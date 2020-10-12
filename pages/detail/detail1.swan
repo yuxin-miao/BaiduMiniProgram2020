@@ -1,0 +1,22 @@
+
+<view class="icon-item" s-for="item in list">
+    <view class="icon-inner">
+        <view><smt-icon name="{{item}}" size="{{iconSize}}" /></view>
+    </view>
+    <br/>
+    <view class="icon-text">
+        <button type="default" plain="true">
+            <navigator
+                target="self"
+                open-type="navigate"
+                url="/pages/chat/chat"
+                hover-class="navigator-hover"
+                hover-start-time="50"
+                hover-stay-time="600"
+                hover-stop-propagation="true">
+                Chat With Me!
+            </navigator>
+        </button>
+    </view>
+</view>
+
