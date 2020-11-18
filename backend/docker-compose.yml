@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  server:
+    container_name: xiaou
+    image: ncj/xiaou
+    ports:
+      - "8000:8000"
+    volumes:
+      - type: bind
+        source: .
+        target: /xiaou/
+    working_dir: /xiaou/
+    command: ./command.sh
