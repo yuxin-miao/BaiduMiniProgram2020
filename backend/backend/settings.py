@@ -25,7 +25,9 @@ SECRET_KEY = '0g6rqqf0jc4mkf)r@)y*#&-2rh6k1rxi!lgo*(=@$wqzvhlua9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'xiaou.tech'
+]
 
 
 # Application definition
