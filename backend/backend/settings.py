@@ -26,6 +26,8 @@ SECRET_KEY = '0g6rqqf0jc4mkf)r@)y*#&-2rh6k1rxi!lgo*(=@$wqzvhlua9'
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
     'xiaou.tech'
 ]
 
