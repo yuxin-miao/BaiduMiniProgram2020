@@ -38,30 +38,36 @@ class AccountViewSet(viewsets.ViewSet):
             'sk': APP_SECRET
         })
 
-        print('Oauth Success:', r.text)
-
         res = json.loads(r.text)
         openid = res['openid'] if 'openid' in res else None
-        # session_key = res['session_key'] if 'session_key' in res else None
+        session_key = res['session_key'] if 'session_key' in res else None
+
         if not openid:
             return Response({'message': 'OAuth调用失败'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         # 判断用户是否第一次登录
-        try:
-            user = User.objects.get(openid=openid)
-        except Exception:
-            # 微信用户第一次登陆,新建用户
-            username = request.data.get('nickname')
-            gender = request.data.get('sex')
-            avatar = request.data.get('avatar')
-            user = User.objects.create(username=username, gender=gender, avatar=avatar)
-            user.set_password(openid)
+        user = User.objects.filter(openid=openid).first()
+        if user is None:
+            try:
+                username = request.data.get('userInfo').get('nickName')
+                gender = request.data.get('userInfo').get('sex')
+                avatar = request.data.get('userInfo').get('avatar')
+                user = User.objects.create(username=username, gender=gender, avatar=avatar)
+                user.set_password(openid)
+            except Exception:
+                return Response({'detail': '百度用户数据错误'}, status=status.HTTP_400_BAD_REQUEST)
+
 
         if user is None:
             return Response({'detail': '登陆失败'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
         django_login(request, user)
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK, data={
+            'openid': openid,
+            'session_key': session_key,
+            'username': user.username,
+            'avatar': user.avatar
+        })
 
     @action(detail=False, methods=['POST'])
     def logout(self, request):
