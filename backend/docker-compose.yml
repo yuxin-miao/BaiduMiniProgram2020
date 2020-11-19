@@ -11,4 +11,8 @@ services:
         source: .
         target: /xiaou/
     working_dir: /xiaou/
+    environment:
+      APP_ID:
+      APP_KEY:
+      APP_SECRET:
     command: ./command.sh
