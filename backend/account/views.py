@@ -54,7 +54,7 @@ class AccountViewSet(viewsets.ViewSet):
             username = request.data.get('nickname')
             gender = request.data.get('sex')
             avatar = request.data.get('avatar')
-            user = User.objects.create(username=username, sex=gender, avatar=avatar)
+            user = User.objects.create(username=username, gender=gender, avatar=avatar)
             user.set_password(openid)
 
         if user is None:
