@@ -50,8 +50,8 @@ class AccountViewSet(viewsets.ViewSet):
         if user is None:
             try:
                 username = request.data.get('userInfo').get('nickName')
-                gender = request.data.get('userInfo').get('sex')
-                avatar = request.data.get('userInfo').get('avatar')
+                gender = request.data.get('userInfo').get('gender')
+                avatar = request.data.get('userInfo').get('avatarUrl')
                 user = User.objects.create(
                     username=username,
                     gender=gender,
