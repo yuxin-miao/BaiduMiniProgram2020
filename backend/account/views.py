@@ -52,7 +52,13 @@ class AccountViewSet(viewsets.ViewSet):
                 username = request.data.get('userInfo').get('nickName')
                 gender = request.data.get('userInfo').get('sex')
                 avatar = request.data.get('userInfo').get('avatar')
-                user = User.objects.create(username=username, gender=gender, avatar=avatar)
+                user = User.objects.create(
+                    username=username,
+                    gender=gender,
+                    avatar=avatar,
+                    openid=openid,
+                    session_key=session_key
+                )
                 user.set_password(openid)
             except Exception:
                 return Response({'detail': '百度用户数据错误'}, status=status.HTTP_400_BAD_REQUEST)
