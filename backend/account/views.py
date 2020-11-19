@@ -67,6 +67,9 @@ class AccountViewSet(viewsets.ViewSet):
         if user is None:
             return Response({'detail': '登陆失败'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
+        if user.is_authenticated:
+            return Response({'detail': '重复登录'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
         django_login(request, user)
         return Response(status=status.HTTP_200_OK, data={
             'openid': openid,
