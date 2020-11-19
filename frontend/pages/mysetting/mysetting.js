@@ -3,7 +3,6 @@ Page({
 
     },
     bindKeyfocus(e){
-        console.log(e.detail);
     },
     bindKeyblur(e) {
         swan.showToast({
@@ -40,5 +39,24 @@ Page({
     },
     onShareAppMessage: function () {
         // 用户点击右上角转发
+    },
+
+    login(e) {
+        let userInfo = e.detail;
+        getApp().login(userInfo);
+    },
+    logout() {
+        getApp().logout();
+    },
+    getUser() {
+        swan.request({
+            url: getApp().getUrl('/account/user/'),
+            success: res => {
+                console.log(res);
+            },
+            fail: err => {
+                console.log(err);
+            }
+        })
     }
 });

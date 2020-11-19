@@ -20,6 +20,7 @@
     "swan-automator": "0.0.6"
   },
   "dependencies": {
-    "@smt-ui/component": "^1.1.72"
+    "@smt-ui/component": "^1.1.72",
+    "weapp-cookie": "^1.4.6"
   }
 }

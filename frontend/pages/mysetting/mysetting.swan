@@ -41,5 +41,13 @@
                 <input value='value="{= value =}"' />
             </view>
         </view>
+
+
+
+        <button open-type="getUserInfo" bindgetuserinfo="login" type="primary" hover-stop-propagation="true">登录</button>
+
+        <button bind:tap="getUser" type="primary" hover-stop-propagation="true">用户</button>
+
+        <button bind:tap="logout" type="primary" hover-stop-propagation="true">退出</button>
     </view>
 </view
