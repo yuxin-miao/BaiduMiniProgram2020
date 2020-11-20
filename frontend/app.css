@@ -12,13 +12,13 @@ body {
     color: #333;
 }
 
-/* 组件主体 */
+/* 全局整页面 */
 .wrap {
-    padding-bottom: .5rem;
+    height: 100vh;
     font-size: .16rem;
 }
 
-/* API主体 */
+/* 组件容器 */
 .container {
     font-size: .16rem;
     display: flex;
@@ -52,9 +52,10 @@ body {
 /* 卡片区域 */
 .card-area {
     overflow: hidden;
-    margin: .17rem .17rem 0 .17rem;
-    border-radius: 8px 8px;
-    background: #fff;
+    /* margin: .17rem .17rem 0 .17rem; */
+    /* border-radius: 8px 8px; */
+    /* background:#CFF4D1; */
+    /* opacity: 0.5; */
 }
 
 /* 展示区 */
@@ -499,4 +500,17 @@ not all {
     html {
         font-size: 100px;
     }
+}
+
+/* mask */
+.drawer_screen {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 998;
+    background: #000;
+    opacity: 0.5;
+    overflow: hidden;
 }

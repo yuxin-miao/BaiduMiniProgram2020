@@ -2,18 +2,22 @@
     "appid": "22942007",
     "compilation-args": {
         "common": {
-            "enhance": true
+            "enhance": true,
+            "ignorePrefixCss": false
         }
     },
     "host": "baiduboxapp",
+    "preview": {
+        "packageId": 815953
+    },
     "projectname": "xiaou",
     "setting": {
         "urlCheck": false
     },
     "swan": {
         "baiduboxapp": {
-            "swanJsVersion": "3.220.16",
-            "extensionJsVersion": "1.18.3"
+            "extensionJsVersion": "1.18.3",
+            "swanJsVersion": "3.220.16"
         }
     }
 }

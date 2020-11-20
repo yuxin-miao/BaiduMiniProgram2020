@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText": "心情日记",
+    "navigationStyle": "default",
+    "usingComponents": {
+        "smt-calendar": "@smt-ui/component/src/calendar"
+    }
+}

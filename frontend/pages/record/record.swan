@@ -1,0 +1,31 @@
+<view class="wrap">
+<view class="box">
+    <view class="card-area">
+        <view class="text">
+            <text>Hey!
+            你今天感觉怎么样？
+            </text>
+        </view>
+    </view>
+
+
+    <view class="card-area">
+        <view s-for="mood in moodtype">
+            <image
+            class="mood-item",
+            mode="scaleToFill"
+            src='../../images/mood_{{mood}}.png'/>
+        </view>
+    </view>
+
+    <!-- <view class="row"> -->
+    <view class="card-area">
+        <input class="normalInput" placeholder="说点什么..." />
+        <button class="card-button" style="width:60%">
+            记录一下
+        </button>
+    </view>
+    </view>
+
+</view>
+</view>

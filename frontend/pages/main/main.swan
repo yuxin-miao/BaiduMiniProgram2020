@@ -1,0 +1,66 @@
+<view class="wrap">
+<view class="box">
+    <view class="row">
+        <view class="text">
+            <text>你好！</text>
+        </view>
+        <view class="text">
+        你好！
+        </view>
+        <view class="text">
+        你好！
+        </view>
+    </view>
+
+
+    <view class="row">
+        <navigator
+        target="self"
+        open-type="navigate"
+        url="/pages/calender/calender"
+        hover-class="navigator-hover"
+        hover-start-time="50"
+        hover-stay-time="600"
+        hover-stop-propagation="true">
+
+        <smt-list
+            s-for="v in items"
+            title="{{v.title}}"
+            sub-title="{{v.subTitle}}"
+            desc="{{v.desc}}"
+            img-src="{{v.imgSrc}}"
+        ></smt-list>
+        </navigator>
+    </view>
+
+    <view class="row">
+        <!-- <view class="icon-text">
+        <image
+            class="image-area {{item.hasBackgroud == 1 ? 'backGround': ''}}"
+            data-name="{{item.mode}}"
+            bindtap="onTap"
+            mode='widthFix'
+            src='../../images/mood_smile.png'
+            binderror="imageError"
+            bindload="imageLoad" />
+
+            </view> -->
+
+        <view class="icon-text">
+            <button type="default" plain="true">
+            <navigator
+                target="self"
+                open-type="navigate"
+                url="/pages/chat/chat"
+                hover-class="navigator-hover"
+                hover-start-time="50"
+                hover-stay-time="600"
+                hover-stop-propagation="true">
+                Chat With Me!
+            </navigator>
+            </button>
+        </view>
+    </view>
+
+</view>
+</view>

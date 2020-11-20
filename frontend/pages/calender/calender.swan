@@ -1,0 +1,16 @@
+<view class="wrap">
+    <view class="content">
+
+        <view class="card-panel">
+            <view class="comp-wrap">
+                <smt-calendar
+                    class="calendar"
+                    range="{{range}}"
+                    value="{{allDayValue}}"
+                    bind:dayclick="allDayClick"
+                >
+                </smt-calendar>
+            </view>
+        </view>
+    </view>
+</view>

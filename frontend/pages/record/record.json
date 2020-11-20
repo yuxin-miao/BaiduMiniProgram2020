@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText": "Ucho",
+
+    "usingComponents": {
+        "smt-list": "@smt-ui/component/src/list"
+    }
+}

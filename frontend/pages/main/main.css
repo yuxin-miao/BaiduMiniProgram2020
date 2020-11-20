@@ -1,0 +1,30 @@
+.box {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+.row{
+    flex-basis: 100%;
+    display:flex;
+
+  }
+.row:nth-child(1) {
+    justify-content: space-between;
+}
+.row .text{
+    margin-top: 27.17rpx;
+    /* align-self: center; */
+    font-size: 30rpx;
+}
+.row:nth-child(2){
+    justify-content: center;
+}
+.row:nth-child(3){
+
+    justify-content: center;
+}
+
+

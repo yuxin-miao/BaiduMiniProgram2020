@@ -1,0 +1,149 @@
+html,
+body {
+    background-color: rgba(207 244 209);
+}
+
+.top-bar view {
+    z-index: 999;
+    background-color: #55C595;
+}
+
+.fixTopBar {
+    width: 100%;
+    position: fixed;
+    height: 53px;
+}
+
+.fixTopBarBlock {
+    width: 100%;
+    position: fixed;
+    top: 0;
+}
+
+.fixTopBarText {
+    font-family: PingFangSC-Medium;
+    font-size: .18rem;
+    color: #000;
+    text-align: center;
+    line-height: .18rem;
+}
+
+.flex {
+    height: .53rem;
+    font-size: .16rem;
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+}
+
+.group {
+    font-size: .15rem;
+}
+
+.group-hd {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: .58rem;
+}
+
+.top-box {
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.item-border-bottom:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    left: 0;
+    bottom: 0;
+    -webkit-transform-origin: 0 100%;
+            transform-origin: 0 100%;
+    background: #e6e6e6;
+}
+
+.group-logo {
+    width: 1.99rem;
+}
+
+.group-desc {
+    text-align: center;
+    color: #999;
+    margin-top: .14rem;
+    line-height: 1.6;
+}
+
+.group-bd {
+    border-top: 7px solid #f5f5f5;
+    background: #fff;
+}
+
+.group-bd:last-child {
+    border-bottom: .25rem solid #f5f5f5;
+}
+
+.item {
+    padding: .22rem 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.border-bottom {
+    border: 0;
+    margin: 0 .17rem;
+}
+
+
+.item-logo {
+    display: inline-block;
+    width: .26rem;
+    height: .26rem;
+}
+
+.item-desc {
+    font-size: .17rem;
+    margin-left: .17rem;
+    color: #000;
+}
+
+.item-toggle {
+    position: absolute;
+    right: 0;
+}
+
+
+.hover {
+    background: #F5F7F7;
+}
+
+
+.icon-item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+}
+.icon-item .icon-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    height: 22.94686vw;
+    padding: 0 4.23rpx;
+    font-size: 0;
+}
+.icon-item .icon-text {
+    white-space: normal;
+    font-size: 23.55rpx;
+    margin-top: 27.17rpx;
+}
