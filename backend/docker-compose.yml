@@ -15,4 +15,5 @@ services:
       APP_ID:
       APP_KEY:
       APP_SECRET:
+      DJANGO_SECRET_KEY:
     command: ./command.sh
