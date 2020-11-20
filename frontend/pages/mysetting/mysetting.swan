@@ -1,0 +1,56 @@
+
+<view class="wrap">
+    <view class="card-area">
+        <view class="top-description border-bottom">自定义输入控制</view>
+        <view class="list-area border-bottom">
+            <view class="list-item-key-4">自动聚焦</view>
+            <view class="list-item-value">
+                <input
+                    placeholder='focus="true"'
+                    selection-start="3"
+                    selection-end="7"
+                    focus="{{true}}"
+                    confirm-hold="false"
+                    confirm-type="send"
+                    bindfocus="bindKeyfocus" />
+            </view>
+        </view>
+
+        <view class="list-area border-bottom">
+            <view class="list-item-key-4">控制长度</view>
+            <view class="list-item-value">
+                <input
+                    cursor="100"
+                    bindblur="bindKeyblur"
+                    bindconfirm="bindKeyconfirm"
+                    placeholder='maxlength="10"'
+                    maxlength="10" />
+            </view>
+        </view>
+
+        <view class="list-area border-bottom">
+            <view class="list-item-key-4">禁用</view>
+            <view class="list-item-value">
+                <input disabled="true" placeholder='disabled="true"' />
+            </view>
+        </view>
+
+        <view class="list-area">
+            <view class="list-item-key-4">带有内容</view>
+            <view class="list-item-value">
+                <input value='value="{= value =}"' />
+            </view>
+        </view>
+
+
+
+        <button open-type="getUserInfo" bindgetuserinfo="login" type="primary" hover-stop-propagation="true">登录</button>
+
+        <button bind:tap="getUser" type="primary" hover-stop-propagation="true">用户</button>
+
+        <button bind:tap="logout" type="primary" hover-stop-propagation="true">退出</button>
+
+        <p>用户名: {{username}}</p>
+        <img src="{{avatar}}" />
+    </view>
+</view

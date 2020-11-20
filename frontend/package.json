@@ -1,0 +1,26 @@
+{
+  "name": "baidumini",
+  "version": "1.0.0",
+  "description": "开发者工具新建工程,生成demo",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuxin-miao/BaiduMiniProgram2020.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yuxin-miao/BaiduMiniProgram2020/issues"
+  },
+  "homepage": "https://github.com/yuxin-miao/BaiduMiniProgram2020#readme",
+  "devDependencies": {
+    "swan-automator": "0.0.6"
+  },
+  "dependencies": {
+    "@smt-ui/component": "^1.1.72",
+    "weapp-cookie": "^1.4.6"
+  }
+}
