@@ -10,12 +10,7 @@ import cookies from 'weapp-cookie';
 
 App({
     globalData: {
-        userInfo: 'user',
-        host: API,
-        user: {
-            username: '',
-
-        }
+        host: API
     },
     onLaunch(options) {
         // do something when launch
@@ -26,28 +21,42 @@ App({
     onHide() {
         // do something when hide
     },
+
+    // *****************************
+    // ***** Setters & Getters *****
+    // *****************************
     getUrl(path) {
         // 返回拼接后的API地址: 域名+路由
         return this.globalData.host + path
     },
-    getOpenID() {
-        // get localStorage
-        let openID = '';
+    getLocalStorage(key) {
+        // 获取本地持久化数据
+        let data = '';
         try {
-            openID = swan.getStorageSync('openID');
+            data = swan.getStorageSync(key);
         } catch (e) {
             console.log(e);
-            openID = '';
+            data = null;
         }
-        return openID;
+        return data;
     },
-    setOpenID(openID) {
+    setLocalStorage(key, value) {
+        // 设置本地持久化数据
         try {
-            swan.setStorageSync('openID', openID);
+            swan.setStorageSync(key, value);
         } catch (e) {
             console.log(e);
         }
     },
+    isAuthenticated() {
+        // 返回用户是否登录
+        const username = swan.getStorageSync('username');
+        return !(username === null || username.length === 0);
+    },
+
+    // *****************************
+    // ********** Actions **********
+    // *****************************
     login(userInfo) {
         swan.showLoading({
             title: '登录中'
@@ -66,6 +75,9 @@ App({
                     },
                     success: res => {
                         let openID = res.data && res.data.openid;
+                        this.setLocalStorage('username', res.data.username);
+                        this.setLocalStorage('avatar', res.data.avatar);
+                        this.setLocalStorage('gender', res.data.gender);
 
                         if (!openID) {
                             swan.showModal({
@@ -75,7 +87,7 @@ App({
                             swan.hideLoading();
                             return;
                         }
-                        getApp().setOpenID(openID);
+                        this.setLocalStorage('openID', openID);
                         swan.hideLoading();
                         swan.showToast({
                             title: '登录成功'
@@ -100,7 +112,13 @@ App({
         });
     },
     logout() {
+        swan.showLoading({
+            title: '退出中'
+        });
         cookies.clearCookies();
+        swan.clearStorageSync('username');
+        swan.clearStorageSync('avatar');
+        swan.clearStorageSync('gender');
         swan.request({
             url: this.getUrl('/account/logout/'),
             method: 'POST',
@@ -108,7 +126,7 @@ App({
                 swan.showToast({
                     title: '退出成功',
                     icon: 'none'
-                })
+                });
             },
             fail: err => {
                 console.log(err);
@@ -117,6 +135,7 @@ App({
                     icon: 'none'
                 })
             }
-        })
+        });
+        swan.hideLoading();
     }
 });
