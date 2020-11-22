@@ -34,8 +34,7 @@
                     "ext": {},
                     "index": "pages/myCalender/myCalender",
                     "query": "",
-                    "scene": {},
-                    "isUpdate": false
+                    "scene": {}
                 },
                 "id": 2,
                 "text": "myCalender"

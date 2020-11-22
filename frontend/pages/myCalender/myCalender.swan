@@ -1,0 +1,35 @@
+<view class="wrap">
+<view class="calender">
+    <view class="calender-week">
+    <view class="grid" s-for="item, index in weekText">{{item}}</view>
+
+    </view>
+    <view class="calender-day">
+
+    <view class="grid lighter" s-for="item, index in empytGridsBefore">{{item}}</view>
+    <view class="grid" s-for="item, index in thisMonthDays">
+        <block s-if="{{index < 15}}">
+            <view> {{item.date}}</view>
+        </block>
+        <block s-else>
+            <image
+            class="mood-image"
+            mode="widthFix"
+            style="width: 60%"
+            src="../../images/mood_{{item.mood}}.png"
+            data-mood="{{mood}}"
+            bind:tap="selectMood"
+            />
+            <view class="mood-date">{{item.date}}</view>
+        </block>
+    </view>
+    <view class="grid lighter" s-for="item, index in empytGridsAfter">{{item}}</view>
+
+    </view>
+</view>
+
+<view class="today">
+<text> 12</text>
+</view>
+
+</view>

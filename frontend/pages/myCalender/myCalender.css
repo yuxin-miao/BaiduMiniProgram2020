@@ -1,0 +1,70 @@
+.wrap {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(245 251 245);
+    color: rgba(181 181 181);
+}
+
+/* top calender */
+.calender {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffff;
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);/*for IOS*/
+    margin-bottom: 30rpx;
+    font-size: .18rem;
+}
+
+.calender-week {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20rpx 0rpx 20rpx 0rpx;
+    border-bottom: 1px solid rgba(181 181 181);
+
+}
+
+.calender-day {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20rpx 10rpx;
+    box-sizing: border-box;
+}
+
+.grid {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    /* align-self: center; */
+    width: 14.28571428571429%;
+    line-height: 70rpx;
+}
+
+.lighter {
+    opacity: 0.5;
+}
+
+.mood-imgae {
+    float:left;
+    display: inline;
+    width: 90%;
+    width: 40px;
+    height: 40px;
+    border-radius: 20%;
+}
+
+.mood-date {
+    float:bottom;
+    display: inline;
+    position:relative;
+    font-size: .08rem;
+    align-self: bottom;
+}
+/* bottom moods */
+.today {
+    display: flex;
+    background-color: #ffffff;
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);/*for IOS*/
+}

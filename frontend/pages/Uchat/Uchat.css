@@ -46,34 +46,45 @@
 }
 
 .chat-row {
-    display: flex;
+    display: inline-block;
+    width: 100%;
+    margin: 10rpx 0;
 }
-.m_right {
-    align-self:right;
-    margin-bottom: 20rpx;
-    border-radius: 10% 15% 0 10%;
-    float: right;
-    /* position: relative; */
-    /* right: 20rpx; */
-    padding: 15rpx 25rpx;
-    background-color: rgba(207 244 209);
 
+.m_right {
+    position: relative;
+    float: right;
+    right: 30rpx;
+    max-width: 600rpx;
+    padding: 15rpx 25rpx;
+    border-radius: 20rpx;
+    border-bottom-right-radius: 0;
+    background-color: rgba(207 244 209);
+    text-align: left;
 }
 
 .u_left {
-    float: left;
     position: relative;
-    border-radius: 15% 10% 10% 0;
-    margin-bottom: 20rpx;
-    left: 20rpx;
+    float: left;
+    left: 30rpx;
+    max-width: 600rpx;
     padding: 15rpx 25rpx;
-    background-color: #ffff;
+    border-radius: 20rpx;
+    border-bottom-left-radius: 0;
+    background-color: #ffffff;
+    text-align: left;
 }
 
-.shadow {
-    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
-    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);/*for IOS*/
+.shadow-left {
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.02);/*for Android*/
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.02);/*for IOS*/
 }
+.shadow-right {
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.04);/*for Android*/
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.04);/*for IOS*/
+}
+
+
 /* 输入框 */
 .msg-input {
     position: fixed;
