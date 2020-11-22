@@ -4,7 +4,55 @@
         "common": {
             "enhance": true,
             "ignorePrefixCss": false
-        }
+        },
+        "options": [
+            {
+                "extra": {
+                    "compileArgs": "--module cmd",
+                    "ext": {},
+                    "index": "pages/mysetting/mysetting",
+                    "query": "",
+                    "scene": {}
+                },
+                "id": 0,
+                "text": "setting"
+            },
+            {
+                "extra": {
+                    "compileArgs": "--module cmd",
+                    "ext": {},
+                    "index": "pages/record/record",
+                    "query": "",
+                    "scene": {}
+                },
+                "id": 1,
+                "text": "心情记录"
+            },
+            {
+                "extra": {
+                    "compileArgs": "--module cmd",
+                    "ext": {},
+                    "index": "pages/myCalender/myCalender",
+                    "query": "",
+                    "scene": {},
+                    "isUpdate": false
+                },
+                "id": 2,
+                "text": "myCalender"
+            },
+            {
+                "extra": {
+                    "compileArgs": "--module cmd",
+                    "ext": {},
+                    "index": "pages/Uchat/Uchat",
+                    "query": "",
+                    "scene": {}
+                },
+                "id": 3,
+                "text": "Uchat"
+            }
+        ],
+        "selected": 2
     },
     "host": "baiduboxapp",
     "preview": {

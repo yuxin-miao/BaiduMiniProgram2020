@@ -1,0 +1,39 @@
+<view class="chat-page">
+    <view class="chat-top">
+
+    <image
+        class="portrait"
+        mode="aspectFit"
+        src="../../images/chat-send.png"
+     />
+    </view>
+    <view class="chat-body">
+    <scroll-view class="scroll-view" scroll-y>
+        <view class="chat-time">{{time}}</view>
+
+        <view s-for="item, index in messages">
+            <block s-if="{{item.type == 1}}">
+                <view class="chat-row">
+                <view class="u_left {{index == messages.length - 2 ? 'shadow': '' }}"> {{item.type}}: {{item.msg}}</view>
+                </view>
+            </block>
+            <block s-else>
+                <view class="chat-row">
+                <view class="m_right {{index == messages.length - 1 ? 'shadow': '' }}"> {{item.msg}}</view>
+                <view class="chat-row">
+            </block>
+        </view>
+    </scroll-view>
+    </view>
+
+
+    <view class="msg-input">
+    <input
+        class="normalInput"/>
+    <image
+        mode="widthFix"
+        class="msg-send"
+        src="../../images/chat-send.png"/>
+
+    </view>
+</view>

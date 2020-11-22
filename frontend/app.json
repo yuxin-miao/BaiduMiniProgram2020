@@ -1,9 +1,11 @@
 {
     "debug": false,
     "pages": [
-        "pages/record/record",
         "pages/main/main",
         "pages/initial/initial",
+        "pages/Uchat/Uchat",
+        "pages/record/record",
+        "pages/myCalender/myCalender",
         "pages/calender/calender",
         "pages/detail/detail1",
         "pages/index/index",

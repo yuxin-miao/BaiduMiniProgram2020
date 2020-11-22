@@ -1,8 +1,8 @@
 <view class="wrap">
-<view class="box">
+<view class="drawer_box">
     <view class="card-area">
         <view class="text">
-            <text>Hey!
+            <text>Hey {{username}}！
             你今天感觉怎么样？
             </text>
         </view>
@@ -12,9 +12,12 @@
     <view class="card-area">
         <view s-for="mood in moodtype">
             <image
-            class="mood-item",
+            class="mood-item {{mood == selectedMood ? 'mood-border' : ''}}",
             mode="scaleToFill"
-            src='../../images/mood_{{mood}}.png'/>
+            src="../../images/mood_{{mood}}.png"
+            data-mood="{{mood}}"
+            bind:tap="selectMood"
+            />
         </view>
     </view>
 

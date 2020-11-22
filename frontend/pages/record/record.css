@@ -1,5 +1,6 @@
-.box {
+.drawer_box {
     height: 100%;
+    z-index: 999;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -28,13 +29,13 @@
     /* align-self: center; */
     font-size: 60rpx;
     color: #55C595;
-    weight: bold;
+    font-family: PingFangSC-Medium;
 }
 
 /* mood */
 .card-area:nth-child(2){
     width: 100%;
-    margin-top: 10rpx;
+    margin: 10rpx 5rpx 0 2rpx;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -43,10 +44,18 @@
 
 .mood-item {
     /* display: inline-block; */
-    width: 1.1rem;
-    height: 1.1rem;
-    margin: 10rpx;
+    width: 1.05rem;
+    height: 1.05rem;
+    margin: 10rpx 13rpx 10rpx 13rpx;
     justify-content: center;
+}
+
+.mood-border {
+    /* box-sizing: content-box; */
+    /* border: solid 4rpx; */
+    border-radius: 50%;
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);/*for IOS*/
 }
 
 /* input */
