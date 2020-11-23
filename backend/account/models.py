@@ -9,7 +9,7 @@ class User(AbstractUser):
     nickname = models.CharField(max_length=64, null=True, blank=True)
     gender = models.SmallIntegerField(choices=UserGender.choices, default=UserGender.UNKNOWN, verbose_name="性别")
     avatar = models.URLField(max_length=256, null=True, blank=True, verbose_name="头像")
-    openid = models.CharField(max_length=64, db_index=True, verbose_name='openid', unique=True)
+    openid = models.CharField(max_length=64, db_index=True, verbose_name='openid', unique=True, null=True, blank=True)
     session_key = models.CharField(max_length=64, null=True, blank=True, verbose_name='session_key')
 
     class Meta:
