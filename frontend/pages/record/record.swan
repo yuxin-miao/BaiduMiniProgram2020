@@ -23,8 +23,8 @@
 
     <!-- <view class="row"> -->
     <view class="card-area">
-        <input class="normalInput" placeholder="说点什么..." />
-        <button class="card-button" style="width:60%">
+        <textarea class="normalInput" placeholder="说点什么..." bindinput="MoodDescription"/>
+        <button class="card-button" style="width:60%" bind:tap="createtMood" form-type="submit">
             记录一下
         </button>
     </view>

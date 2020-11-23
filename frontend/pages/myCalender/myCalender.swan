@@ -6,30 +6,32 @@
     </view>
     <view class="calender-day">
 
-    <view class="grid lighter" s-for="item, index in empytGridsBefore">{{item}}</view>
+    <view class="grid lighter" s-for="item, index in emptyGridsBefore">{{item}}</view>
     <view class="grid" s-for="item, index in thisMonthDays">
         <block s-if="{{index < 15}}">
             <view> {{item.date}}</view>
         </block>
         <block s-else>
             <image
-            class="mood-image"
+            class="mood-image {{item.date==selectDay ? 'select' : '' }}"
             mode="widthFix"
             style="width: 60%"
             src="../../images/mood_{{item.mood}}.png"
-            data-mood="{{mood}}"
-            bind:tap="selectMood"
+            data-day = "{{item.date}}"
+            bind:tap="selectDay"
             />
             <view class="mood-date">{{item.date}}</view>
         </block>
     </view>
-    <view class="grid lighter" s-for="item, index in empytGridsAfter">{{item}}</view>
+    <view class="grid lighter" s-for="item, index in emptyGridsAfter">{{item}}</view>
 
     </view>
 </view>
 
 <view class="today">
-<text> 12</text>
+<view class="record-row" s-for="emptyGridsAfter">
+{{testString}}
+</view>
 </view>
 
 </view>

@@ -58,12 +58,12 @@ App({
     // ********** Actions **********
     // *****************************
     login(userInfo) {
-        swan.showLoading({
-            title: '登录中'
-        });
-
         swan.login({
             success: res => {
+                swan.showLoading({
+                    title: '登录中'
+                });
+
                 let code = res.code || '';
 
                 swan.request({

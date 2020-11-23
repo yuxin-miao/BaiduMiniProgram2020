@@ -45,13 +45,13 @@
     opacity: 0.5;
 }
 
-.mood-imgae {
-    float:left;
-    display: inline;
-    width: 90%;
-    width: 40px;
-    height: 40px;
-    border-radius: 20%;
+.mood-image {
+    border-radius: 10%;
+}
+.select {
+    border-radius: 50%;
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.05);/*for Android*/
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.05);/*for IOS*/
 }
 
 .mood-date {
@@ -64,7 +64,12 @@
 /* bottom moods */
 .today {
     display: flex;
+    flex-direction: column;
     background-color: #ffffff;
     box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
     -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);/*for IOS*/
+}
+
+.record-row {
+    padding: 20rpx;
 }

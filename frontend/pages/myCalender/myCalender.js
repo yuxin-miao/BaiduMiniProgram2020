@@ -1,17 +1,22 @@
-var util = require('../../utils/cal-util.js');
+// var moods = require('../../utils/constants.js');
+import {MoodName, MoodType} from '../../utils/constants.js';
 
 Page({
     data: {
-        value: '2018-11-11',
-        week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        lastMonth: 'lastMonth',
-        nextMonth: 'nextMonth',
-        selectVal: '',
+        //value: '2018-11-11',
+        //week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        //lastMonth: 'lastMonth',
+        //nextMonth: 'nextMonth',
+        selectDay: '',
         thisMonth: '11',
+        testString: "WOW~",
         thisMonthDays: [],
-        empytGridsBefore: [],
-        empytGridsAfter: [],
-
+        emptyGridsBefore: [],
+        emptyGridsAfter: [],
+        // dayRecordMood = [
+        //     {'mood': 0, 'comment': "wow~"},
+        //     {'mood': 1, 'comment': "qwqqq"}
+        // ],
         weekText: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
         //显示日期
         title: '',
@@ -41,7 +46,7 @@ Page({
             for (let i = 1; i <= numberDays; i++) {
                 thisMonthDays.push({
                     date: i,
-                    mood: "smile"
+                    mood: MoodName[MoodType.LIKE]
                 });
             }
             return thisMonthDays;
@@ -49,28 +54,28 @@ Page({
         // empty grids for this month
         emptyGrid: function(year, month) {
             let week = new Date(Date.UTC(year, month - 1, 1)).getDay(),
-                empytGridsBefore = [],
-                empytGridsAfter = [],
+                emptyGridsBefore = [],
+                emptyGridsAfter = [],
                 emptyDays = (week == 0 ? 7 : week);
-            var thisMonthDays = this.getThisMonthDays(year, month); // call this month day number
-            var preMonthDays = month - 1 < 0
+            let thisMonthDays = this.getThisMonthDays(year, month); // call this month day number
+            let preMonthDays = month - 1 < 0
                 ? this.getThisMonthDays(year - 1, 12) : this.getThisMonthDays(year, month - 1);
 
             //空出日期
             for (let i = 1; i <= emptyDays; i++) {
-                empytGridsBefore.push(preMonthDays - (emptyDays - i));
+                emptyGridsBefore.push(preMonthDays - (emptyDays - i));
             }
 
-            var after = (42 - thisMonthDays - emptyDays) - 7 >= 0
+            let after = (42 - thisMonthDays - emptyDays) - 7 >= 0
                         ? (42 - thisMonthDays - emptyDays) - 7
                         : (42 - thisMonthDays - emptyDays);
             for (let i = 1; i <= after; i++) {
-                empytGridsAfter.push(i);
+                emptyGridsAfter.push(i);
             }
-            if (empytGridsBefore.length == 7) {
-                empytGridsBefore = [];
+            if (emptyGridsBefore.length == 7) {
+                emptyGridsBefore = [];
             }
-            return { before: empytGridsBefore, after: empytGridsAfter};
+            return { before: emptyGridsBefore, after: emptyGridsAfter};
         },
         //补全0
         zero: function (i) {
@@ -83,27 +88,21 @@ Page({
         //     title: thisMonth
         // });
         // 监听页面加载的生命周期函数
-        // var month = util.thisMonth(new Date());
-        // var monthdays = util.thisMonthDays(new Date());
-        // this.setData({
-        //     thisMonth: month,
-        //     thisMonthDays: monthdays
-        // });
-        var timestamp = Date.parse(new Date());
-        var date = new Date(timestamp);
+
+        let timestamp = Date.parse(new Date());
+        let date = new Date(timestamp);
         //获取年份  
-        var Y =date.getFullYear();
+        let Y =date.getFullYear();
         //获取月份  
-        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
         //获取当日日期 
-        var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate(); 
-        var mday = this.methods.gridThisMonth(Y, M);
-        var emptys = this.methods.emptyGrid(Y, M);
-        console.log(emptys.after);
+        let mday = this.methods.gridThisMonth(Y, M);
+        let emptys = this.methods.emptyGrid(Y, M);
+        // console.log(emptys.after);
         this.setData({
             thisMonthDays: mday,
-            empytGridsBefore: emptys.before,
-            empytGridsAfter: emptys.after
+            emptyGridsBefore: emptys.before,
+            emptyGridsAfter: emptys.after
         })
     },
     onReady: function() {
@@ -129,12 +128,10 @@ Page({
     onShareAppMessage: function () {
         // 用户点击右上角转发
     },
-  //组件监听事件
-    select(e) {
-        // console.log(e)
-        this.setData({
-        selectVal: e.detail
-        });
+    //选择天数
+    selectDay(e) {
+        // console.log('Clicked', e.currentTarget.dataset.day);
+        this.setData({selectDay: e.currentTarget.dataset.day});
     }
 
 });

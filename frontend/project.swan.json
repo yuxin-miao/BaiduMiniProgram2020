@@ -23,7 +23,8 @@
                     "ext": {},
                     "index": "pages/record/record",
                     "query": "",
-                    "scene": {}
+                    "scene": {},
+                    "isUpdate": false
                 },
                 "id": 1,
                 "text": "心情记录"
@@ -51,7 +52,7 @@
                 "text": "Uchat"
             }
         ],
-        "selected": 2
+        "selected": 1
     },
     "host": "baiduboxapp",
     "preview": {
