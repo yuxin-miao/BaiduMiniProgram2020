@@ -80,9 +80,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': getenv('DB_NAME', 'xiaou_test'),
+        'USER': getenv('DB_USER', 'postgres'),
+        'PASSWORD': getenv('DB_PASSWORD', ''),
+        'HOST': getenv('DB_HOST', 'xiaou.tech'),
+        'PORT': '5432'
     }
 }
 
