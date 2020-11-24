@@ -14,7 +14,7 @@
             <image
             class="mood-item {{mood == selectedMood ? 'mood-border' : ''}}",
             mode="scaleToFill"
-            src="../../images/mood_{{mood}}.png"
+            src="../../images/mood_{{mood}}.svg"
             data-mood="{{mood}}"
             bind:tap="selectMood"
             />

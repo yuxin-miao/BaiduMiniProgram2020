@@ -7,7 +7,7 @@
         class="portrait"
         mode="widthFix"
         style="width: 70rpx"
-        src="../../images/chat-send.png"
+        src="../../images/chat-send.svg"
      />
     </view>
     </view>
@@ -35,7 +35,7 @@
             class="chat-icon"
             mode="widthFix"
             style="width: 50rpx"
-            src="../../images/chat-icon.png"
+            src="../../images/chat-icon.svg"
             bindtap="recordNav" />
 
 
@@ -45,7 +45,7 @@
             <image
                 mode="widthFix"
                 class="msg-send"
-                src="../../images/chat-send.png"/>
+                src="../../images/chat-send.svg"/>
 
         </view>
     </view>
