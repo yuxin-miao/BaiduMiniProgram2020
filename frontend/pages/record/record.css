@@ -35,7 +35,7 @@
 /* mood */
 .card-area:nth-child(2){
     width: 100%;
-    margin: 10rpx 5rpx 0 2rpx;
+    padding: 10rpx 5rpx 30rpx 2rpx;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -61,12 +61,15 @@
 /* input */
 .card-area:nth-child(3){
     flex-direction: column;
-    padding-bottom: 40rpx;
+    /* padding-bottom: 20rpx; */
 }
 
 .normalInput {
+    width: 90%;
     height: .8rem;
     margin: 0 .17rem;
+    color: rgba(112 112 112 );
+    align-self: center;
 }
 
 .card-button {

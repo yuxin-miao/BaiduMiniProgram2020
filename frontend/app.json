@@ -2,16 +2,9 @@
     "debug": false,
     "pages": [
         "pages/main/main",
-        "pages/initial/initial",
         "pages/Uchat/Uchat",
         "pages/record/record",
-        "pages/myCalender/myCalender",
-        "pages/calender/calender",
-        "pages/detail/detail1",
-        "pages/index/index",
-        "pages/detail2/detail2",
-        "pages/chat/chat",
-        "pages/mysetting/mysetting"
+        "pages/myCalender/myCalender"
     ],
     "window": {
         "navigationBarBackgroundColor": "#ffffff",

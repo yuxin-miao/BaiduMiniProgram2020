@@ -3,7 +3,7 @@
     <view class="card-area">
         <view class="text">
             <text>Hey {{username}}！
-            你今天感觉怎么样？
+             你感觉怎么样？
             </text>
         </view>
     </view>
@@ -14,7 +14,7 @@
             <image
             class="mood-item {{mood == selectedMood ? 'mood-border' : ''}}",
             mode="scaleToFill"
-            src="../../images/mood_{{mood}}.png"
+            src="../../images/mood_{{mood}}.svg"
             data-mood="{{mood}}"
             bind:tap="selectMood"
             />
@@ -23,8 +23,8 @@
 
     <!-- <view class="row"> -->
     <view class="card-area">
-        <input class="normalInput" placeholder="说点什么..." />
-        <button class="card-button" style="width:60%">
+        <textarea class="normalInput" placeholder="说点什么..." bindinput="MoodDescription"/>
+        <button class="card-button" style="width:60%" bind:tap="createMood" form-type="submit">
             记录一下
         </button>
     </view>

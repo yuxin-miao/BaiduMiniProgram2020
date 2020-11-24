@@ -1,6 +1,0 @@
-<view class="wrap">
-    <view class="page-top">
-        <view class="page-top-text">{{id}}</view>
-    </view>
-    <button bind:tap="navigateBack" type="primary" hover-stop-propagation="true">返回上一页</button>
-</view>

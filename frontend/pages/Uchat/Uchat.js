@@ -20,12 +20,13 @@ Page({
                 msg: "你好，小U～"
             },            {
                 type: "1",
-                msg: "你好，我是小U"
+                msg: "你好，我是小U这是一段很长的话，实现自动换行，最大宽度"
             },
             {
                 type: "",
-                msg: "你好，小U～"
-            },            {
+                msg: "123"
+            },
+            {
                 type: "1",
                 msg: "你好，我是小U"
             },
@@ -106,5 +107,14 @@ Page({
     },
     onShareAppMessage: function () {
         // 用户点击右上角转发
+    },
+    returnNav(e) {
+        swan.navigateBack();
+    },
+    recordNav(e) {
+        console.log("fff")
+        swan.navigateTo({
+            url: '/pages/myCalender/myCalender'
+        });
     }
 });

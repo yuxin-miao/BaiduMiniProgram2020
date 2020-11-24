@@ -34,8 +34,7 @@
                     "ext": {},
                     "index": "pages/myCalender/myCalender",
                     "query": "",
-                    "scene": {},
-                    "isUpdate": false
+                    "scene": {}
                 },
                 "id": 2,
                 "text": "myCalender"
@@ -46,13 +45,14 @@
                     "ext": {},
                     "index": "pages/Uchat/Uchat",
                     "query": "",
-                    "scene": {}
+                    "scene": {},
+                    "isUpdate": false
                 },
                 "id": 3,
                 "text": "Uchat"
             }
         ],
-        "selected": 2
+        "selected": 3
     },
     "host": "baiduboxapp",
     "preview": {

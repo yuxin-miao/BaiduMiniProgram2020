@@ -1,3 +1,6 @@
+import {createMoodRecord} from  '../../utils/api.js';
+import {MoodNumber} from '../../utils/constants.js';
+
 const app = getApp();
 
 Page({
@@ -6,7 +9,8 @@ Page({
         avatar: '',
         moodtype: [ "smile", "like",  "happy", "upset", "sad", "angry", "ok"
         ],
-        selectedMood: ''
+        selectedMood: "smile",
+        moodDescription: ''
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
@@ -38,7 +42,36 @@ Page({
         // 用户点击右上角转发
     },
     selectMood(e) {
-        console.log('Clicked', e.currentTarget.dataset.mood);
+        // console.log('Clicked', e.currentTarget.dataset.mood);
         this.setData({selectedMood: e.currentTarget.dataset.mood});
+    },
+    createMood() {
+        // let type = this.data.selectedMood;
+        // console.log(MoodNumber[type]);
+        console.log(this.data.selectedMood);
+        let moodType = MoodNumber[this.data.selectedMood];
+        console.log(moodType);
+        // if(!moodType) {
+        //     swan.showModal({
+        //         title: '提交失败',
+        //         content: '请选择今日心情',
+        //     });
+        // }
+        // else {
+        createMoodRecord({
+            type: moodType,
+            description: this.data.moodDescription
+        });
+        swan.showToast({
+            title: '记录成功',
+            image: "../../images/avatar.png",
+            duration: 1500
+        })
+        // }
+    },
+    MoodDescription: function(e) {
+        this.setData({
+            moodDescription: e.detail.value
+        })
     }
 });
