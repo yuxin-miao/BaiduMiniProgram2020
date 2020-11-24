@@ -1,11 +1,15 @@
 <view class="chat-page">
     <view class="chat-top">
+    <view class="top-navigation">
+    <smt-icon class="back-arrow" name="arrow-left" size="38rpx" bindtap="returnNav" />
 
     <image
         class="portrait"
-        mode="aspectFit"
+        mode="widthFix"
+        style="width: 70rpx"
         src="../../images/chat-send.png"
      />
+    </view>
     </view>
     <view class="chat-body">
     <scroll-view class="scroll-view" scroll-y>
@@ -26,14 +30,23 @@
     </scroll-view>
     </view>
 
+    <view class="chat-bottom">
+        <image
+            class="chat-icon"
+            mode="widthFix"
+            style="width: 50rpx"
+            src="../../images/chat-icon.png"
+            bindtap="recordNav" />
 
-    <view class="msg-input">
-    <input
-        class="normalInput"/>
-    <image
-        mode="widthFix"
-        class="msg-send"
-        src="../../images/chat-send.png"/>
 
+        <view class="msg-input">
+            <input
+                class="normalInput"/>
+            <image
+                mode="widthFix"
+                class="msg-send"
+                src="../../images/chat-send.png"/>
+
+        </view>
     </view>
 </view>

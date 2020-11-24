@@ -1,4 +1,13 @@
 <view class="wrap">
+
+<view class="top-navigation">
+    <smt-icon class="back-arrow" name="arrow-left" size="38rpx" bindtap="returnNav" />
+    <view class="month-change">
+        <view class="triangle-left" bindtap="changePrevMonth"/>
+        <view class="month-display">{{thisYear}}.{{thisMonth}}</view>
+        <view class="triangle-right {{constMonth==thisMonth ? 'lighter' : '' }}" bindtap="changeNextMonth" />
+    </view>
+</view>
 <view class="calender">
     <view class="calender-week">
     <view class="grid" s-for="item, index in weekText">{{item}}</view>
@@ -7,15 +16,15 @@
     <view class="calender-day">
 
     <view class="grid lighter" s-for="item, index in emptyGridsBefore">{{item}}</view>
-    <view class="grid" s-for="item, index in thisMonthDays">
-        <block s-if="{{index < 15}}">
-            <view> {{item.date}}</view>
+    <view class="grid {{item.date==selectDay ? 'select-no-mood' : '' }}" s-for="item, index in thisMonthDays">
+        <block s-if="{{index > 15}}">
+            <view data-day = "{{item.date}}" bind:tap="selectDay"> {{item.date}}</view>
         </block>
         <block s-else>
             <image
             class="mood-image {{item.date==selectDay ? 'select' : '' }}"
             mode="widthFix"
-            style="width: 60%"
+            style="width: 70%"
             src="../../images/mood_{{item.mood}}.png"
             data-day = "{{item.date}}"
             bind:tap="selectDay"
@@ -29,9 +38,39 @@
 </view>
 
 <view class="today">
-<view class="record-row" s-for="emptyGridsAfter">
-{{testString}}
-</view>
+    <scroll-view class="mood-journal" scroll-y>
+        <view class="record-row">
+            <view class="day-text"> {{thisMonth}}.{{thisDay}} </view>
+            <image
+                class="mood-image"
+                mode="widthFix"
+                style="width: 50rpx"
+                src="../../images/mood_smile.png"/>
+            <view class="row-text">{{testMoodRecord[0].description}}</view>
+        </view>
+    </scroll-view>
+    <view class="gratidute-journal gtitle">
+        <image
+            class="mood-image "
+            mode="widthFix"
+            style="width: 50rpx"
+            src="../../images/avatar.png"/>
+            <view class="u-left"> 今日开心事～ </view>
+
+    </view>
+
+    <scroll-view class="gratitude-journal" scroll-y>
+        <view class="record-row" s-for="testGratitute">
+            <view class="day-text"> {{thisMonth}}.{{thisDay}} </view>
+            <image
+                class="mood-image "
+                mode="widthFix"
+                style="width: 50rpx"
+                src="../../images/gratitude_icon.png"/>
+            <view class="row-text">{{item}} </view>
+        </view>
+    </scroll-view>
+
 </view>
 
 </view>

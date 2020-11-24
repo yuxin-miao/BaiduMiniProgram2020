@@ -107,5 +107,14 @@ Page({
     },
     onShareAppMessage: function () {
         // 用户点击右上角转发
+    },
+    returnNav(e) {
+        swan.navigateBack();
+    },
+    recordNav(e) {
+        console.log("fff")
+        swan.navigateTo({
+            url: '/pages/myCalender/myCalender'
+        });
     }
 });

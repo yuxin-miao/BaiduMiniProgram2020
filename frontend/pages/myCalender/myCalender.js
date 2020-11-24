@@ -1,37 +1,33 @@
-// var moods = require('../../utils/constants.js');
+var moods = require('../../utils/constants.js');
 import {MoodName, MoodType} from '../../utils/constants.js';
+
+import 'weapp-cookie';
+import cookies from 'weapp-cookie';
+
+export const API = "https://xiaou.tech/api";
 
 Page({
     data: {
-        //value: '2018-11-11',
-        //week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        //lastMonth: 'lastMonth',
-        //nextMonth: 'nextMonth',
         selectDay: '',
-        thisMonth: '11',
+        constMonth: '',
+        constDay: '',
+        thisYear: '',
+        thisMonth: '',
+        thisDay: '',
         testString: "WOW~",
         thisMonthDays: [],
         emptyGridsBefore: [],
         emptyGridsAfter: [],
-        // dayRecordMood = [
-        //     {'mood': 0, 'comment': "wow~"},
-        //     {'mood': 1, 'comment': "qwqqq"}
-        // ],
+        returnMoodRecord: [],
         weekText: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-        //显示日期
-        title: '',
-        //格式化日期
-        format: '',
 
-        year: 0,
-        month: 0,
-        date: 0,
-        toggleType: 'large',
-        scrollLeft: 0,
-        //常量 用于匹配是否为当天
-        YEAR: 0,
-        MONTH: 0,
-        DATE: 0
+        // test 
+        testMoodRecord: [{
+            type: 3,
+            description: "long test messagethis is a long long long long long test messagethis is a long long long long long test message"
+        }],
+        tesMoodRecord: {}
+
 
     },
     methods : {
@@ -96,14 +92,31 @@ Page({
         //获取月份  
         let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
         //获取当日日期 
+        let D = date.getDate();
+
+        // call function to create grids
         let mday = this.methods.gridThisMonth(Y, M);
         let emptys = this.methods.emptyGrid(Y, M);
         // console.log(emptys.after);
+        // set the default selectDay as today
         this.setData({
             thisMonthDays: mday,
             emptyGridsBefore: emptys.before,
-            emptyGridsAfter: emptys.after
-        })
+            emptyGridsAfter: emptys.after,
+            thisDay: D,
+            constMonth: M,
+            constDay: D,
+            thisMonth: M,
+            thisYear: Y,
+            selectDay: D
+        });
+        let temp = this.returnMoodRecord({
+            Year: this.data.thisYear,
+            Month: this.data.thisMonth,
+            Day: this.data.selectDay
+        });
+        this.setData({returnMoodRecord: temp});
+        // console.log(this.data.returnMoodRecord);
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
@@ -130,8 +143,125 @@ Page({
     },
     //选择天数
     selectDay(e) {
-        // console.log('Clicked', e.currentTarget.dataset.day);
+        console.log('Clicked', e.currentTarget.dataset.day);
         this.setData({selectDay: e.currentTarget.dataset.day});
-    }
+        console.log(this.data.thisMonth);
+        console.log(this.data.selectDay);
+        let temp = this.returnMoodRecord({
+            Year: this.data.thisYear,
+            Month: this.data.thisMonth,
+            Day: this.data.selectDay
+        });
+        this.setData({returnMoodRecord: temp});
+        console.log(this.data.tesMoodRecord);
+        if (JSON.stringify(this.data.tesMoodRecord) == '{}') {
+            if (this.data.selectDay > this.data.constDay) {
+                swan.showToast({
+                    title: '无法为未来添加心情',
+                    icon: 'none',
+                    // image: "../../images/gratitude_icon.png",
+                    duration: 1500
+                })
+                return;
+            }
+            swan.navigateTo({
+                url: '/pages/record/record'
+            });
+        }
+
+
+    },
+    returnNav(e) {
+        swan.navigateBack();
+    },
+    changePrevMonth(e) {
+        this.setData({
+            thisMonth: this.data.thisMonth == 1 ? 12 : this.data.thisMonth - 1,
+            thisYear: this.data.thisMonth == 1 ? this.data.thisYear - 1 : this.data.thisYear
+        })
+        // call function to create grids
+        let mday = this.methods.gridThisMonth(this.data.thisYear, this.data.thisMonth);
+        let emptys = this.methods.emptyGrid(this.data.thisYear, this.data.thisMonth);
+        // console.log(emptys.after);
+        // set the default selectDay as today
+        this.setData({
+            thisMonthDays: mday,
+            emptyGridsBefore: emptys.before,
+            emptyGridsAfter: emptys.after,
+        });
+        
+    },
+    changeNextMonth(e) {
+        // console.log("after");
+        if(this.data.thisMonth == this.data.constMonth) return;
+        this.setData({
+            thisMonth: this.data.thisMonth == 12 ? 1 : this.data.thisMonth + 1,
+            thisYear: this.data.thisMonth == 12 ? this.data.thisYear + 1 : this.data.thisYear
+        })
+        // call function to create grids
+        let mday = this.methods.gridThisMonth(this.data.thisYear, this.data.thisMonth);
+        let emptys = this.methods.emptyGrid(this.data.thisYear, this.data.thisMonth);
+        // console.log(emptys.after);
+        // set the default selectDay as today
+        this.setData({
+            thisMonthDays: mday,
+            emptyGridsBefore: emptys.before,
+            emptyGridsAfter: emptys.after,
+        });
+    },
+
+    returnMoodRecord: function (selectDay) {
+    // used to return the mood record in 'select day'
+    swan.request({
+        url: `${API}/mood/`,
+        method: 'GET',
+        data: selectDay,
+        success: res => {
+            console.log(res);
+            let returnMood = []; //used to return 
+            if (res.statusCode != 200) {
+                swan.showModal({
+                    title: '请求失败',
+                    content: 'MoodRecord Fail'
+                });
+                return;                    
+            }
+            swan.request({
+                url: `${API}/mood/${res.data[0].id}/`,
+                method: 'GET',
+                success: res => {
+                    console.log(res);
+                    if (res.statusCode != 200) {
+                        swan.showModal({
+                            title: '请求失败',
+                            content: 'MoodRecordID failed'
+                        });
+                    }
+                    console.log(res.data.type);
+                    console.log(res.data.description);
+                    returnMood.push({
+                        type: res.data.type,
+                        description: res.data.description
+                    });
+                },
+                fail: err => {
+                    swan.showModal({
+                        title: '网络异常',
+                        content: 'moodid请检查网络连接'
+                    });
+                }
+            });
+
+            return returnMood;
+            // this.setLocalStorage('returnMoodList', returnMood);
+        },
+        fail: err => {
+            swan.showModal({
+                title: '网络异常',
+                content: '请检查网络连接'
+            });
+        }
+    });
+}
 
 });

@@ -45,7 +45,7 @@ Page({
         // console.log('Clicked', e.currentTarget.dataset.mood);
         this.setData({selectedMood: e.currentTarget.dataset.mood});
     },
-    createtMood() {
+    createMood() {
         // let type = this.data.selectedMood;
         // console.log(MoodNumber[type]);
         console.log(this.data.selectedMood);
@@ -62,6 +62,11 @@ Page({
             type: moodType,
             description: this.data.moodDescription
         });
+        swan.showToast({
+            title: '记录成功',
+            image: "../../images/avatar.png",
+            duration: 1500
+        })
         // }
     },
     MoodDescription: function(e) {

@@ -12,17 +12,18 @@
     position: fixed;
     top: 0;
     width: 100%;
-    display: fixed;
     height: 12%;
     background-color: #ffff;
-    z-index: 998;
-    flex-grow: 2;
+    z-index: 995;
 }
+
 .portrait {
-    width: 100%;
-    padding-top: 8%;
     align-self: center;
+    margin-left: 280rpx;
+    /* padding-left: 300rpx; */
+    /* padding-right: 15%;
     height: 80%;
+    width: 90%; */
 }
 
 /* 聊天文字 */
@@ -34,7 +35,7 @@
     top: 13.5%;
     /* bottom: 20rpx; */
     height: 75%;
-    padding-bottom: 20rpx;
+    padding-bottom: 10rpx;
     text-align: center;
     /* flex-grow: 2; */
 }
@@ -86,28 +87,34 @@
 
 
 /* 输入框 */
-.msg-input {
+.chat-bottom {
     position: fixed;
     bottom: 0;
-    width: 90%;
-    display:flex;
-    height: 90rpx;
-    border: 1px solid rgba(207 244 209);
+    padding-bottom: 50rpx;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.chat-icon {
     align-self: center;
+    margin: 0 40rpx 0 40rpx;
+}
+.msg-input {
+    display:flex;
     align-items: center;
-    margin-bottom: 60rpx;
-    border-radius: 5px;
+    height: 80rpx;
+    border: 1px solid rgba(207 244 209);
+    border-radius: 3px;
     background-color: #ffffff;
-    flex-grow: 1;
+
 }
 .normalInput {
     padding-left: 20rpx;
-    height: 80rpx;
+    height: 70rpx;
+    width: 500rpx;
 }
 .msg-send {
-    width: 8%;
-    /* height: 60rpx; */
-    align-self: right;
+    width: 50rpx;
     margin-right: 20rpx;
 }
 

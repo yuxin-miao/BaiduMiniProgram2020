@@ -3,7 +3,7 @@
     <view class="card-area">
         <view class="text">
             <text>Hey {{username}}！
-            你今天感觉怎么样？
+             你感觉怎么样？
             </text>
         </view>
     </view>
@@ -24,7 +24,7 @@
     <!-- <view class="row"> -->
     <view class="card-area">
         <textarea class="normalInput" placeholder="说点什么..." bindinput="MoodDescription"/>
-        <button class="card-button" style="width:60%" bind:tap="createtMood" form-type="submit">
+        <button class="card-button" style="width:60%" bind:tap="createMood" form-type="submit">
             记录一下
         </button>
     </view>
