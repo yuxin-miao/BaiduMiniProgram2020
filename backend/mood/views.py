@@ -4,7 +4,13 @@ from rest_framework.response import Response
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin, CreateModelMixin
 
 from mood.models import MoodRecord
-from mood.serializers import MoodRecordDetailSerializer, MoodRecordMiniSerializer
+from mood.serializers import (
+    MoodRecordDetailSerializer,
+    MoodRecordMiniSerializer,
+    MoodRecordMonthSerializer,
+    MoodRecordDaySerializer
+)
+from mood.constants import MoodType
 
 from backend.permissions import IsAuthenticated
 
@@ -46,3 +52,59 @@ class MoodRecordViewSet(
             return Response({'detail': '心情记录数据错误'}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['GET'])
+    def day(self, request):
+        serializer = MoodRecordDaySerializer(data=request.GET)
+        if not serializer.is_valid():
+            error = '表单填写错误'
+        else:
+            year = serializer.validated_data['year']
+            month = serializer.validated_data['month']
+            day = serializer.validated_data['day']
+
+            # fetch the latest mood record that day
+            mood_record = self.get_queryset().filter(
+                created_at__year=year,
+                created_at__month=month,
+                created_at__day=day
+            ).exclude(type=MoodType.GRATITUDE).first()
+            mood_data = MoodRecordDetailSerializer(mood_record).data
+            return Response(data=mood_data, status=status.HTTP_200_OK)
+        return Response(data={'detail': error}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['GET'])
+    def month(self, request):
+        serializer = MoodRecordMonthSerializer(data=request.GET)
+        if not serializer.is_valid():
+            error = '表单填写错误'
+        else:
+            year = serializer.validated_data['year']
+            month = serializer.validated_data['month']
+
+            # get all mood records in a month
+            mood_records = self.get_queryset().filter(
+                created_at__year=year,
+                created_at__month=month,
+            ).exclude(type=MoodType.GRATITUDE)
+
+            # only reserve the latest record of each day
+            mood_values = mood_records.values('id', 'created_at')
+            for i in range(len(mood_values)):
+                if i > 0 and mood_values[i]['created_at'].day == mood_values[i - 1]['created_at'].day:
+                    mood_records = mood_records.exclude(id=mood_values[i]['id'])
+
+            # get all gratitude journals in a month
+            gratitude_journals = MoodRecord.objects.filter(
+                created_at__year=year,
+                created_at__month=month,
+                type=MoodType.GRATITUDE
+            ).order_by('created_at')
+
+            mood_data = MoodRecordMiniSerializer(mood_records, many=True).data
+            gratitude_data = MoodRecordDetailSerializer(gratitude_journals, many=True).data
+            return Response(data={
+                'moodList': mood_data,
+                'gratitudeList': gratitude_data
+            }, status=status.HTTP_200_OK)
+        return Response(data={'detail': error}, status=status.HTTP_400_BAD_REQUEST)

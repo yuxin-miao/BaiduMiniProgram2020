@@ -6,6 +6,7 @@ class MoodType:
     SAD = 4
     ANGRY = 5
     OK = 6
+    GRATITUDE = 7
 
     choices = (
         (SMILE, 'smile'),
@@ -14,5 +15,6 @@ class MoodType:
         (UPSET, 'upset'),
         (SAD, 'sad'),
         (ANGRY, 'angry'),
-        (OK, 'ok')
+        (OK, 'ok'),
+        (GRATITUDE, 'gratitude')
     )
