@@ -64,7 +64,7 @@ class MoodRecordViewSet(
             day = serializer.validated_data['day']
 
             # fetch the latest mood record that day
-            mood_record = self.get_queryset().filter(
+            mood_record = self.get_queryset().filter(user=request.user).filter(
                 created_at__year=year,
                 created_at__month=month,
                 created_at__day=day
@@ -83,7 +83,7 @@ class MoodRecordViewSet(
             month = serializer.validated_data['month']
 
             # get all mood records in a month
-            mood_records = self.get_queryset().filter(
+            mood_records = self.get_queryset().filter(user=request.user).filter(
                 created_at__year=year,
                 created_at__month=month,
             ).exclude(type=MoodType.GRATITUDE)
@@ -95,7 +95,7 @@ class MoodRecordViewSet(
                     mood_records = mood_records.exclude(id=mood_values[i]['id'])
 
             # get all gratitude journals in a month
-            gratitude_journals = MoodRecord.objects.filter(
+            gratitude_journals = MoodRecord.objects.filter(user=request.user).filter(
                 created_at__year=year,
                 created_at__month=month,
                 type=MoodType.GRATITUDE
