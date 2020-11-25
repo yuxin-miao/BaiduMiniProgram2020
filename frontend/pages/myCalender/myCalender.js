@@ -8,26 +8,33 @@ export const API = "https://xiaou.tech/api";
 
 Page({
     data: {
-        selectDay: '',
         constMonth: '',
         constDay: '',
         thisYear: '',
         thisMonth: '',
         thisDay: '',
-        testString: "WOW~",
-        thisMonthDays: [],
+        selectDay: '',
+        thisMonthDays: [], // attention for difference in index and date 
         emptyGridsBefore: [],
         emptyGridsAfter: [],
-        returnMoodRecord: [],
         weekText: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+
+        // GET data 
+        // moodTypeList: {}, // item {day: , type: } in array 
+        gratitudeRecord: [], // item {day: , description: } in array 
+        thisDescription: '', // string of description for thisDay
+
+        returnMoodRecord: [],
+
 
         // test 
         testMoodRecord: [{
             type: 3,
             description: "long test messagethis is a long long long long long test messagethis is a long long long long long test message"
         }],
-        tesMoodRecord: {}
-
+        tesMoodRecord: {},
+        testGratitute: ["这是一段很长的文字这是一段很这是一段很长的文字这是一段很", "这是一段很长的文字这是一段很这是一段很长的文字这是一段很", "这是一段很长的文字这是一段很", "长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字", "long test messagethis is a long long long long long test messagethis is a long long", "rrrrrrr", " 3333333", "f"],
+        test1: ["1", "2"]
 
     },
     methods : {
@@ -42,7 +49,7 @@ Page({
             for (let i = 1; i <= numberDays; i++) {
                 thisMonthDays.push({
                     date: i,
-                    mood: MoodName[MoodType.LIKE]
+                    mood: 0,
                 });
             }
             return thisMonthDays;
@@ -97,6 +104,7 @@ Page({
         // call function to create grids
         let mday = this.methods.gridThisMonth(Y, M);
         let emptys = this.methods.emptyGrid(Y, M);
+
         // console.log(emptys.after);
         // set the default selectDay as today
         this.setData({
@@ -108,20 +116,24 @@ Page({
             constDay: D,
             thisMonth: M,
             thisYear: Y,
-            selectDay: D
+            selectDay: D,
         });
-        let temp = this.returnMoodRecord({
-            Year: this.data.thisYear,
-            Month: this.data.thisMonth,
-            Day: this.data.selectDay
+        this.moodTypeGratitude({
+            year: this.data.thisYear,
+            month: this.data.thisMonth
         });
-        this.setData({returnMoodRecord: temp});
-        // console.log(this.data.returnMoodRecord);
+        this.dayMoodDescrip({
+            year: this.data.thisYear,
+            month: this.data.thisMonth,
+            day: this.data.thisDay,
+        });
+
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
         // this.today();
-
+        // console.log(this.data.moodTypeList);
+        // console.log(this.data.gratitudeRecord);
     },
     onShow: function() {
         // 监听页面显示的生命周期函数
@@ -141,41 +153,52 @@ Page({
     onShareAppMessage: function () {
         // 用户点击右上角转发
     },
-    //选择天数
-    selectDay(e) {
-        console.log('Clicked', e.currentTarget.dataset.day);
-        this.setData({selectDay: e.currentTarget.dataset.day});
-        console.log(this.data.thisMonth);
-        console.log(this.data.selectDay);
-        let temp = this.returnMoodRecord({
-            Year: this.data.thisYear,
-            Month: this.data.thisMonth,
-            Day: this.data.selectDay
-        });
-        this.setData({returnMoodRecord: temp});
-        console.log(this.data.tesMoodRecord);
-        if (JSON.stringify(this.data.tesMoodRecord) == '{}') {
-            if (this.data.selectDay > this.data.constDay) {
-                swan.showToast({
-                    title: '无法为未来添加心情',
-                    icon: 'none',
-                    // image: "../../images/gratitude_icon.png",
-                    duration: 1500
-                })
-                return;
-            }
-            swan.navigateTo({
-                url: '/pages/record/record'
-            });
-        }
 
-
-    },
+    // navigation bar used 
     returnNav(e) {
         swan.navigateBack();
     },
+
+
+    selectDay(e) {
+        // used when select a new day in this month 
+        // jump to the day if 
+        console.log('Clicked', e.currentTarget.dataset.day);
+
+        if (e.currentTarget.dataset.day > this.data.constDay) {
+            // cant jump to futrue
+            swan.showToast({
+                title: '无法为未来添加心情',
+                icon: 'none',
+                duration: 1800
+            })
+            return;
+        }
+        this.setData({selectDay: e.currentTarget.dataset.day});
+        // console.log(this.data.thisMonthDays[this.data.selectDay - 1].mood);
+        if (this.data.thisMonthDays[this.data.selectDay - 1].mood == 0) {
+            // when day no mood record, record first 
+            swan.showToast({
+                title: '跳转心情记录',
+                icon: 'none',
+                duration: 500
+            })
+            swan.navigateTo({
+                url: '/pages/record/record'
+            })
+        }
+        this.dayMoodDescrip({
+            year: this.data.thisYear,
+            month: this.data.thisMonth,
+            day: this.data.selectDay,
+        });
+
+
+    },
+    // when change month 
     changePrevMonth(e) {
         this.setData({
+            selectDay: this.data.thisDay,
             thisMonth: this.data.thisMonth == 1 ? 12 : this.data.thisMonth - 1,
             thisYear: this.data.thisMonth == 1 ? this.data.thisYear - 1 : this.data.thisYear
         })
@@ -189,12 +212,22 @@ Page({
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
         });
+        this.moodTypeGratitude({
+            year: this.data.thisYear,
+            month: this.data.thisMonth
+        });
+        this.dayMoodDescrip({
+            year: this.data.thisYear,
+            month: this.data.thisMonth,
+            day: this.data.thisDay,
+        });
         
     },
     changeNextMonth(e) {
         // console.log("after");
         if(this.data.thisMonth == this.data.constMonth) return;
         this.setData({
+            selectDay: this.data.thisDay,
             thisMonth: this.data.thisMonth == 12 ? 1 : this.data.thisMonth + 1,
             thisYear: this.data.thisMonth == 12 ? this.data.thisYear + 1 : this.data.thisYear
         })
@@ -208,60 +241,106 @@ Page({
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
         });
+        this.moodTypeGratitude({
+            year: this.data.thisYear,
+            month: this.data.thisMonth
+        });
+        this.dayMoodDescrip({
+            year: this.data.thisYear,
+            month: this.data.thisMonth,
+            day: this.data.thisDay,
+        });
     },
 
-    returnMoodRecord: function (selectDay) {
-    // used to return the mood record in 'select day'
-    swan.request({
-        url: `${API}/mood/`,
-        method: 'GET',
-        data: selectDay,
-        success: res => {
-            console.log(res);
-            let returnMood = []; //used to return 
-            if (res.statusCode != 200) {
-                swan.showModal({
-                    title: '请求失败',
-                    content: 'MoodRecord Fail'
-                });
-                return;                    
-            }
-            swan.request({
-                url: `${API}/mood/${res.data[0].id}/`,
-                method: 'GET',
-                success: res => {
-                    console.log(res);
-                    if (res.statusCode != 200) {
-                        swan.showModal({
-                            title: '请求失败',
-                            content: 'MoodRecordID failed'
-                        });
-                    }
-                    console.log(res.data.type);
-                    console.log(res.data.description);
-                    returnMood.push({
-                        type: res.data.type,
-                        description: res.data.description
-                    });
-                },
-                fail: err => {
+    /* util functions for getting data */
+    moodTypeGratitude: function (selectMonth) {
+        // send data: selectMonth(year & month)
+        // return the moodType & gratitudeRecord 
+        // used when first enter / change month 
+        swan.request({
+            url: `${API}/mood/month/`,
+            method: 'GET',
+            data: selectMonth,
+            success: res => {
+                let returnMood = []; //used to return 
+                if (res.statusCode != 200) {
                     swan.showModal({
-                        title: '网络异常',
-                        content: 'moodid请检查网络连接'
+                        title: '请求失败',
+                        content: 'moodTypeGratitude Fail 1'
                     });
+                    return;                    
                 }
-            });
+                let tempMonthList = this.data.thisMonthDays;
+                let tempGradList = [];
+                let gratitudeRecord = res.data.gratitudeList;
+                
+                res.data.moodList.forEach(mood => {
+                    let tempDate = (new Date(mood.created_at)).toLocaleDateString().split('/');
+                    let tempD = tempDate[2];
+                    tempMonthList[tempD - 1].mood = MoodName[mood.type];
+                });
+                res.data.gratitudeList.forEach(graRecord => {
+                    let tempDate = (new Date(graRecord.created_at)).toLocaleDateString().split('/');
+                    let tempM = tempDate[1];
+                    let tempD = tempDate[2];
+                    tempD = tempD < 10 ? '0'+tempD : tempD;
+                    tempGradList.push({
+                        day: tempD,
+                        description: graRecord.description,
+                    })
+                });
+                
+                this.setData({
+                    thisMonthDays: tempMonthList,
+                    gratitudeRecord: tempGradList,
+                });
+                console.log(this.data.thisMonthDays);
 
-            return returnMood;
-            // this.setLocalStorage('returnMoodList', returnMood);
-        },
-        fail: err => {
-            swan.showModal({
-                title: '网络异常',
-                content: '请检查网络连接'
-            });
-        }
-    });
-}
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        });
+    },
+
+    dayMoodDescrip: function (selectDay) {
+        // send data: selectDay(year&month&day)
+        // return this day's mood description
+        // used when first enter / change day 
+        swan.request({
+            url: `${API}/mood/day/`,
+            method: 'GET',
+            data: selectDay,
+            success: res => {
+                console.log(selectDay),
+                console.log(res);
+                if (res.statusCode != 200) {
+                    swan.showModal({
+                        title: '请求失败',
+                        content: 'dayMoodDescrip Fail'
+                    });
+                    return;                     
+                }
+                if(res.data.description == '') res.data.description = "...";
+                this.setData({
+                    thisDescription: res.data.description
+                })
+                console.log(this.data.thisDescription);
+                
+
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+
+        })
+    }
+
 
 });

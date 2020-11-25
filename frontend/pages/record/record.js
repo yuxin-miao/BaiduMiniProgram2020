@@ -51,13 +51,7 @@ Page({
         console.log(this.data.selectedMood);
         let moodType = MoodNumber[this.data.selectedMood];
         console.log(moodType);
-        // if(!moodType) {
-        //     swan.showModal({
-        //         title: '提交失败',
-        //         content: '请选择今日心情',
-        //     });
-        // }
-        // else {
+
         createMoodRecord({
             type: moodType,
             description: this.data.moodDescription
@@ -67,6 +61,18 @@ Page({
             image: "../../images/avatar.png",
             duration: 1500
         })
+        console.log("createmood");
+        let pages = getCurrentPages();
+        let prevPage = pages[pages.length - 2];
+        // console.log(res);
+        // prevPage.setData({
+        //     selectDay: res.data.
+        // })
+        // res.data.description
+
+        // swan.redirectTo({
+        //     url: '/pages/myCalender/myCalender'
+        // });
         // }
     },
     MoodDescription: function(e) {
