@@ -10,7 +10,7 @@
             <view class="square"  bind:tap="goMoodRecord">
             </view>
             <view class="prodc-text" bind:tap="goMoodRecord">
-            我的记录
+            我的日志
             </view>
         </view>
         <view class="intro-text">
