@@ -64,7 +64,7 @@ class AccountViewSet(viewsets.ViewSet):
                     openid=openid,
                     session_key=session_key
                 )
-                user.set_password(openid)
+                # user.set_password(openid)
             except Exception:
                 print('百度用户数据错误')
                 return Response({'detail': '百度用户数据错误'}, status=status.HTTP_400_BAD_REQUEST)
