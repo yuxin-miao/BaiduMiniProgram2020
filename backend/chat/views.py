@@ -176,4 +176,23 @@ class MessageViewSet(
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             print(str(e))
-            return Response({'detail': '心情记录数据错误'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': '无法解析回答'}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['GET'])
+    def get_question(self, request):
+        try:
+            last_question_record = QuestionRecord.objects.filter(user=request.user).order_by('-created_at').first()
+
+            if last_question_record is None or last_question_record.answered:
+                question = QuestionTemplate.gen_question()
+
+                if question is None:
+                    return Response({'detail': '没有可选问题'}, status=status.HTTP_400_BAD_REQUEST)
+                QuestionRecord.objects.create(user=request.user, question=question)
+                msg = Message.objects.create(receiver=request.user, content=question.title)
+                return Response(data=QuestionTemplateSerializer(question).data, status=status.HTTP_200_OK)
+            return Response(data=QuestionTemplateSerializer(last_question_record.question).data,
+                            status=status.HTTP_200_OK)
+        except Exception as e:
+            print(str(e))
+            return Response({'detail': '无法获取问题'}, status=status.HTTP_400_BAD_REQUEST)
