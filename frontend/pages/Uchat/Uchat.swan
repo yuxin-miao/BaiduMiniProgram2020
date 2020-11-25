@@ -18,7 +18,7 @@
         <view s-for="item, index in messages">
             <block s-if="{{item.type == 1}}">
                 <view class="chat-row">
-                <view class="u_left {{index == messages.length - 2 ? 'shadow-left': '' }}"> {{item.type}}: {{item.msg}}</view>
+                <view class="u_left {{index == messages.length - 2 ? 'shadow-left': '' }}"> {{item.msg}}</view>
                 </view>
             </block>
             <block s-else>

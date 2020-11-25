@@ -9,7 +9,7 @@ Page({
         avatar: '',
         moodtype: [ "smile", "like",  "happy", "upset", "sad", "angry", "ok"
         ],
-        selectedMood: "smile",
+        selectedMood: "",
         moodDescription: ''
     },
     onLoad: function () {
@@ -48,25 +48,64 @@ Page({
     createMood() {
         // let type = this.data.selectedMood;
         // console.log(MoodNumber[type]);
+        if (this.data.selectedMood == "") {
+            swan.showToast({
+                title: '请选择心情！',
+                icon: 'none',
+                duration: 1500,
+            })
+            return;
+        }
+        if (this.data.moodDescription == "") {
+            swan.showToast({
+                title: '请填写描述！',
+                icon: 'none',
+                duration: 1500,
+            })
+            return;
+        }
+
         console.log(this.data.selectedMood);
         let moodType = MoodNumber[this.data.selectedMood];
         console.log(moodType);
-        // if(!moodType) {
-        //     swan.showModal({
-        //         title: '提交失败',
-        //         content: '请选择今日心情',
-        //     });
-        // }
-        // else {
+        let pages = getCurrentPages();
+        let prevPage = pages[pages.length - 2];
         createMoodRecord({
+            year: prevPage.data.thisYear,
+            month: prevPage.data.thisMonth,
+            day: prevPage.data.selectDay,
             type: moodType,
             description: this.data.moodDescription
         });
         swan.showToast({
             title: '记录成功',
-            image: "../../images/avatar.png",
+            icon: 'none',
             duration: 1500
-        })
+        }) 
+        console.log("createmood");
+        // let tempMonthDays = thisMonthDays;
+        // tempMonthDays[selectDay-1].mood = this.data.selectedMood;
+
+        // prevPage.setData({
+        //     // thisMonthDays: tempMonthDays, 
+        //     "thisMonthDays[selectDay-1].mood": this.data.selectedMood,
+        //     thisDescription: this.data.moodDescription,
+        // })
+        console.log(prevPage.data.thisMonthDays[prevPage.data.selectDay-1].mood);
+        console.log(prevPage.data.thisDescription);
+        console.log("finish create mood");
+        prevPage.updateMood(this.data.selectedMood, this.data.moodDescription);
+        
+        
+        // console.log(res);
+        // prevPage.setData({
+        //     selectDay: res.data.
+        // })
+        // res.data.description
+
+        // swan.redirectTo({
+        //     url: '/pages/myCalender/myCalender'
+        // });
         // }
     },
     MoodDescription: function(e) {

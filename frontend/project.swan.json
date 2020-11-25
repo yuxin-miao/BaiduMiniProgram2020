@@ -45,18 +45,17 @@
                     "ext": {},
                     "index": "pages/Uchat/Uchat",
                     "query": "",
-                    "scene": {},
-                    "isUpdate": false
+                    "scene": {}
                 },
                 "id": 3,
                 "text": "Uchat"
             }
         ],
-        "selected": 3
+        "selected": -2
     },
     "host": "baiduboxapp",
     "preview": {
-        "packageId": 815953
+        "packageId": 826274
     },
     "projectname": "xiaou",
     "setting": {
@@ -64,8 +63,8 @@
     },
     "swan": {
         "baiduboxapp": {
-            "swanJsVersion": "3.220.16",
-            "extensionJsVersion": "1.18.3"
+            "extensionJsVersion": "1.18.3",
+            "swanJsVersion": "3.220.16"
         }
     }
 }

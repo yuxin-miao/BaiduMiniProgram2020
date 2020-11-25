@@ -1,12 +1,5 @@
 Page({
     data: {
-        items: [
-            {
-                title: '心情日记',
-                open: false
-            }
-        ],
-
 
     },
     onLoad: function () {
@@ -32,5 +25,22 @@ Page({
     },
     onShareAppMessage: function () {
         // 用户点击右上角转发
+    },
+    goMoodRecord(e) {
+        if (getApp().isAuthenticated()) {
+            swan.navigateTo ({
+                url: '/pages/myCalender/myCalender'
+            })
+        } else {
+            swan.navigateTo ({
+                url: '/pages/mysetting/mysetting'
+            })
+            // getApp().login();
+        }
+    },
+    startChat(e) {
+        swan.navigateTo ({
+            url: '/pages/Uchat/Uchat'
+        })
     }
 });
