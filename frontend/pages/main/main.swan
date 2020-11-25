@@ -1,0 +1,30 @@
+<view class="wrap">
+    <view class="top">
+        <view class="welcome-text">
+        <text class="big-text">  你好，\n 我是小U
+        <text class="small-text"> 快来和我聊聊吧～</text>
+        </view>
+    </view>
+    <view class="middle">
+        <view class="intro-text">
+            <view class="square"  bind:tap="goMoodRecord">
+            </view>
+            <view class="prodc-text" bind:tap="goMoodRecord">
+            我的记录
+            </view>
+        </view>
+        <view class="intro-text">
+            <view class="square">
+            </view>
+            <view class="prodc-text">
+            Ucho产品介绍
+            </view>
+        </view>
+    </view>
+    <view class="bottom">
+        <view class="circle-button" bindtap="startChat">
+            <view class="chat-text">开始聊天 </view>
+        </view>
+    </view>
+
+</view>

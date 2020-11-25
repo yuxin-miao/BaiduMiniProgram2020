@@ -1,0 +1,34 @@
+<view class="wrap">
+<view class="drawer_box">
+    <view class="card-area">
+        <view class="text">
+            <text>Hey {{username}}！
+             你感觉怎么样？
+            </text>
+        </view>
+    </view>
+
+
+    <view class="card-area">
+        <view s-for="mood in moodtype">
+            <image
+            class="mood-item {{mood == selectedMood ? 'mood-border' : ''}}",
+            mode="scaleToFill"
+            src="../../images/mood_{{mood}}.svg"
+            data-mood="{{mood}}"
+            bind:tap="selectMood"
+            />
+        </view>
+    </view>
+
+    <!-- <view class="row"> -->
+    <view class="card-area">
+        <textarea class="normalInput" placeholder="说点什么..." bindinput="MoodDescription"/>
+        <button class="card-button" style="width:60%" bind:tap="createMood" form-type="submit">
+            记录一下
+        </button>
+    </view>
+    </view>
+
+</view>
+</view>

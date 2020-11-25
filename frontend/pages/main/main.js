@@ -1,8 +1,6 @@
 Page({
     data: {
-        // 更多icon请参看右侧示例的icon全集
-        list: ['collect'],
-        iconSize: '150pt'
+
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
@@ -28,24 +26,21 @@ Page({
     onShareAppMessage: function () {
         // 用户点击右上角转发
     },
-    successHandler(e) {
-        console.log('success', e.detail.errMsg);
+    goMoodRecord(e) {
+        if (getApp().isAuthenticated()) {
+            swan.navigateTo ({
+                url: '/pages/myCalender/myCalender'
+            })
+        } else {
+            swan.navigateTo ({
+                url: '/pages/mysetting/mysetting'
+            })
+            // getApp().login();
+        }
     },
-    failHandler(e) {
-        console.log('fail', e.detail.errMsg);
-    },
-    completeHandler(e) {
-        console.log('complete', e.detail.errMsg);
-    },
-    onShow() {
-        console.log(getCurrentPages()); // [{uri: 'index/index'}]
-        // 可以根据页面栈来判断页面层级
-    },
-    navigateTo(e) {
-        swan.navigateTo({
-            url: '/pages/chat/chat'
-        });
+    startChat(e) {
+        swan.navigateTo ({
+            url: '/pages/Uchat/Uchat'
+        })
     }
 });
-
-

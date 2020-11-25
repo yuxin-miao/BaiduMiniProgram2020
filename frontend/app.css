@@ -1,24 +1,24 @@
 * {
     box-sizing: border-box;
-    margin: 1;
     padding: 0;
 }
 
 html,
 body {
     height: 100%;
-    font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
+    font-family: PingFangSC-Regular, sans-serif;
     font-size: 100px;
     color: #333;
 }
 
-/* 组件主体 */
+/* 全局整页面 */
 .wrap {
-    padding-bottom: .5rem;
+    font-family: PingFangSC-Regular, sans-serif;
+    max-height: 100vh;
     font-size: .16rem;
 }
 
-/* API主体 */
+/* 组件容器 */
 .container {
     font-size: .16rem;
     display: flex;
@@ -26,7 +26,23 @@ body {
     justify-content: space-between;
     min-height: 100%;
 }
+.top-navigation {
+    /* top: 0;
+    position: fixed; */
 
+    display: flex;
+    padding-top:60rpx;
+    flex-direction: row;
+    width: 100%;
+    height: 160rpx;
+    background-color: #ffff;
+    z-index: 995;
+}
+.back-arrow {
+    padding-left: 30rpx;
+    align-self: center;
+    /* width: 10%; */
+}
 /* radio样式 */
 .radio {
     display: block;
@@ -52,9 +68,10 @@ body {
 /* 卡片区域 */
 .card-area {
     overflow: hidden;
-    margin: .17rem .17rem 0 .17rem;
-    border-radius: 8px 8px;
-    background: #fff;
+    /* margin: .17rem .17rem 0 .17rem; */
+    /* border-radius: 8px 8px; */
+    /* background:#CFF4D1; */
+    /* opacity: 0.5; */
 }
 
 /* 展示区 */
@@ -499,4 +516,17 @@ not all {
     html {
         font-size: 100px;
     }
+}
+
+/* mask */
+.drawer_screen {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 998;
+    background: #000;
+    opacity: 0.5;
+    overflow: hidden;
 }

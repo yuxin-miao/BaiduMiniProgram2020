@@ -1,0 +1,52 @@
+<view class="chat-page">
+    <view class="chat-top">
+    <view class="top-navigation">
+    <smt-icon class="back-arrow" name="arrow-left" size="38rpx" bindtap="returnNav" />
+
+    <image
+        class="portrait"
+        mode="widthFix"
+        style="width: 70rpx"
+        src="../../images/chat-send.svg"
+     />
+    </view>
+    </view>
+    <view class="chat-body">
+    <scroll-view class="scroll-view" scroll-y>
+        <view class="chat-time">{{time}}</view>
+
+        <view s-for="item, index in messages">
+            <block s-if="{{item.type == 1}}">
+                <view class="chat-row">
+                <view class="u_left {{index == messages.length - 2 ? 'shadow-left': '' }}"> {{item.msg}}</view>
+                </view>
+            </block>
+            <block s-else>
+                <view class="chat-row">
+                <view class="m_right {{index == messages.length - 1 ? 'shadow-right': '' }}"> {{item.msg}}</view>
+                </view>
+            </block>
+        </view>
+    </scroll-view>
+    </view>
+
+    <view class="chat-bottom">
+        <image
+            class="chat-icon"
+            mode="widthFix"
+            style="width: 50rpx"
+            src="../../images/chat-icon.svg"
+            bindtap="recordNav" />
+
+
+        <view class="msg-input">
+            <input
+                class="normalInput"/>
+            <image
+                mode="widthFix"
+                class="msg-send"
+                src="../../images/chat-send.svg"/>
+
+        </view>
+    </view>
+</view>

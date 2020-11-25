@@ -1,0 +1,176 @@
+.wrap {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(245 251 245);
+    color: rgba(181 181 181);
+}
+
+
+
+/* navigation bar */
+.month-change{
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.month-display {
+    padding: 0 20rpx 15rpx 20rpx;
+    font-size: .25rem;
+    font-weight: 600;
+    color: rgba(112 112 112);
+    height: 60rpx;
+    align-self: center;
+    text-align: center;
+}
+.triangle-left {
+    margin-left: 171rpx;
+    /* padding-top: 20rpx; */
+    width: 0;
+    height: 0;
+    border-top: 15rpx solid transparent;
+    border-right: 20rpx solid rgba(128 186 161);
+    border-bottom: 15rpx solid transparent;
+}
+.triangle-right {
+    width: 0;
+    height: 0;
+    border-top: 15rpx solid transparent;
+    border-left: 20rpx solid rgba(128 186 161);
+    border-bottom: 15rpx solid transparent;
+}
+.no-navigation {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 90%;
+}
+/* top calender */
+.calender {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30rpx;
+    /* height: 600rpx; */
+    background-color: #ffff;
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);/*for IOS*/
+
+    font-size: .18rem;
+}
+
+.calender-week {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10rpx 30rpx 10rpx 30rpx;
+    border-bottom: 1px solid rgba(181 181 181);
+
+}
+
+.calender-day {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 25rpx 30rpx;
+    box-sizing: border-box;
+    /* height: 450rpx; */
+}
+
+.grid {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    font-family: "Microsoft YaHei",sans-serif;
+    width: calc(100% / 7);
+    line-height: 100rpx;
+    height: 100rpx;
+}
+
+.lighter {
+    opacity: 0.5;
+}
+
+.grid .select-no-mood {
+    width: 10rpx;
+    height: 10rpx;
+    background: red;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+}
+
+.mood-image {
+    border-radius: 10%;
+}
+.select {
+    border-radius: 50%;
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.05);/*for Android*/
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.05);/*for IOS*/
+}
+
+.mood-date {
+    float:bottom;
+    display: inline;
+    position:relative;
+    font-size: .08rem;
+    font-family: PingFangSC-Medium;
+    align-self: bottom;
+}
+/* bottom moods */
+.today {
+    /* flex-grow: 1; */
+    display: flex;
+    flex-direction: column;
+    padding: 0rpx 30rpx 0rpx 30rpx;
+    background-color: #ffffff;
+    /* box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
+    /* -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);for IOS  */
+}
+.journal {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 35vh;
+    /* padding-bottom: 70rpx; */
+    /* flex-grow: 2; */
+
+}
+
+
+.oval {
+    margin-left: 65rpx;
+    z-index: 999;
+    width: 570rpx;
+    height: 1.3rpx;
+    background: rgba(207 244 209);
+    opacity: 0.7;
+    border-radius: 100px / 50px;
+}
+
+.record-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 20rpx;
+}
+.gratitude {
+    height: 60rpx;
+}
+.gratitude-row {
+    display: flex;
+    /* align-items: flex-start; */
+    height: 60rpx;
+    padding: 20rpx;
+
+
+}
+.row-text {
+    padding: 0rpx 20rpx 0 20rpx;
+    width: 670rpx;
+    align-self: flex-start;
+    text-align: top;
+}
+.day-text {
+    font-family: TrebuchetMS,Rotobo,"Microsoft YaHei",sans-serif;
+    width: 110rpx;
+    color: rgba(181 181 181);
+    margin: 0 20rpx 0 20rpx;
+}
