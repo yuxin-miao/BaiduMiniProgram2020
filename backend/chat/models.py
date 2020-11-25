@@ -58,7 +58,7 @@ class QuestionTemplate(models.Model):
             pass
         else:
             if self.choice_set.count() == 0:
-                return None
+                return self.gen_question()
             return self.choice_set.first().question
 
     class Meta:

@@ -18,6 +18,7 @@ from mood.serializers import (
 )
 from chat.serializers import MessageSerializer, MessageReplySerializer, QuestionTemplateSerializer
 from chat.constants import ReplyType, ProcessType
+from mood.constants import MoodType
 
 from backend.permissions import IsAuthenticated
 
@@ -125,16 +126,31 @@ class MessageViewSet(
 
                     request.user.nickname = content
                     request.user.save()
-                    msg = Message.objects.create(receiver=request.user, content='输入成功')
+                    last_question_record.answered = True
+                    last_question_record.save()
+                    question = last_question.next_question()
+                    QuestionRecord.objects.create(user=request.user, question=question)
+                    msg = Message.objects.create(receiver=request.user, content=question.title)
                     return Response(data={
                         'message': MessageSerializer(msg).data,
-                        'question': QuestionTemplateSerializer(last_question.next_question()).data
+                        'question': QuestionTemplateSerializer(question).data
                     }, status=status.HTTP_200_OK)
                 elif last_question.process_type == ProcessType.MOOD_RECORD:
+                    # TODO: 到底咋处理这个？？
                     pass
                 elif last_question.process_type == ProcessType.GRATITUDE_JOURNAL:
-                    pass
+                    MoodRecord.objects.create(user=request.user, type=MoodType.GRATITUDE, description=content)
+                    question = last_question.next_question()
+                    QuestionRecord.objects.create(user=request.user, question=question)
+                    msg = Message.objects.create(receiver=request.user, content=question.title)
+                    last_question_record.answered = True
+                    last_question_record.save()
+                    return Response(data={
+                        'message': MessageSerializer(msg).data,
+                        'question': QuestionTemplateSerializer(question).data
+                    }, status=status.HTTP_200_OK)
                 elif last_question.process_type == ProcessType.ORDINARY:
+                    # TODO: 可做闲聊
                     pass
                 else:
                     return Response({'detail': '问题处理类型错误'}, status=status.HTTP_400_BAD_REQUEST)
