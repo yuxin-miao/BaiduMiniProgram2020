@@ -16,4 +16,8 @@ services:
       APP_KEY:
       APP_SECRET:
       DJANGO_SECRET_KEY:
+      DB_HOST:
+      DB_NAME:
+      DB_USER:
+      DB_PASSWORD:
     command: ./command.sh

@@ -28,10 +28,13 @@ class AccountViewSet(viewsets.ViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         # 前端发送code到后端,后端发送网络请求到微信服务器换取openid
+        print('Start login...')
+        print(request.data)
         code = request.data.get('code')
         if not code:
             return Response({'message': '缺少code'}, status=status.HTTP_400_BAD_REQUEST)
 
+        print('Fetch openid with code...')
         r = requests.post('https://spapi.baidu.com/oauth/jscode2sessionkey', data={
             'code': code,
             'client_id': APP_KEY,
@@ -42,32 +45,43 @@ class AccountViewSet(viewsets.ViewSet):
         openid = res['openid'] if 'openid' in res else None
         session_key = res['session_key'] if 'session_key' in res else None
 
+        print('Fetched response', res)
+
         if not openid:
             return Response({'message': 'OAuth调用失败'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         # 判断用户是否第一次登录
         user = User.objects.filter(openid=openid).first()
         if user is None:
+            print('First login, creating user...')
             try:
-                username = request.data.get('userInfo').get('nickName')
-                gender = request.data.get('userInfo').get('gender')
-                avatar = request.data.get('userInfo').get('avatarUrl')
+                username = openid
+                # username = request.data.get('userInfo').get('nickName')
+                # gender = request.data.get('userInfo').get('gender')
+                # avatar = request.data.get('userInfo').get('avatarUrl')
                 user = User.objects.create(
                     username=username,
-                    gender=gender,
-                    avatar=avatar,
                     openid=openid,
                     session_key=session_key
                 )
                 # user.set_password(openid)
             except Exception:
+                print('百度用户数据错误')
                 return Response({'detail': '百度用户数据错误'}, status=status.HTTP_400_BAD_REQUEST)
 
 
         if user is None:
+            print('登陆失败')
             return Response({'detail': '登陆失败'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
         django_login(request, user)
+        print('Login success')
+        print({
+            'openid': openid,
+            'session_key': session_key,
+            'username': user.username,
+            'avatar': user.avatar
+        })
         return Response(status=status.HTTP_200_OK, data={
             'openid': openid,
             'session_key': session_key,

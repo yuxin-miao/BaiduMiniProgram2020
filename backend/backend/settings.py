@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = getenv('DJANGO_SECRET_KEY', '')
+SECRET_KEY = '0g6rqqf0jc4mkf)r@)y*#&-2rh6k1rxi!lgo*(=@$wqzvhlua9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -28,7 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    'xiaou.tech'
+    'xiaou.tech',
+    '106.12.91.240'
 ]
 
 # Application definition
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account',
+    'mood',
+    'chat',
     'rest_framework',
 ]
 
@@ -79,9 +82,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': getenv('DB_NAME', 'xiaou_test'),
+        'USER': getenv('DB_USER', 'postgres'),
+        'PASSWORD': getenv('DB_PASSWORD', ''),
+        'HOST': getenv('DB_HOST', 'xiaou.tech'),
+        'PORT': '5432'
     }
 }
 
@@ -110,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
