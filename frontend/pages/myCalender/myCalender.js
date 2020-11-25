@@ -304,7 +304,7 @@ Page({
                     thisMonthDays: tempMonthList,
                     gratitudeRecord: tempGradList,
                 });
-                console.log(this.data.thisMonthDays);
+                console.log('moodTypeGratitude: ', this.data.thisMonthDays);
 
             },
             fail: err => {
@@ -325,8 +325,8 @@ Page({
             method: 'GET',
             data: selectDay,
             success: res => {
-                console.log(selectDay),
-                console.log(res);
+                console.log('dayMoodDescrip: ', selectDay),
+                console.log('dayMoodDescrip: ', res);
                 if (res.statusCode != 200) {
                     swan.showModal({
                         title: '请求失败',
@@ -338,7 +338,7 @@ Page({
                 this.setData({
                     thisDescription: res.data.description
                 })
-                console.log(this.data.thisDescription);
+                console.log('dayMoodDescrip: ', this.data.thisDescription);
                 
 
             },
@@ -352,15 +352,11 @@ Page({
         })
     },
     updateMood(a, b) {
-        console.log('!!!!!');
+        // console.log('!!!!!');
         this.setData({
             "thisMonthDays[selectDay-1].mood": a,
             thisDescription: b
         })
     },
-    // testUsed(e) {
-    //     console.log("TEST");
-    //     console.log(this.data.selectDay);
-    //     console.log(this.data.thisMonthDays[this.data.selectDay - 1].mood);
-    // }
+
 });

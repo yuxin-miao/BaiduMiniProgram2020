@@ -45,17 +45,18 @@
                     "ext": {},
                     "index": "pages/Uchat/Uchat",
                     "query": "",
-                    "scene": {}
+                    "scene": {},
+                    "isUpdate": false
                 },
                 "id": 3,
                 "text": "Uchat"
             }
         ],
-        "selected": -2
+        "selected": 3
     },
     "host": "baiduboxapp",
     "preview": {
-        "packageId": 826783
+        "packageId": 827326
     },
     "projectname": "xiaou",
     "setting": {
