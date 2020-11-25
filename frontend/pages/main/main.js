@@ -28,19 +28,52 @@ Page({
     },
     goMoodRecord(e) {
         if (getApp().isAuthenticated()) {
+            // swan.navigateTo ({
+            //     url: '/pages/mysetting/mysetting'
+            // })
             swan.navigateTo ({
                 url: '/pages/myCalender/myCalender'
             })
         } else {
-            swan.navigateTo ({
-                url: '/pages/mysetting/mysetting'
+            swan.authorize({
+                scope: 'scope.userInfo',
+                success: res => {
+                    getApp().login();
+                },
+                fail: err => {
+                    swan.showToast({
+                        title: '授权失败',
+                        icon: 'none'
+                    })
+                }
             })
+            // swan.navigateTo ({
+            //     url: '/pages/mysetting/mysetting'
+            // })
             // getApp().login();
         }
     },
     startChat(e) {
-        swan.navigateTo ({
-            url: '/pages/Uchat/Uchat'
-        })
+        if (getApp().isAuthenticated()) {
+            // swan.navigateTo ({
+            //     url: '/pages/mysetting/mysetting'
+            // })
+            swan.navigateTo ({
+                url: '/pages/Uchat/Uchat'
+            })
+        } else {
+            swan.authorize({
+                scope: 'scope.userInfo',
+                success: res => {
+                    getApp().login();
+                },
+                fail: err => {
+                    swan.showToast({
+                        title: '授权失败',
+                        icon: 'none'
+                    })
+                }
+            })
+        }
     }
 });

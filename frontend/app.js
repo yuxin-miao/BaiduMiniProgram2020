@@ -10,10 +10,63 @@ import cookies from 'weapp-cookie';
 
 App({
     globalData: {
-        host: API
+        host: API,
     },
     onLaunch(options) {
         // do something when launch
+        // used for navigation bar 
+
+        // swan.getSystemInfo({
+        //     success: res => {
+        //         let isIOS = res.model.indexOf('iOS') > -1;
+        //         let menuTop = 0;
+        //         let menuHeight = 32;
+        //         // 获取胶囊信息
+        //         swan.getMenuButtonBoundingClientRect({
+        //             success: res => {
+        //                 menuHeight = res.height;
+        //                 menuTop = res.top;
+        //             }
+        //         })
+        //         let tempNavHeight = 48;
+        //         // 若胶囊信息获取失败
+        //         if (menuTop) {
+        //             tempNavHeight = (menuTop - res.statusBarHeight) * 2 + menuHeight;
+        //         }
+        //         else if (isIOS) {
+        //             tempNavHeight = 40;
+        //         }
+        //         let tempBoth = tempNavHeight + res.statusBarHeight;
+                // this.setData({
+                //     navHeight: tempNavHeight + 'px',
+                //     statusHeight: res.statusBarHeight + 'px',
+                //     statusNavHeight: tempBoth + 'px'
+                // });
+                // // 获取是否为IPhoneX
+                // if (res.model && (res.model.indexOf('iPhone X') > -1) || (res.model === 'iPhone Simulator <x86-64>' && res.screenWidth === 375)) {
+                //     this.setData({
+                //         isIPhoneX: true
+                //     })
+                // }
+                // else {
+                //     this.setData({
+                //         isIPhoneX: false
+                //     })
+                // }
+                // console.log('statusNavHeight', this.data.statusNavHeight);
+                // console.log("statusHeight ", this.data.statusHeight);
+                // console.log("navHeight ", this.data.navHeight);
+                // console.log("isIPhoneX ", this.data.isIPhoneX);
+        //     },
+        //     fail: res => {
+        //         swan.showModal({
+        //             title: '网络异常',
+        //             content: '请检查网络连接'
+        //         });
+        //     }
+        // })
+
+
     },
     onShow(options) {
         // do something when show
@@ -53,11 +106,60 @@ App({
         const username = swan.getStorageSync('username');
         return !(username === null || username.length === 0);
     },
+    setNavigationData() {
+        let menuHeight = '';
+        swan.getMenuButtonBoundingClientRect({
+            success: res => {
+                console.log('menuHeight', res);
+                if(res.top) {
+                    menuHeight = res.top;
+                }
+                else {
+                    console.log("胶囊高度获取失败");
+                    menuHeight = 32;
+                }
+
+            }
+        })
+
+        swan.getSystemInfo({
+            success: res => {
+                console.log('getSystemInfo', res);
+                let isIOS = res.model.indexOf('iOS') > -1;
+                let tempHeight = 44;
+                if (!isIOS) {
+                    tempHeight = 48;
+                }
+                this.setData({
+                    navHeight: tempHeight,
+                    statusHeight: res.statusBarHeight,
+                });
+
+                if (res.model && (res.model.indexOf('iPhone X') > -1) || (res.model === 'iPhone Simulator <x86-64>' && res.screenWidth === 375)) {
+                    this.setData({
+                        isIPhoneX: true
+                    })
+                }
+                else {
+                    this.setData({
+                        isIPhoneX: false
+                    })
+                }
+            },
+            fail: res => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        })
+    },
 
     // *****************************
     // ********** Actions **********
     // *****************************
     login(userInfo) {
+        cookies.clearCookies();
         swan.login({
             success: res => {
                 swan.showLoading({
