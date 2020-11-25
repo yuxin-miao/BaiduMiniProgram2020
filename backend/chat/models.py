@@ -32,6 +32,9 @@ class Message(models.Model):
     content = models.TextField(verbose_name="消息内容")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
+    def __str__(self):
+        return self.content if (self.content is not None) else '空消息'
+
     class Meta:
         verbose_name = '聊天记录'
         verbose_name_plural = verbose_name
