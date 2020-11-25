@@ -150,7 +150,15 @@ class MessageViewSet(
                         'question': QuestionTemplateSerializer(question).data
                     }, status=status.HTTP_200_OK)
                 elif last_question.process_type == ProcessType.ORDINARY:
-                    # TODO: 可做闲聊
+                    question = last_question.next_question()
+                    QuestionRecord.objects.create(user=request.user, question=question)
+                    msg = Message.objects.create(receiver=request.user, content=question.title)
+                    last_question_record.answered = True
+                    last_question_record.save()
+                    return Response(data={
+                        'message': MessageSerializer(msg).data,
+                        'question': QuestionTemplateSerializer(question).data
+                    }, status=status.HTTP_200_OK)
                     pass
                 else:
                     return Response({'detail': '问题处理类型错误'}, status=status.HTTP_400_BAD_REQUEST)
@@ -173,7 +181,7 @@ class MessageViewSet(
             #         type=type,
             #         description=description,
             #     )
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             print(str(e))
             return Response({'detail': '无法解析回答'}, status=status.HTTP_400_BAD_REQUEST)
