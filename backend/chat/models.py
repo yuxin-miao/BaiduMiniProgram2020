@@ -1,3 +1,4 @@
+from random import choice
 from django.db import models
 
 from account.models import User
@@ -40,12 +41,25 @@ class QuestionTemplate(models.Model):
     '''
     Question Template
     '''
+    root = models.BooleanField(default=False, verbose_name="根问题")
     title = models.CharField(max_length=256, verbose_name="问题内容")
     reply_type = models.IntegerField(choices=ReplyType.choices, verbose_name="回复类型")
     process_type = models.IntegerField(choices=ProcessType.choices, verbose_name="处理类型")
 
     def __str__(self):
         return self.title
+
+    @classmethod
+    def gen_question(cls):
+        return choice(cls.objects.filter(root=True))
+
+    def next_question(self, choice_idx=None):
+        if choice_idx:
+            pass
+        else:
+            if self.choice_set.count() == 0:
+                return None
+            return self.choice_set.first().question
 
     class Meta:
         verbose_name = '问题模板'
@@ -57,7 +71,7 @@ class QuestionRecord(models.Model):
     Instances of Question. Each QuestionRecord belongs to a user.
     User's messages reply to the most recent QuestionRecord.
     '''
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="所属用户", null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="所属用户")
     question = models.ForeignKey(QuestionTemplate, on_delete=models.CASCADE, verbose_name="问题模板")
     answered = models.BooleanField(default=False, verbose_name="已回答")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
@@ -72,13 +86,7 @@ class QuestionRecord(models.Model):
 
 
 class Choice(models.Model):
-    question = models.ForeignKey(
-        QuestionTemplate,
-        on_delete=models.CASCADE,
-        verbose_name="所属问题",
-        null=True,
-        blank=True
-    )
+    question = models.ForeignKey(QuestionTemplate, on_delete=models.CASCADE, verbose_name="所属问题")
     dest_question = models.ForeignKey(
         QuestionTemplate,
         on_delete=models.CASCADE,
@@ -92,6 +100,10 @@ class Choice(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     def __str__(self):
+        if self.question is None:
+            return '[{0}] None -> {1}'.format(self.title, self.dest_question.id)
+        if self.dest_question is None:
+            return '[{0}] {1} -> None'.format(self.title, self.question.id)
         return '[{0}] {1} -> {2}'.format(self.title, self.question.id, self.dest_question.id)
 
     class Meta:
