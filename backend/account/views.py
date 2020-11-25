@@ -55,13 +55,12 @@ class AccountViewSet(viewsets.ViewSet):
         if user is None:
             print('First login, creating user...')
             try:
-                username = request.data.get('userInfo').get('nickName')
-                gender = request.data.get('userInfo').get('gender')
-                avatar = request.data.get('userInfo').get('avatarUrl')
+                username = openid
+                # username = request.data.get('userInfo').get('nickName')
+                # gender = request.data.get('userInfo').get('gender')
+                # avatar = request.data.get('userInfo').get('avatarUrl')
                 user = User.objects.create(
                     username=username,
-                    gender=gender,
-                    avatar=avatar,
                     openid=openid,
                     session_key=session_key
                 )
