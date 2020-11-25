@@ -1,3 +1,6 @@
+from django.utils import timezone
+from datetime import datetime
+
 from rest_framework import viewsets, response, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -30,6 +33,10 @@ class MoodRecordViewSet(
     def get_serializer_class(self):
         if self.action == 'list':
             return MoodRecordMiniSerializer
+        if self.action == 'day':
+            return MoodRecordDaySerializer
+        if self.action == 'month':
+            return MoodRecordMonthSerializer
         return MoodRecordDetailSerializer
 
     def list(self, request, *args, **kwargs):
@@ -40,22 +47,37 @@ class MoodRecordViewSet(
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         try:
             type = serializer.data.get('type')
             description = serializer.data.get('description')
-            record = MoodRecord.objects.create(
-                user=request.user,
-                type=type,
-                description=description,
-            )
+            year = serializer.data.get('year', None)
+            month = serializer.data.get('month', None)
+            day = serializer.data.get('day', None)
+
+            if year and month and day:
+                create_time = timezone.get_default_timezone().localize(datetime(year=year, month=month, day=day))
+                record = MoodRecord.objects.create(
+                    user=request.user,
+                    type=type,
+                    description=description,
+                )
+                record.created_at = create_time
+                record.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                record = MoodRecord.objects.create(
+                    user=request.user,
+                    type=type,
+                    description=description,
+                )
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception:
             return Response({'detail': '心情记录数据错误'}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
     @action(detail=False, methods=['GET'])
     def day(self, request):
-        serializer = MoodRecordDaySerializer(data=request.GET)
+        serializer = self.get_serializer(data=request.GET)
         if not serializer.is_valid():
             error = '表单填写错误'
         else:
@@ -68,14 +90,14 @@ class MoodRecordViewSet(
                 created_at__year=year,
                 created_at__month=month,
                 created_at__day=day
-            ).exclude(type=MoodType.GRATITUDE).first()
+            ).exclude(type=MoodType.GRATITUDE).order_by('-id').first()
             mood_data = MoodRecordDetailSerializer(mood_record).data
             return Response(data=mood_data, status=status.HTTP_200_OK)
         return Response(data={'detail': error}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['GET'])
     def month(self, request):
-        serializer = MoodRecordMonthSerializer(data=request.GET)
+        serializer = self.get_serializer(data=request.GET)
         if not serializer.is_valid():
             error = '表单填写错误'
         else:

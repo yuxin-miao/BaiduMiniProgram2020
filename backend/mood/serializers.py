@@ -9,9 +9,13 @@ class MoodRecordMiniSerializer(serializers.ModelSerializer):
 
 
 class MoodRecordDetailSerializer(serializers.ModelSerializer):
+    year = serializers.IntegerField(required=False)
+    month = serializers.IntegerField(required=False)
+    day = serializers.IntegerField(required=False)
+
     class Meta:
         model = MoodRecord
-        fields = ('type', 'description', 'created_at',)
+        fields = ('type', 'description', 'created_at', 'year', 'month', 'day')
 
 
 class MoodRecordMonthSerializer(serializers.Serializer):
