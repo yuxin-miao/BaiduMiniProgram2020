@@ -24,13 +24,13 @@
                         style="width: 70%"
                         src="../../images/mood_{{item.mood}}.svg"
                         data-day = "{{item.date}}"
-                        bind:tap="selectDay"
+                        bind:tap="toSelectDay"
                         />
                         <view class="mood-date with-image">{{item.date}}</view>
                     </block>
                     <block s-else>
                         
-                        <view data-day = "{{item.date}}" bind:tap="selectDay"> {{item.date}}</view>
+                        <view data-day = "{{item.date}}" bind:tap="toSelectDay"> {{item.date}}</view>
                     </block>
                 </view>
                 <view class="grid lighter" s-for="item, index in emptyGridsAfter">{{item}}</view>
@@ -47,7 +47,7 @@
                         style="width: 50rpx"
                         src="../../images/icon-point.svg"/>
 
-                    <view class="day-text"> {{thisMonth}}.{{thisDay}} </view>
+                    <view class="day-text"> {{thisMonth}}.{{selectDay}} </view>
                     <image
                         class="mood-image"
                         mode="widthFix"

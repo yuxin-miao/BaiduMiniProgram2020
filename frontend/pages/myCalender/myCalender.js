@@ -100,6 +100,8 @@ Page({
         let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
         //获取当日日期 
         let D = date.getDate();
+        // D = D < 10 ? "0" + D : D;
+
 
         // call function to create grids
         let mday = this.methods.gridThisMonth(Y, M);
@@ -160,12 +162,12 @@ Page({
     },
 
 
-    selectDay(e) {
+    toSelectDay(e) {
         // used when select a new day in this month 
         // jump to the day if 
         console.log('Clicked', e.currentTarget.dataset.day);
 
-        if (e.currentTarget.dataset.day > this.data.constDay) {
+        if (e.currentTarget.dataset.day > this.data.constDay & this.data.thisMonth == this.data.constMonth) {
             // cant jump to futrue
             swan.showToast({
                 title: '无法为未来添加心情',
@@ -174,19 +176,27 @@ Page({
             })
             return;
         }
+        // let tempSelDay = e.currentTarget.dataset.day;
+        // tempSelDay = tempSelDay < 10 ? "0" + tempSelDay : tempSelDay;
         this.setData({selectDay: e.currentTarget.dataset.day});
+        // console.log("Hey! whether to change?");
+        // console.log(this.data.selectDay);
+        // console.log(this.data.thisMonthDays);
         // console.log(this.data.thisMonthDays[this.data.selectDay - 1].mood);
+        
         if (this.data.thisMonthDays[this.data.selectDay - 1].mood == 0) {
             // when day no mood record, record first 
-            swan.showToast({
-                title: '跳转心情记录',
-                icon: 'none',
-                duration: 500
-            })
+            // swan.showToast({
+            //     title: '跳转心情记录',
+            //     icon: 'none',
+            //     duration: 500
+            // })
             swan.navigateTo({
                 url: '/pages/record/record'
             })
+            return;
         }
+
         this.dayMoodDescrip({
             year: this.data.thisYear,
             month: this.data.thisMonth,
@@ -283,7 +293,7 @@ Page({
                     let tempDate = (new Date(graRecord.created_at)).toLocaleDateString().split('/');
                     let tempM = tempDate[1];
                     let tempD = tempDate[2];
-                    tempD = tempD < 10 ? '0'+tempD : tempD;
+                    // tempD = tempD < 10 ? '0'+tempD : tempD;
                     tempGradList.push({
                         day: tempD,
                         description: graRecord.description,
@@ -324,7 +334,7 @@ Page({
                     });
                     return;                     
                 }
-                if(res.data.description == '') res.data.description = "...";
+                if(res.data.description == '') res.data.description = "快来添加你的心情吧";
                 this.setData({
                     thisDescription: res.data.description
                 })
@@ -340,7 +350,17 @@ Page({
             }
 
         })
-    }
-
-
+    },
+    updateMood(a, b) {
+        console.log('!!!!!');
+        this.setData({
+            "thisMonthDays[selectDay-1].mood": a,
+            thisDescription: b
+        })
+    },
+    // testUsed(e) {
+    //     console.log("TEST");
+    //     console.log(this.data.selectDay);
+    //     console.log(this.data.thisMonthDays[this.data.selectDay - 1].mood);
+    // }
 });

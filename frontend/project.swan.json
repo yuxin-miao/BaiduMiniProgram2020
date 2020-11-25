@@ -34,8 +34,7 @@
                     "ext": {},
                     "index": "pages/myCalender/myCalender",
                     "query": "",
-                    "scene": {},
-                    "isUpdate": false
+                    "scene": {}
                 },
                 "id": 2,
                 "text": "myCalender"
@@ -52,11 +51,11 @@
                 "text": "Uchat"
             }
         ],
-        "selected": 2
+        "selected": -2
     },
     "host": "baiduboxapp",
     "preview": {
-        "packageId": 815953
+        "packageId": 826274
     },
     "projectname": "xiaou",
     "setting": {

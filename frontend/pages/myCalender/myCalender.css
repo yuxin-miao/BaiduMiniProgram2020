@@ -120,7 +120,7 @@
     /* flex-grow: 1; */
     display: flex;
     flex-direction: column;
-    padding: 30rpx 30rpx 0rpx 30rpx;
+    padding: 0rpx 30rpx 0rpx 30rpx;
     background-color: #ffffff;
     /* box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
     /* -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);for IOS  */
@@ -170,6 +170,7 @@
 }
 .day-text {
     font-family: TrebuchetMS,Rotobo,"Microsoft YaHei",sans-serif;
+    width: 110rpx;
     color: rgba(181 181 181);
-    padding:0 40rpx 0 20rpx;
+    margin: 0 20rpx 0 20rpx;
 }
