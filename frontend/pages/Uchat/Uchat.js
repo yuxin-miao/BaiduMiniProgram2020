@@ -16,7 +16,7 @@ Page({
         getInitialCh: [], 
         getInitialChRe: [],
         getInitialDoCh: "0",
-        nickname: "111", // 通过是否有名字判断是否初次进入
+        nickname: "", // 通过是否有名字判断是否初次进入
         doChoice: "0", // 选择选项：1 / 纯输入：0,
         uChoices: [], // choices given, array of strings
         uChRely: [], // reply by U after select a choice 
@@ -32,8 +32,8 @@ Page({
             time: time
         });
         this.getQuestion();
-        this.userEnter();
-        // this.scrollToBottom();
+        this.getNickName();
+
     },
     onReady: function() {
         console.log('ready')
@@ -135,15 +135,40 @@ Page({
             })
         }
         else {
-            this.getInitialUpdateData('-1');
+            if(this.data.thisSenderMsg.length > 5){
+                swan.showToast({
+                    title: '昵称长度不可大于五个字符',
+                    icon: 'none',
+                    duration: 1400
+                })
+                return;
+            }
+            swan.request({
+                url: getApp().getUrl('/account/nickname/'),
+                method: 'POST',
+                header: {
+                    // POST 携带
+                    'X-CSRFToken': cookies.get('csrftoken')
+                },
+                data: {nickname: this.data.thisSenderMsg},
+                success: res => {
+                    if (res.statusCode != 200) {
+                        swan.showModal({
+                            title: '请求失败',
+                            content: '昵称设置失败',
+                            duration: 1400
+                        })
+                    }
+                    this.getInitialUpdateData(-1);
+
+                }
+            })
         }
 
     },
     // CHOICE: send choice 
     selectChoice(e) {
         // update user's reply and u's reply 
-        // console.log("select choice: ", e.currentTarget.dataset.choiceIndex);
-
         let choiceIndex = e.currentTarget.dataset.choiceIndex;
         let tempMsgs = this.data.displayMsgs;
         tempMsgs.push ({
@@ -252,7 +277,6 @@ Page({
                 });
             }
         })
-        // this.pageScrollToBottom();
 
     },
     getQuestion: function(){
@@ -321,7 +345,63 @@ Page({
           };
           console.log('pageScrollToBottom', that.data.scrollTop);
         }).exec()
-      },
+    },
+    getInitialUpdateData: function(chIndex) { // 只有刚进入的时候用到
+        let tempDis = this.data.displayMsgs;
+        if (this.data.doChoice == "1" && chIndex == '1') { // 非初次使用 选择重新开始
+            // TODO
+            
+
+            return;
+        }
+        // 初次使用和接着聊天的数据设置相同
+        let tempCh = [];
+        let tempChRe = [];
+        this.data.getInitialMsg.forEach(element => {
+            tempDis.push(element)
+        })
+        if (this.data.getInitialDoCh == "1") {
+            this.data.getInitialCh.forEach(element => {
+                tempCh.push(element)
+            })
+            this.data.getInitialChRe.forEach(element => {
+                tempChRe.push(element)
+            })
+        }
+        this.setData({
+            displayMsgs: tempDis,
+            uChoices: tempCh,
+            uChRely: tempChRe,
+            doChoice: this.data.getInitialDoCh,
+            justEnter: '0'
+        })
+        
+    },
+    getNickName: function() {
+        swan.request({
+            url: getApp().getUrl('/account/user/'),
+            method: 'GET',
+            success: res => {
+                if (res.statusCode != 200) {
+                    swan.showModal({
+                        title: '请求失败',
+                        content: 'getNickName Fail'
+                    })
+                }
+                this.setData({
+                    nickname: res.data.nickname
+                }, () => {
+                    this.userEnter();
+                })
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        })
+    }, 
     userEnter: function() {
         this.setData({
             justEnter: "1",
@@ -354,38 +434,4 @@ Page({
 
         }
     },
-    getInitialUpdateData: function(chIndex) { // 只有刚进入的时候用到
-        let tempDis = this.data.displayMsgs;
-        if (this.data.doChoice == "1" && chIndex == '1') { // 非初次使用 选择重新开始
-            // TODO
-            
-
-            return;
-        }
-        // 初次使用和接着聊天的数据设置相同
-        let tempCh = [];
-        let tempChRe = [];
-
-        this.data.getInitialMsg.forEach(element => {
-            tempDis.push(element)
-        })
-        if (this.data.getInitialDoCh == "1") {
-            this.data.getInitialCh.forEach(element => {
-                tempCh.push(element)
-            })
-            this.data.getInitialChRe.forEach(element => {
-                tempChRe.push(element)
-            })
-        }
-        
-
-        this.setData({
-            displayMsgs: tempDis,
-            uChoices: tempCh,
-            uChRely: tempChRe,
-            doChoice: this.data.getInitialDoCh,
-            justEnter: '0'
-        })
-        
-    }
 });

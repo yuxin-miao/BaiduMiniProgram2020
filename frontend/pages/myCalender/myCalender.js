@@ -176,21 +176,12 @@ Page({
             })
             return;
         }
-        // let tempSelDay = e.currentTarget.dataset.day;
-        // tempSelDay = tempSelDay < 10 ? "0" + tempSelDay : tempSelDay;
+
         this.setData({selectDay: e.currentTarget.dataset.day});
         console.log("Hey! whether to change?");
         console.log('selectDay: ',this.data.selectDay);
-        // console.log(this.data.thisMonthDays);
-        // console.log('', this.data.thisMonthDays[this.data.selectDay - 1].mood);
-        
+
         if (this.data.thisMonthDays[e.currentTarget.dataset.day - 1].mood == 0) {
-            // when day no mood record, record first 
-            // swan.showToast({
-            //     title: '跳转心情记录',
-            //     icon: 'none',
-            //     duration: 500
-            // })
             swan.navigateTo({
                 url: '/pages/record/record'
             })

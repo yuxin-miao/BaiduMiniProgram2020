@@ -2,7 +2,7 @@
 <view class="drawer_box">
     <view class="card-area">
         <view class="text">
-            <text>Hey {{username}}！
+            <text>Hey{{nickname}}！
              你感觉怎么样？
             </text>
         </view>
@@ -21,7 +21,6 @@
         </view>
     </view>
 
-    <!-- <view class="row"> -->
     <view class="card-area">
         <textarea class="normalInput" placeholder="说点什么..." bindinput="MoodDescription"/>
         <button class="card-button" style="width:60%" bind:tap="createMood" form-type="submit">
