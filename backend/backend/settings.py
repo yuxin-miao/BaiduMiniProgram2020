@@ -29,6 +29,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     'xiaou.tech',
+    'www.xiaou.tech',
     '106.12.91.240'
 ]
 
