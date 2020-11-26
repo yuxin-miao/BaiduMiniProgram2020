@@ -18,6 +18,7 @@ Page({
         // lastId: thisDisplayMsg[thisDisplayMsg - 1]
     },
     onLoad: function () {
+        console.log('load')
         // console.log(messages);
         // 监听页面加载的生命周期函数
         var time = util.chatTime(new Date());
@@ -28,16 +29,21 @@ Page({
         // this.scrollToBottom();
     },
     onReady: function() {
+        console.log('ready')
         // 监听页面初次渲染完成的生命周期函数
         var height = swan.getSystemInfoSync().windowHeight;
         this.setData({
-          windowHeight: height
-        })
+          windowHeight: height,
+          scrollTop: 8000000000
+        });
+        this.scrollToBottomTemp();
+
         // this.pageScrollToBottom();
         // console.log("onReady ", height)
     },
     onShow: function() {
         // 监听页面显示的生命周期函数
+        console.log('show')
 
     },
     onHide: function() {
@@ -99,6 +105,9 @@ Page({
             data: {content: this.data.thisSenderMsg},
             
             success: res => {
+                setTimeout(() => {
+                    this.scrollToBottomTemp()
+                }, 400);
                 console.log('sendMsg: ', res);
                 if (res.statusCode != 200) {
                     swan.showModal({
@@ -184,6 +193,9 @@ Page({
             uChoices: tempCh,
             uChRely: tempChRe,
         })
+        setTimeout(() => {
+            this.scrollToBottomTemp()
+        }, 400);
     },
     initial: function() {
         swan.request({
@@ -208,8 +220,11 @@ Page({
                 })
                 this.setData({
                     prevMsgs: tempPrevM,
-                    scrollTop: 12321321321
                 })
+                setTimeout(() => {
+                    this.scrollToBottomTemp()
+                }, 2000);
+
             },
             fail: err => {
                 swan.showModal({
@@ -264,35 +279,29 @@ Page({
             }
         })
     },
-    // scrollToBottom(){
-    //     swan.createSelectorQuery()
-    //     .select(".chat-bottom")
-    //     .boundingClientRect(function(rect) {
-    //         swan.pageScrollTo({
-    //             scrollTop: rect.bottom,
-    //             duration: 300,
-    //             success: res => {
-    //                 console.log('pageScrollTo success', res);
-    //             },
-    //             fail: err => {
-    //                 console.log('pageScrollTo fail', err);
-    //             }
-    //         });
-    //     })
-    //     .exec();
-    // },
-    // pageScrollToBottom: function() {
-    //     var that = this;
-    //     var height = swan.getSystemInfoSync().windowHeight;
-    //     console.log('pageScrollToBottom', height);
-    //     swan.createSelectorQuery().select('#page').boundingClientRect(function(rect) {
-    //       if (rect){
-    //         that.setData({
-    //           windowHeight: height,
-    //           scrollTop: rect.height
-    //         })
-    //       }
-    //     }).exec()
-    //   },
+    scrollToTop(e) {
+        this.setData({ scrollTop: 0 });
+
+    },
+    scrollToBottomTemp() {
+        // console.log(e);
+        console.log("scrollToBottomTemp");
+        this.setData({ scrollTop: 8000000000 });
+    },
+
+    pageScrollToBottom: function() {
+        var that = this;
+        var height = swan.getSystemInfoSync().windowHeight;
+        console.log('pageScrollToBottom', height);
+        swan.createSelectorQuery().select('#page').boundingClientRect(function(rect) {
+          if (rect){
+            that.setData({
+              windowHeight: height,
+              scrollTop: rect.height
+            })
+          };
+          console.log('pageScrollToBottom', that.data.scrollTop);
+        }).exec()
+      },
     
 });

@@ -8,11 +8,12 @@
         mode="widthFix"
         style="width: 70rpx"
         src="../../images/chat-send.svg"
+        bindtap="scrollToTop"
      />
     </view>
     </view>
-    <view class="chat-body">
-    <scroll-view class="scroll-view" scroll-y="true" scroll-top="{= scrollTop =}">
+    <!-- <view class="chat-body"> -->
+    <scroll-view class="chat-body" scroll-y="true" scroll-top="{= scrollTop =}" scroll-with-animation="true">
 
         <view s-for="item, index in prevMsgs">
             <block s-if="{{item.type == 1}}">
@@ -43,9 +44,9 @@
         </view>
 
     </scroll-view>
-    </view>
+    <!-- </view> -->
     <block s-if="{{doChoice == 1}}">
-        <view class="choice-buttom">
+        <view class="choice-buttom" bind:tap="scrollToBottomTemp">
 
             <view class="all-choices">
                 <view s-for="choice, chIndex in uChoices" class="each-choice" bind:tap="selectChoice" data-choice-index="{{chIndex}}">
@@ -55,7 +56,7 @@
         </view>
     </block>
     <block s-else>
-        <view class="chat-bottom">
+        <view class="chat-bottom" bind:tap="scrollToBottomTemp">
             <image
                 class="chat-icon"
                 mode="widthFix"
@@ -64,7 +65,7 @@
                 bindtap="recordNav" />
 
 
-            <form class="msg-input">
+            <form class="msg-input" bindtap="scrollToBottomTemp">
                 <input class="normalInput" bindinput="SenderMsg"/>
                 <button class="image-button" formType="reset" bindtap="sendMsg"  style="height:80rpx"> 
                 <image

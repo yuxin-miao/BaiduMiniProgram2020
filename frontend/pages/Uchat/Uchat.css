@@ -24,16 +24,14 @@
 
 /* 聊天文字 */
 .chat-body {
+    padding-bottom: 10rpx;
     width: 100%;
     position: relative;
     display: flex;
     font-size: 30rpx;
     top: 13.5%;
-    /* bottom: 20rpx; */
-    height: 75%;
-    padding-bottom: 10rpx;
+    height: calc(88% - 170rpx);
     text-align: center;
-    /* flex-grow: 2; */
 }
 /* display time */
 .chat-time {
