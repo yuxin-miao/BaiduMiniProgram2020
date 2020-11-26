@@ -112,3 +112,15 @@ class Choice(models.Model):
     class Meta:
         verbose_name = '问题选项'
         verbose_name_plural = verbose_name
+
+
+class Keyword(models.Model):
+    question = models.ForeignKey(QuestionTemplate, on_delete=models.CASCADE, verbose_name="所属问题")
+    title = models.CharField(max_length=32, verbose_name="关键词")
+
+    def __str__(self):
+        return '[{0}] {1}'.format(self.question.id, self.title)
+
+    class Meta:
+        verbose_name = '匹配关键词'
+        verbose_name_plural = verbose_name

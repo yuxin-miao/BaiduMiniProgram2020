@@ -46,6 +46,8 @@ class MessageViewSet(
             return MessageReplySerializer
         if self.action == 'talk_finished':
             return MessageReplySerializer
+        if self.action == 'get_question':
+            return MessageReplySerializer
         return MessageSerializer
 
     def list(self, request, *args, **kwargs):
