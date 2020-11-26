@@ -24,7 +24,7 @@
     text-align: center;
 }
 .triangle-left {
-    margin-left: 171rpx;
+    padding-left: 171rpx;
     /* padding-top: 20rpx; */
     width: 0;
     height: 0;
@@ -33,6 +33,7 @@
     border-bottom: 15rpx solid transparent;
 }
 .triangle-right {
+    padding-right: 50rpx;
     width: 0;
     height: 0;
     border-top: 15rpx solid transparent;
