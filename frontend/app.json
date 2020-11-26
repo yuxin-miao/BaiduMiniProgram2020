@@ -6,7 +6,7 @@
         "pages/record/record",
         "pages/myCalender/myCalender",
         "pages/mysetting/mysetting",
-        "pages/test/test"
+        "pages/intro/intro"
     ],
     "window": {
         "navigationBarBackgroundColor": "#ffffff",

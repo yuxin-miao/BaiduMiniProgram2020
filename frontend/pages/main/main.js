@@ -75,5 +75,10 @@ Page({
                 }
             })
         }
+    },
+    goIntro(e) {
+        swan.navigateTo ({
+            url: '/pages/intro/intro'
+        })
     }
 });
