@@ -53,8 +53,27 @@ class QuestionTemplate(models.Model):
         return self.title
 
     @classmethod
-    def gen_question(cls):
-        return choice(cls.objects.filter(root=True))
+    def gen_question(cls, matching=None):
+        if matching is None:
+            return choice(cls.objects.filter(root=True))
+        else:
+            matched = cls.get_matched_questions(matching)
+            if len(matched) == 0:
+                return None
+            return choice(cls.get_matched_questions(matching))
+
+    @classmethod
+    def get_matched_questions(cls, matching):
+        root_questions = cls.objects.filter(root=True)
+        for question in root_questions:
+            matched = False
+            for keyword in question.keyword_set.all():
+                if keyword.title in matching:
+                    matched = True
+                    break
+            if not matched:
+                root_questions = root_questions.exclude(id=question.id)
+        return root_questions
 
     def next_question(self, choice_idx=None):
         if choice_idx:

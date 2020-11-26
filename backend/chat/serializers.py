@@ -12,6 +12,10 @@ class MessageReplySerializer(serializers.Serializer):
     content = serializers.CharField(max_length=128)
 
 
+class MessageMatchingSerializer(serializers.Serializer):
+    matching = serializers.CharField(max_length=128, required=False)
+
+
 class QuestionTemplateSerializer(serializers.ModelSerializer):
     choices = serializers.SerializerMethodField()
 

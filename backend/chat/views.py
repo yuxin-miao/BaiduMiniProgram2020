@@ -9,14 +9,12 @@ from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveMode
 
 from mood.models import MoodRecord
 from chat.models import QuestionTemplate, Message, QuestionRecord, Choice
-from account.models import User
-from mood.serializers import (
-    MoodRecordDetailSerializer,
-    MoodRecordMiniSerializer,
-    MoodRecordMonthSerializer,
-    MoodRecordDaySerializer
+from chat.serializers import (
+    MessageSerializer,
+    MessageReplySerializer,
+    QuestionTemplateSerializer,
+    MessageMatchingSerializer
 )
-from chat.serializers import MessageSerializer, MessageReplySerializer, QuestionTemplateSerializer
 from chat.constants import ReplyType, ProcessType
 from mood.constants import MoodType
 
@@ -47,7 +45,7 @@ class MessageViewSet(
         if self.action == 'talk_finished':
             return MessageReplySerializer
         if self.action == 'get_question':
-            return MessageReplySerializer
+            return MessageMatchingSerializer
         return MessageSerializer
 
     def list(self, request, *args, **kwargs):
@@ -192,21 +190,30 @@ class MessageViewSet(
             print(str(e))
             return Response({'detail': '无法解析回答'}, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=['GET'])
+    @action(detail=False, methods=['POST'])
     def get_question(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'detail': '无法获取问题，表单填写错误'}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            last_question_record = QuestionRecord.objects.filter(user=request.user).order_by('-created_at').first()
+            matching = serializer.validated_data.get('matching', None)
 
-            if last_question_record is None or last_question_record.answered:
+            if matching is None or len(matching) == 0:
+                # return a random choice from all root question
                 question = QuestionTemplate.gen_question()
-
                 if question is None:
                     return Response({'detail': '没有可选问题'}, status=status.HTTP_400_BAD_REQUEST)
-                QuestionRecord.objects.create(user=request.user, question=question)
-                msg = Message.objects.create(receiver=request.user, content=question.title)
-                return Response(data=QuestionTemplateSerializer(question).data, status=status.HTTP_200_OK)
-            return Response(data=QuestionTemplateSerializer(last_question_record.question).data,
-                            status=status.HTTP_200_OK)
+            else:
+                question = QuestionTemplate.gen_question(matching=matching)
+                if question is None:
+                    return Response({'detail': '没有可选问题'}, status=status.HTTP_400_BAD_REQUEST)
+
+            QuestionRecord.objects.create(user=request.user, question=question)
+            msg = Message.objects.create(receiver=request.user, content=question.title)
+            return Response(data={
+                'message': MessageSerializer(msg).data,
+                'question': QuestionTemplateSerializer(question).data
+            }, status=status.HTTP_200_OK)
         except Exception as e:
             print(str(e))
             return Response({'detail': '无法获取问题'}, status=status.HTTP_400_BAD_REQUEST)
