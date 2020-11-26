@@ -280,12 +280,9 @@ Page({
                     tempMonthList[tempDate - 1].mood = MoodName[mood.type];
                 });
                 res.data.gratitudeList.forEach(graRecord => {
-                    let tempDate = (new Date(graRecord.created_at)).toLocaleDateString().split('/');
-                    let tempM = tempDate[1];
-                    let tempD = tempDate[2];
-                    // tempD = tempD < 10 ? '0'+tempD : tempD;
+                    let tempDate = (new Date(graRecord.created_at)).getDate();
                     tempGradList.push({
-                        day: tempD,
+                        day: tempDate,
                         description: graRecord.description,
                     })
                 });
