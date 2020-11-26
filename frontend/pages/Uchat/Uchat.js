@@ -12,7 +12,9 @@ Page({
         thisDisplayMsg: '', // 发送/显示的用户信息
         displayMsgs: [], // item {type: msg: } 本次聊天所有信息 for both
         justEnter: '0', // 进入时的判断
-        taskFinish: '0',
+        taskFinish: false,
+        talkMatching: '0',
+        whetherDetermineMatch: '1',
         // getInitialMsg:[], // get_question 开始新话题 匹配关键词或者不匹配
         // getInitialCh: [], 
         // getInitialChRe: [],
@@ -33,7 +35,7 @@ Page({
             time: time
         });
         this.initial();
-        this.getNickName();
+        this.getNickName(); // 获取用户信息并且进行是否第一次使用判断
 
     },
     onReady: function() {
@@ -46,8 +48,6 @@ Page({
         });
         this.scrollToBottomTemp();
 
-        // this.pageScrollToBottom();
-        // console.log("onReady ", height)
     },
     onShow: function() {
         // 监听页面显示的生命周期函数
@@ -73,7 +73,6 @@ Page({
         swan.navigateBack();
     },
     recordNav(e) {
-        console.log("fff")
         swan.navigateTo({
             url: '/pages/myCalender/myCalender'
         });
@@ -103,39 +102,7 @@ Page({
         this.setData({
             displayMsgs: tempMsgs,
         })
-        if (this.data.justEnter == "0") {
-            swan.request({
-                url: getApp().getUrl('/message/reply/'),
-                method: 'POST',
-                header: {
-                    // POST 携带
-                    'X-CSRFToken': cookies.get('csrftoken')
-                },
-                data: {content: this.data.thisSenderMsg},
-                
-                success: res => {
-                    setTimeout(() => {
-                        this.scrollToBottomTemp()
-                    }, 400);
-                    console.log('sendMsg: ', res);
-                    if (res.statusCode != 200) {
-                        swan.showModal({
-                            title: '请求失败',
-                            content: 'sendMsg Fail'
-                        });
-                        return;
-                    }
-                    this.updateData(res);
-                },
-                fail: err => {
-                    swan.showModal({
-                        title: '网络异常',
-                        content: '请检查网络连接'
-                    });
-                }
-            })
-        }
-        else {
+        if (this.data.justEnter == "1") {
             if(this.data.thisSenderMsg.length > 5){
                 swan.showToast({
                     title: '昵称长度不可大于五个字符',
@@ -160,9 +127,55 @@ Page({
                             duration: 1400
                         })
                     }
-                    // this.getInitialUpdateData(-1);
+                    this.getInitialUpdateData(-1);
 
                 }
+            })
+        }
+        else if (this.data.taskFinish === "0") {
+            if (this.data.whetherDetermineMatch === '0') {
+                swan.request({
+                    url: getApp().getUrl('/message/reply/'),
+                    method: 'POST',
+                    header: {
+                        // POST 携带
+                        'X-CSRFToken': cookies.get('csrftoken')
+                    },
+                    data: {content: this.data.thisSenderMsg},
+                    success: res => {
+                        if (res.data.title != "") {
+                            this.allQuestionUpdate(res);
+                            return;
+                        } 
+                    },
+                    fail: err => {
+                        swan.showModal({
+                            title: '网络异常',
+                            content: '请检查网络连接'
+                        });
+                    }
+                })
+            }
+            let tempDis = this.data.displayMsgs;
+            tempDis.push({
+                type: '1',
+                msg: '有想和我聊聊的话题吗？'
+            });
+            let tempCh = ["有", "没有"];
+            let tempChRe = ["有", "没有"];
+            this.setData({
+                displayMsgs: tempDis,
+                doChoice: '1',
+                uChoices: tempCh,
+                uChRely: tempChRe,
+                taskFinish: '1',
+            })
+            
+        }
+        else if (this.data.taskFinish === "1") {
+            swan.showModal({
+                title: "错误",
+                content: "sendMsg taskFinish"
             })
         }
 
@@ -179,7 +192,7 @@ Page({
         this.setData({
             displayMsgs: tempMsgs,
         })
-        if (this.data.justEnter == "0") {
+        if (this.data.justEnter === "0" &&  this.data.taskFinish === '0') {
             swan.request({
                 url: getApp().getUrl('/message/reply/'),
                 method: 'POST',
@@ -190,14 +203,24 @@ Page({
                 data: {content: choiceIndex},
                 success: res => {
                     console.log('selectChoice: ', res);
-                    if (res.statusCode != 200) {
-                        swan.showModal({
-                            title: '请求失败',
-                            content: 'sendMsg Fail'
-                        });
-                        return;
+                    if (res.data.title != "") {
+                        this.allQuestionUpdate(res);
+                        return
                     }
-                    this.updateData(res);
+                    let tempDis = this.data.displayMsgs;
+                    tempDis.push({
+                        type: '1',
+                        msg: '有想和我聊聊的话题吗？'
+                    });
+                    let tempCh = ["有", "没有"];
+                    let tempChRe = ["有", "没有"];
+                    this.setData({
+                        displayMsgs: tempDis,
+                        doChoice: '1',
+                        uChoices: tempCh,
+                        uChRely: tempChRe,
+                        taskFinish: '1',
+                    })
                 },
                 fail: err => {
                     swan.showModal({
@@ -208,39 +231,16 @@ Page({
             })
         }
         else {
-            // this.getInitialUpdateData(choiceIndex);
-        }
 
-    },
-    
-    updateData: function(res) {
-        // used after POST to server
-        // for xiaou's msg 
-        let tempMsgs = this.data.displayMsgs;
-        console.log("updateData");
-        tempMsgs.push ({
-            type:'1', 
-            msg: res.data.message.content,
-        }); 
-        let tempCh = [];
-        let tempChRe = [];
-        // for choices
-        if (res.data.question.reply_type == 1) {
-            res.data.question.choices.forEach(element => {
-                tempCh.push(element.title),
-                tempChRe.push(element.reply_content)
-            });
+            if (this.data.whetherDetermineMatch === '0') {
+                this.getInitialUpdateData(choiceIndex);
+                return
+            }
+
+            if (choiceIndex === '0') this.matchingQuestion();
+            else this.notMatchingQuestion();
+
         }
-        // update data 
-        this.setData({
-            displayMsgs: tempMsgs,
-            doChoice: res.data.question.reply_type,
-            uChoices: tempCh,
-            uChRely: tempChRe,
-        })
-        setTimeout(() => {
-            this.scrollToBottomTemp()
-        }, 400);
     },
     initial: function() {
         swan.request({
@@ -280,51 +280,6 @@ Page({
         })
 
     },
-    getQuestion: function(){
-        swan.request({
-            url: getApp().getUrl('/message/get_question/'),
-            method: 'GET',
-            success: res => {
-                console.log('initial question: ', res);
-                if (res.statusCode != 200) {
-                    swan.showModal({
-                        title: '请求失败',
-                        content: 'sendMsg Fail'
-                    });
-                    return;
-                }
-                let tempDis = this.data.displayMsgs;
-                tempDis.push({
-                    type: "1",
-                    msg: res.data.title
-                });
-                let tempCh = [];
-                let tempChRe = [];
-
-                if (res.data.reply_type == 1) {
-                    res.data.choices.forEach(element => {
-                        tempCh.push(element.title),
-                        tempChRe.push(element.reply_content)
-                    })
-                }
-
-                this.setData({ 
-                    displayMsgs: tempDis,
-                    uChoices: tempCh,
-                    uChRely: tempChRe,
-                    doChoice: res.data.reply_type
-                })
-
-
-            },
-            fail: err => {
-                swan.showModal({
-                    title: '网络异常',
-                    content: '请检查网络连接'
-                });
-            }
-        })
-    },
     scrollToTop(e) {
         this.setData({ scrollTop: 0 });
 
@@ -349,49 +304,47 @@ Page({
           console.log('pageScrollToBottom', that.data.scrollTop);
         }).exec()
     },
-    getInitialUpdateData: function(chIndex) { // 只有刚进入的时候用到
+    getInitialUpdateData: function(chIndex) { // 还未向服务器请求question
         let tempDis = this.data.displayMsgs;
-        // 选择继续对话
 
-        if (this.data.doChoice == "1" && chIndex == '1') { // 非初次使用 选择重新开始
-            swan.request({
-                url: getApp().getUrl('/message/bye/'),
-                method: 'POST',
-                header: {
-                    // POST 携带
-                    'X-CSRFToken': cookies.get('csrftoken')
-                },
-                success: res =>{
-                    
-
-
-
-                }
-
-            });
+        if (this.data.doChoice == '1' &&  this.data.taskFinish == false && chIndex == 1) {
+            // 非初次进入+上次话题未结束+想继续聊
+            // get last question 
+            this.getLastQuestion();
+            this.setData({
+                justEnter: '0',
+            })
             return;
         }
-        // 初次使用和接着聊天的数据设置相同
-        let tempCh = [];
-        let tempChRe = [];
-        this.data.getInitialMsg.forEach(element => {
-            tempDis.push(element)
+        
+        if (this.data.taskFinish === true) {    // 非初次进入+话题已经结束
+            this.setData({
+                justEnter: '0',
+            });
+            if (chIndex == '0') {
+                //matching 
+                this.matchingQuestion();
+            }
+            else {
+                // not matching 
+                this.notMatchingQuestion();
+            }
+            return;
+        };
+
+          // 初次进入 或 再次进入不想继续上次的话题
+        tempDis.push({
+            type: '1',
+            msg: '有想和我聊聊的话题吗'
         })
-        if (this.data.getInitialDoCh == "1") {
-            this.data.getInitialCh.forEach(element => {
-                tempCh.push(element)
-            })
-            this.data.getInitialChRe.forEach(element => {
-                tempChRe.push(element)
-            })
-        }
         this.setData({
             displayMsgs: tempDis,
-            uChoices: tempCh,
-            uChRely: tempChRe,
-            doChoice: this.data.getInitialDoCh,
-            justEnter: '0'
-        })
+            uChoices: ["有", "没有"],
+            uChRely: ["有", "没有"],
+            doChoice: '1',
+            whetherDetermineMatch: '1'
+        },() => {this.scrollToBottomTemp()})
+
         
     },
     getNickName: function() {
@@ -438,20 +391,155 @@ Page({
             let tempMsg = this.data.nickname + "，欢迎回来！";
             let tempDis = [
                 { type: "1", msg: tempMsg },
-                { type: "1", msg: "你想接着聊上次的话题吗？"}
             ];
-            let tempCh = ["接着聊", "重新开始"];
-            let tempChRe = ["让我们接着聊吧", "我想要聊别的"];
-            this.setData({
-                displayMsgs: tempDis,
-                doChoice: '1',
-                uChoices: tempCh,
-                uChRely: tempChRe,
+            swan.request({
+                url: getApp().getUrl('/message/talk_finished'),
+                method: 'GET',
+                header: {
+                    // POST 携带
+                    'X-CSRFToken': cookies.get('csrftoken')
+                },
+                success: res => {
+                    console.log('tempTaskFinish', res);
+                    if (res.statusCode != 200) {
+                        swan.showModal({
+                            title: "请求错误",
+                            content: 'tempTaskFinish fail'
+                        })
+                        return;
+                    }
+                    if (res.data.talk_finished === false) {
+                        let tempDis = this.data.displayMsgs;
+                        tempDis.push({
+                            type: '1',
+                            msg: '你想要和我接着聊上次的话题吗？'
+                        });
+                        let tempCh = ["接着聊", "重新开始"];
+                        let tempChRe = ["让我们接着聊吧", "我想要聊别的"];
+                        this.setData({
+                            displayMsgs: tempDis,
+                            doChoice: '1',
+                            uChoices: tempCh,
+                            uChRely: tempChRe,
+                            taskFinish: res.data.talk_finished,
+                        })
+                    }
+                    else {
+                        let tempDis = this.data.displayMsgs;
+                        tempDis.push({
+                            type: '1',
+                            msg: '有想和我聊聊的话题吗？'
+                        });
+                        let tempCh = ["有", "没有"];
+                        let tempChRe = ["有", "没有"];
+                        this.setData({
+                            displayMsgs: tempDis,
+                            doChoice: '1',
+                            uChoices: tempCh,
+                            uChRely: tempChRe,
+                            taskFinish: res.data.talk_finished,
+                        })
+                    }   
+                }
             })
-
         }
     },
-    wantTalk: function() {
-
+    talkFinish: function() {
+        swan.request({
+            url: getApp().getUrl('message/talk_finished'),
+            method: 'GET',
+            success: res => {
+                if (res.statusCode != 200 ) {
+                    swan.showModal({
+                        title: "请求失败",
+                        content: "talkFinish fail"
+                    })
+                    return;
+                }
+                this.setData({
+                    taskFinish: this.data.talk_finished,
+                })
+            }
+        })
+    },    
+    notMatchingQuestion: function(){
+        swan.request({
+            url: getApp().getUrl('/message/get_question/'),
+            method: 'GET',
+            success: res => {
+                this.allQuestionUpdate(res);
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        })
     },
+    
+    matchingQuestion: function() {
+        swan.request({
+            url: getApp().getUrl('/message/get_question/'),
+            method: 'GET',
+            data: {matching: this.data.thisSenderMsg},
+            success: res => {
+                this.allQuestionUpdate(res);
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+
+
+        })
+    },
+    getLastQuestion: function(){
+        swan.request({
+            url: getApp().getUrl('/message/get_last_question/'),
+            method: 'GET',
+            success: res => {
+                this.allQuestionUpdate(res);
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        })
+    },
+    allQuestionUpdate: function(res) {
+        if (res.statusCode != 200) {
+            swan.showModal({
+                title: '请求失败',
+                content: 'sendMsg Fail'
+            });
+            return;
+        }
+        let tempDis = this.data.displayMsgs;
+        tempDis.push({
+            type: "1",
+            msg: res.data.title
+        });
+        let tempCh = [];
+        let tempChRe = [];
+
+        if (res.data.reply_type == 1) {
+            res.data.choices.forEach(element => {
+                tempCh.push(element.title),
+                tempChRe.push(element.reply_content)
+            })
+        }
+        this.setData({ 
+            displayMsgs: tempDis,
+            uChoices: tempCh,
+            uChRely: tempChRe,
+            doChoice: res.data.reply_type
+        },() => {this.scrollToBottomTemp()})
+    },
+    
+    
 });
