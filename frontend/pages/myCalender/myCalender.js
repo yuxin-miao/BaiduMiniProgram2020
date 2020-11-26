@@ -87,9 +87,7 @@ Page({
     },
 
     onShow: function () {
-        // swan.setNavigationBarTitle({
-        //     title: thisMonth
-        // });
+
         // 监听页面加载的生命周期函数
 
         let timestamp = Date.parse(new Date());
@@ -100,14 +98,11 @@ Page({
         let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
         //获取当日日期 
         let D = date.getDate();
-        // D = D < 10 ? "0" + D : D;
-
 
         // call function to create grids
         let mday = this.methods.gridThisMonth(Y, M);
         let emptys = this.methods.emptyGrid(Y, M);
 
-        // console.log(emptys.after);
         // set the default selectDay as today
         this.setData({
             thisMonthDays: mday,
@@ -133,9 +128,7 @@ Page({
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
-        // this.today();
-        // console.log(this.data.moodTypeList);
-        // console.log(this.data.gratitudeRecord);
+
     },
     onLoad: function() {
         // 监听页面显示的生命周期函数
@@ -165,7 +158,7 @@ Page({
     toSelectDay(e) {
         // used when select a new day in this month
         // jump to the day if
-        console.log('Clicked', e.currentTarget.dataset.day);
+        // console.log('Clicked', e.currentTarget.dataset.day);
 
         if (e.currentTarget.dataset.day > this.data.constDay & this.data.thisMonth == this.data.constMonth) {
             // cant jump to futrue
@@ -178,8 +171,7 @@ Page({
         }
 
         this.setData({selectDay: e.currentTarget.dataset.day});
-        console.log("Hey! whether to change?");
-        console.log('selectDay: ',this.data.selectDay);
+
 
         if (this.data.thisMonthDays[e.currentTarget.dataset.day - 1].mood == 0) {
             swan.navigateTo({
@@ -206,7 +198,6 @@ Page({
         // call function to create grids
         let mday = this.methods.gridThisMonth(this.data.thisYear, this.data.thisMonth);
         let emptys = this.methods.emptyGrid(this.data.thisYear, this.data.thisMonth);
-        // console.log(emptys.after);
         // set the default selectDay as today
         this.setData({
             thisMonthDays: mday,
@@ -225,7 +216,6 @@ Page({
         });
     },
     changeNextMonth(e) {
-        // console.log("after");
         if(this.data.thisMonth == this.data.constMonth) return;
         this.setData({
             selectDay: this.data.thisDay,
@@ -235,7 +225,6 @@ Page({
         // call function to create grids
         let mday = this.methods.gridThisMonth(this.data.thisYear, this.data.thisMonth);
         let emptys = this.methods.emptyGrid(this.data.thisYear, this.data.thisMonth);
-        // console.log(emptys.after);
         // set the default selectDay as today
         this.setData({
             thisMonthDays: mday,
@@ -291,7 +280,6 @@ Page({
                     thisMonthDays: tempMonthList,
                     gratitudeRecord: tempGradList,
                 });
-                console.log('moodTypeGratitude: ', this.data.thisMonthDays);
 
             },
             fail: err => {
@@ -312,8 +300,7 @@ Page({
             method: 'GET',
             data: selectDay,
             success: res => {
-                console.log('dayMoodDescrip: ', selectDay),
-                console.log('dayMoodDescrip: ', res);
+
                 if (res.statusCode != 200) {
                     swan.showModal({
                         title: '请求失败',
@@ -325,7 +312,6 @@ Page({
                 this.setData({
                     thisDescription: res.data.description
                 })
-                console.log('dayMoodDescrip: ', this.data.thisDescription);
 
 
             },
@@ -339,7 +325,6 @@ Page({
         })
     },
     updateMood(a, b) {
-        // console.log('!!!!!');
         this.setData({
             "thisMonthDays[selectDay-1].mood": a,
             thisDescription: b

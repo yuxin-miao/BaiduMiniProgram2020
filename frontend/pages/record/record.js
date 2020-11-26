@@ -12,13 +12,14 @@ Page({
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
+        this.getNickName();
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
     },
     onShow: function() {
         // 监听页面显示的生命周期函数
-         console.log(app.isAuthenticated());
+        //  console.log(app.isAuthenticated());
     },
     onHide: function() {
         // 监听页面隐藏的生命周期函数
@@ -61,11 +62,12 @@ Page({
             type: moodType,
             description: thisDis,
         });
+        // console.log("selectDay:", prevPage.data.selectDay);
         swan.showToast({
             title: '记录成功',
             icon: 'none',
             duration: 1500
-        })
+        });
 
     },
     MoodDescription: function(e) {
@@ -77,7 +79,8 @@ Page({
         swan.request({
             url: getApp().getUrl('/account/user/'),
             method: 'GET',
-            success: rss => {
+            success: res => {
+                // console.log(res);
                 if (res.statusCode != 200) {
                     swan.showModal({
                         title: '请求失败',

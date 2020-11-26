@@ -183,6 +183,7 @@ Page({
     // CHOICE: send choice 
     selectChoice(e) {
         // update user's reply and u's reply 
+        console.log('select choice: ', this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch);
         let choiceIndex = e.currentTarget.dataset.choiceIndex;
         let tempMsgs = this.data.displayMsgs;
         tempMsgs.push ({
@@ -251,7 +252,7 @@ Page({
                 if (res.statusCode != 200) {
                     swan.showModal({
                         title: '请求失败',
-                        content: 'sendMsg Fail'
+                        content: 'initial record Fail'
                     });
                     return;
                 }
@@ -511,7 +512,7 @@ Page({
         if (res.statusCode != 200) {
             swan.showModal({
                 title: '请求失败',
-                content: 'sendMsg Fail'
+                content: 'allQuestionUpdate Fail'
             });
             return;
         }
