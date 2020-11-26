@@ -209,6 +209,20 @@ class MessageViewSet(
             print(str(e))
             return Response({'detail': '无法获取问题'}, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=False, methods=['GET'])
+    def get_last_question(self, request):
+        try:
+            last_question_record = QuestionRecord.objects.filter(user=request.user).order_by('-created_at').first()
+
+            if last_question_record is None:
+                return Response(data=QuestionTemplateSerializer(None).data, status=status.HTTP_200_OK)
+
+            return Response(data=QuestionTemplateSerializer(last_question_record.question).data,
+                            status=status.HTTP_200_OK)
+        except Exception as e:
+            print(str(e))
+            return Response({'detail': '无法获取最后问题'}, status=status.HTTP_400_BAD_REQUEST)
+
     @action(detail=False, methods=['POST'])
     def bye(self, request):
         try:
