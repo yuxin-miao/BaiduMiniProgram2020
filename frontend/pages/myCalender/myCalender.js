@@ -86,7 +86,7 @@ Page({
         }
     },
 
-    onLoad: function () {
+    onShow: function () {
         // swan.setNavigationBarTitle({
         //     title: thisMonth
         // });
@@ -137,7 +137,7 @@ Page({
         // console.log(this.data.moodTypeList);
         // console.log(this.data.gratitudeRecord);
     },
-    onShow: function() {
+    onLoad: function() {
         // 监听页面显示的生命周期函数
     },
     onHide: function() {

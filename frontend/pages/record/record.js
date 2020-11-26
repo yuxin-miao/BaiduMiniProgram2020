@@ -81,22 +81,22 @@ Page({
             title: '记录成功',
             icon: 'none',
             duration: 1500
-        }) 
+        })
         console.log("createmood");
         // let tempMonthDays = thisMonthDays;
         // tempMonthDays[selectDay-1].mood = this.data.selectedMood;
 
         // prevPage.setData({
-        //     // thisMonthDays: tempMonthDays, 
+        //     // thisMonthDays: tempMonthDays,
         //     "thisMonthDays[selectDay-1].mood": this.data.selectedMood,
         //     thisDescription: this.data.moodDescription,
         // })
         console.log(prevPage.data.thisMonthDays[prevPage.data.selectDay-1].mood);
         console.log(prevPage.data.thisDescription);
         console.log("finish create mood");
-        prevPage.updateMood(this.data.selectedMood, this.data.moodDescription);
-        
-        
+        // prevPage.updateMood(this.data.selectedMood, this.data.moodDescription);
+
+
         // console.log(res);
         // prevPage.setData({
         //     selectDay: res.data.
