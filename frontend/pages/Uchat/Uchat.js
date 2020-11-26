@@ -393,12 +393,8 @@ Page({
                 { type: "1", msg: tempMsg },
             ];
             swan.request({
-                url: getApp().getUrl('/message/talk_finished'),
+                url: getApp().getUrl('/message/talk_finished/'),
                 method: 'GET',
-                header: {
-                    // POST 携带
-                    'X-CSRFToken': cookies.get('csrftoken')
-                },
                 success: res => {
                     console.log('tempTaskFinish', res);
                     if (res.statusCode != 200) {
@@ -439,14 +435,14 @@ Page({
                             uChRely: tempChRe,
                             taskFinish: res.data.talk_finished,
                         })
-                    }   
+                    }
                 }
             })
         }
     },
     talkFinish: function() {
         swan.request({
-            url: getApp().getUrl('message/talk_finished'),
+            url: getApp().getUrl('/message/talk_finished/'),
             method: 'GET',
             success: res => {
                 if (res.statusCode != 200 ) {
