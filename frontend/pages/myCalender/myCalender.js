@@ -119,17 +119,17 @@ Page({
             thisMonth: M,
             thisYear: Y,
             selectDay: D,
+        }, () => {
+            this.moodTypeGratitude({
+                year: Y,
+                month: M
+            });
+            this.dayMoodDescrip({
+                year: Y,
+                month: M,
+                day: D,
+            });
         });
-        this.moodTypeGratitude({
-            year: this.data.thisYear,
-            month: this.data.thisMonth
-        });
-        this.dayMoodDescrip({
-            year: this.data.thisYear,
-            month: this.data.thisMonth,
-            day: this.data.thisDay,
-        });
-
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
@@ -179,12 +179,12 @@ Page({
         // let tempSelDay = e.currentTarget.dataset.day;
         // tempSelDay = tempSelDay < 10 ? "0" + tempSelDay : tempSelDay;
         this.setData({selectDay: e.currentTarget.dataset.day});
-        // console.log("Hey! whether to change?");
-        // console.log(this.data.selectDay);
+        console.log("Hey! whether to change?");
+        console.log('selectDay: ',this.data.selectDay);
         // console.log(this.data.thisMonthDays);
-        // console.log(this.data.thisMonthDays[this.data.selectDay - 1].mood);
+        // console.log('', this.data.thisMonthDays[this.data.selectDay - 1].mood);
         
-        if (this.data.thisMonthDays[this.data.selectDay - 1].mood == 0) {
+        if (this.data.thisMonthDays[e.currentTarget.dataset.day - 1].mood == 0) {
             // when day no mood record, record first 
             // swan.showToast({
             //     title: '跳转心情记录',
@@ -200,7 +200,7 @@ Page({
         this.dayMoodDescrip({
             year: this.data.thisYear,
             month: this.data.thisMonth,
-            day: this.data.selectDay,
+            day: e.currentTarget.dataset.day
         });
 
 
@@ -221,17 +221,17 @@ Page({
             thisMonthDays: mday,
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
+        }, () => {
+            this.moodTypeGratitude({
+                year: this.data.thisYear,
+                month: this.data.thisMonth
+            });
+            this.dayMoodDescrip({
+                year: this.data.thisYear,
+                month: this.data.thisMonth,
+                day: this.data.thisDay,
+            });
         });
-        this.moodTypeGratitude({
-            year: this.data.thisYear,
-            month: this.data.thisMonth
-        });
-        this.dayMoodDescrip({
-            year: this.data.thisYear,
-            month: this.data.thisMonth,
-            day: this.data.thisDay,
-        });
-        
     },
     changeNextMonth(e) {
         // console.log("after");

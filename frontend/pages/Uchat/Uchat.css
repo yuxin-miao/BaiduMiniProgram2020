@@ -160,3 +160,12 @@
     font-family: PingFangSC-Medium, sans-serif;
     color: rgba(128 186 161);
 }
+
+.suspend-button {
+    position: fixed;
+    right: 0;
+    bottom: 170rpx;
+    z-index: 999;
+    padding-right: 30rpx;
+    
+}

@@ -16,7 +16,7 @@ Page({
         getInitialCh: [], 
         getInitialChRe: [],
         getInitialDoCh: "0",
-        nickname: "wow", // 通过是否有名字判断是否初次进入
+        nickname: "111", // 通过是否有名字判断是否初次进入
         doChoice: "0", // 选择选项：1 / 纯输入：0,
         uChoices: [], // choices given, array of strings
         uChRely: [], // reply by U after select a choice 
