@@ -12,10 +12,11 @@ Page({
         thisDisplayMsg: '', // 发送/显示的用户信息
         displayMsgs: [], // item {type: msg: } 本次聊天所有信息 for both
         justEnter: '0', // 进入时的判断
-        getInitialMsg:[], // 初始进入时get_question 得到，在判定用户初次进入 或 非初次进入但继续话题时使用
-        getInitialCh: [], 
-        getInitialChRe: [],
-        getInitialDoCh: "0",
+        taskFinish: '0',
+        // getInitialMsg:[], // get_question 开始新话题 匹配关键词或者不匹配
+        // getInitialCh: [], 
+        // getInitialChRe: [],
+        // getInitialDoCh: "0",
         nickname: "", // 通过是否有名字判断是否初次进入
         doChoice: "0", // 选择选项：1 / 纯输入：0,
         uChoices: [], // choices given, array of strings
@@ -31,7 +32,7 @@ Page({
         this.setData({
             time: time
         });
-        this.getQuestion();
+        this.initial();
         this.getNickName();
 
     },
@@ -159,7 +160,7 @@ Page({
                             duration: 1400
                         })
                     }
-                    this.getInitialUpdateData(-1);
+                    // this.getInitialUpdateData(-1);
 
                 }
             })
@@ -207,7 +208,7 @@ Page({
             })
         }
         else {
-            this.getInitialUpdateData(choiceIndex);
+            // this.getInitialUpdateData(choiceIndex);
         }
 
     },
@@ -292,10 +293,11 @@ Page({
                     });
                     return;
                 }
-                let tempDis = [{
+                let tempDis = this.data.displayMsgs;
+                tempDis.push({
                     type: "1",
                     msg: res.data.title
-                }];
+                });
                 let tempCh = [];
                 let tempChRe = [];
 
@@ -305,13 +307,14 @@ Page({
                         tempChRe.push(element.reply_content)
                     })
                 }
-                this.setData({ // 在判定结束后再加入要被display的array或者丢弃
-                    getInitialMsg: tempDis,
-                    getInitialCh: tempCh,
-                    getInitialChRe: tempChRe,
-                    getInitialDoCh: res.data.reply_type
+
+                this.setData({ 
+                    displayMsgs: tempDis,
+                    uChoices: tempCh,
+                    uChRely: tempChRe,
+                    doChoice: res.data.reply_type
                 })
-                this.initial();
+
 
             },
             fail: err => {
@@ -348,10 +351,24 @@ Page({
     },
     getInitialUpdateData: function(chIndex) { // 只有刚进入的时候用到
         let tempDis = this.data.displayMsgs;
-        if (this.data.doChoice == "1" && chIndex == '1') { // 非初次使用 选择重新开始
-            // TODO
-            
+        // 选择继续对话
 
+        if (this.data.doChoice == "1" && chIndex == '1') { // 非初次使用 选择重新开始
+            swan.request({
+                url: getApp().getUrl('/message/bye/'),
+                method: 'POST',
+                header: {
+                    // POST 携带
+                    'X-CSRFToken': cookies.get('csrftoken')
+                },
+                success: res =>{
+                    
+
+
+
+                }
+
+            });
             return;
         }
         // 初次使用和接着聊天的数据设置相同
@@ -433,5 +450,8 @@ Page({
             })
 
         }
+    },
+    wantTalk: function() {
+
     },
 });
