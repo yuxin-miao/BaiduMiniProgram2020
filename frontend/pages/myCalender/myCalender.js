@@ -14,20 +14,20 @@ Page({
         thisMonth: '',
         thisDay: '',
         selectDay: '',
-        thisMonthDays: [], // attention for difference in index and date 
+        thisMonthDays: [], // attention for difference in index and date
         emptyGridsBefore: [],
         emptyGridsAfter: [],
         weekText: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 
-        // GET data 
-        // moodTypeList: {}, // item {day: , type: } in array 
-        gratitudeRecord: [], // item {day: , description: } in array 
+        // GET data
+        // moodTypeList: {}, // item {day: , type: } in array
+        gratitudeRecord: [], // item {day: , description: } in array
         thisDescription: '', // string of description for thisDay
 
         returnMoodRecord: [],
 
 
-        // test 
+        // test
         testMoodRecord: [{
             type: 3,
             description: "long test messagethis is a long long long long long test messagethis is a long long long long long test message"
@@ -156,15 +156,15 @@ Page({
         // 用户点击右上角转发
     },
 
-    // navigation bar used 
+    // navigation bar used
     returnNav(e) {
         swan.navigateBack();
     },
 
 
     toSelectDay(e) {
-        // used when select a new day in this month 
-        // jump to the day if 
+        // used when select a new day in this month
+        // jump to the day if
         console.log('Clicked', e.currentTarget.dataset.day);
 
         if (e.currentTarget.dataset.day > this.data.constDay & this.data.thisMonth == this.data.constMonth) {
@@ -196,7 +196,7 @@ Page({
 
 
     },
-    // when change month 
+    // when change month
     changePrevMonth(e) {
         this.setData({
             selectDay: this.data.thisDay,
@@ -256,29 +256,28 @@ Page({
     /* util functions for getting data */
     moodTypeGratitude: function (selectMonth) {
         // send data: selectMonth(year & month)
-        // return the moodType & gratitudeRecord 
-        // used when first enter / change month 
+        // return the moodType & gratitudeRecord
+        // used when first enter / change month
         swan.request({
             url: `${API}/mood/month/`,
             method: 'GET',
             data: selectMonth,
             success: res => {
-                let returnMood = []; //used to return 
+                let returnMood = []; //used to return
                 if (res.statusCode != 200) {
                     swan.showModal({
                         title: '请求失败',
                         content: 'moodTypeGratitude Fail 1'
                     });
-                    return;                    
+                    return;
                 }
                 let tempMonthList = this.data.thisMonthDays;
                 let tempGradList = [];
                 let gratitudeRecord = res.data.gratitudeList;
-                
+
                 res.data.moodList.forEach(mood => {
-                    let tempDate = (new Date(mood.created_at)).toLocaleDateString().split('/');
-                    let tempD = tempDate[2];
-                    tempMonthList[tempD - 1].mood = MoodName[mood.type];
+                    let tempDate = (new Date(mood.created_at)).getDate();
+                    tempMonthList[tempDate - 1].mood = MoodName[mood.type];
                 });
                 res.data.gratitudeList.forEach(graRecord => {
                     let tempDate = (new Date(graRecord.created_at)).toLocaleDateString().split('/');
@@ -290,7 +289,7 @@ Page({
                         description: graRecord.description,
                     })
                 });
-                
+
                 this.setData({
                     thisMonthDays: tempMonthList,
                     gratitudeRecord: tempGradList,
@@ -310,7 +309,7 @@ Page({
     dayMoodDescrip: function (selectDay) {
         // send data: selectDay(year&month&day)
         // return this day's mood description
-        // used when first enter / change day 
+        // used when first enter / change day
         swan.request({
             url: `${API}/mood/day/`,
             method: 'GET',
@@ -323,14 +322,14 @@ Page({
                         title: '请求失败',
                         content: 'dayMoodDescrip Fail'
                     });
-                    return;                     
+                    return;
                 }
                 if(res.data.description == '') res.data.description = "快来添加你的心情吧";
                 this.setData({
                     thisDescription: res.data.description
                 })
                 console.log('dayMoodDescrip: ', this.data.thisDescription);
-                
+
 
             },
             fail: err => {
