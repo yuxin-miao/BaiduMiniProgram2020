@@ -44,6 +44,8 @@ class MessageViewSet(
             return MessageReplySerializer
         if self.action == 'bye':
             return MessageReplySerializer
+        if self.action == 'talk_finished':
+            return MessageReplySerializer
         return MessageSerializer
 
     def list(self, request, *args, **kwargs):
@@ -215,3 +217,15 @@ class MessageViewSet(
         except Exception as e:
             print(str(e))
             return Response({'detail': '无法结束对话'}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['GET'])
+    def talk_finished(self, request):
+        try:
+            qr = QuestionRecord.objects.filter(user=request.user).order_by('-created_at').first()
+            if qr is None or qr.answered:
+                return Response(data={'talk_finished': True}, status=status.HTTP_200_OK)
+            else:
+                return Response(data={'talk_finished': False}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(str(e))
+            return Response({'detail': '处理失败'}, status=status.HTTP_400_BAD_REQUEST)
