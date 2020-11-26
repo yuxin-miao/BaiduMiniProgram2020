@@ -12,7 +12,6 @@
      />
     </view>
     </view>
-    <!-- <view class="chat-body"> -->
     <scroll-view class="chat-body" scroll-y="true" scroll-top="{= scrollTop =}" scroll-with-animation="true">
 
         <view s-for="item, index in prevMsgs">
@@ -44,7 +43,6 @@
         </view>
 
     </scroll-view>
-    <!-- </view> -->
     <block s-if="{{doChoice == 1}}">
         <view class="choice-buttom" bind:tap="scrollToBottomTemp">
 
