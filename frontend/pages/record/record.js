@@ -86,8 +86,12 @@ Page({
                         title: '请求失败',
                         content: 'getNickName Fail'
                     })
-                }
+                };
                 let tempNick = ' ' + res.data.nickname;
+
+                if (res.data.nickname === null || res.data.nickname.length === 0) {
+                    tempNick = ' ' + "百度网友";
+                } 
                 this.setData({
                     nickname: tempNick,
                 })

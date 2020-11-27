@@ -10,7 +10,7 @@
             class="portrait"
             src="../../images/portrait.svg"
             style="width: 350rpx;"
-            bind:tap="goMoodRecord"/>
+            bind:tap="goIntro"/>
     </view>
     <view class="middle">
         <view class="intro-text">

@@ -16,11 +16,12 @@ Page({
         justEnter: '0', // 进入时的判断
         taskFinish: false,
         talkMatching: '0',
-        whetherDetermineMatch: '1',
+        whetherDetermineMatch: '0',
         nickname: "", // 通过是否有名字判断是否初次进入
-        doChoice: '0', // 选择选项：1 / 纯输入：0 / 心情记录: 2
+        doChoice: '0', // 选择选项：1 / 纯输入：0 / 心情记录: 2 process_type
         uChoices: [], // choices given, array of strings
         uChRely: [], // reply by U after select a choice 
+        MoodName: ["smile", "like", "happy", "upset", "sad", "angry", "ok"],
         
     },
     onLoad: function () {
@@ -107,7 +108,9 @@ Page({
                     duration: 1400
                 })
                 return;
-            }
+            };
+            console.log('POST 11:', this.data.thisSenderMsg);
+
             swan.request({
                 url: getApp().getUrl('/account/nickname/'),
                 method: 'POST',
@@ -129,8 +132,11 @@ Page({
                 }
             })
         }
-        else if (this.data.taskFinish === "0") {
-            if (this.data.whetherDetermineMatch === '0') {
+        else if (this.data.taskFinish == false) {
+            if (this.data.whetherDetermineMatch === '0' || this.data.taskFinish ==  false) {
+                console.log('POST 22:', this.data.thisSenderMsg);
+
+                // let tempTaskFinish = false;
                 swan.request({
                     url: getApp().getUrl('/message/reply/'),
                     method: 'POST',
@@ -140,10 +146,30 @@ Page({
                     },
                     data: {content: this.data.thisSenderMsg},
                     success: res => {
-                        if (res.data.title != "") {
+                        console.log("sendMsg: res: ", res.data.message.content.length);
+                        if (res.data.message.content.length != 0) {
                             this.allQuestionUpdate(res);
                             return;
                         } 
+                        else {
+                            console.log("sendMsg: thisTaskFinsh: ", this.data.taskFinish);
+                            let tempDis = this.data.displayMsgs;
+                            tempDis.push({
+                                type: '1',
+                                msg: '有想和我聊聊的话题吗？'
+                            });
+                            let tempCh = ["有", "没有"];
+                            let tempChRe = ["有", "没有"];
+                            this.setData({
+                                displayMsgs: tempDis,
+                                doChoice: '1',
+                                uChoices: tempCh,
+                                uChRely: tempChRe,
+                                taskFinish: '1',
+                            }, () => {
+                                this.scrollToBottomTemp();
+                            })
+                        }
                     },
                     fail: err => {
                         swan.showModal({
@@ -153,34 +179,20 @@ Page({
                     }
                 })
             }
-            let tempDis = this.data.displayMsgs;
-            tempDis.push({
-                type: '1',
-                msg: '有想和我聊聊的话题吗？'
-            });
-            let tempCh = ["有", "没有"];
-            let tempChRe = ["有", "没有"];
-            this.setData({
-                displayMsgs: tempDis,
-                doChoice: '1',
-                uChoices: tempCh,
-                uChRely: tempChRe,
-                taskFinish: '1',
-            })
-            
+
+        
         }
-        else if (this.data.taskFinish === "1") {
-            swan.showModal({
-                title: "错误",
-                content: "sendMsg taskFinish"
-            })
+        else if (this.data.taskFinish == true) {
+            console.log("sendMsg taskFinish", this.data.thisSenderMsg);
+            this.matchingQuestion();
+        
         }
 
     },
     // CHOICE: send choice 
     selectChoice(e) {
         // update user's reply and u's reply 
-        console.log('select choice: ', this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch);
+        console.log('select choice: ', this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
         let choiceIndex = e.currentTarget.dataset.choiceIndex;
         let tempMsgs = this.data.displayMsgs;
         tempMsgs.push ({
@@ -190,7 +202,8 @@ Page({
         this.setData({
             displayMsgs: tempMsgs,
         })
-        if (this.data.justEnter === "0" &&  this.data.taskFinish === '0') {
+        if (this.data.justEnter == "0" &&  this.data.taskFinish == false) {
+            console.log('POST SC:', choiceIndex);
             swan.request({
                 url: getApp().getUrl('/message/reply/'),
                 method: 'POST',
@@ -201,7 +214,7 @@ Page({
                 data: {content: choiceIndex},
                 success: res => {
                     console.log('selectChoice: ', res);
-                    if (res.data.title != "") {
+                    if (res.data.message.content.length != "") {
                         this.allQuestionUpdate(res);
                         return
                     }
@@ -218,6 +231,8 @@ Page({
                         uChoices: tempCh,
                         uChRely: tempChRe,
                         taskFinish: '1',
+                    }, () => {
+                        this.scrollToBottomTemp();
                     })
                 },
                 fail: err => {
@@ -228,17 +243,42 @@ Page({
                 }
             })
         }
-        else {
+        else if (this.data.taskFinish == true) {
+            
+            console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
 
-            if (this.data.whetherDetermineMatch === '0') {
-                this.getInitialUpdateData(choiceIndex);
-                return
+            if (choiceIndex == '0') {
+                let tempDis = this.data.displayMsgs;
+                tempDis.push({
+                    type: '1',
+                    msg: '告诉我一个关键词...'
+                });
+                this.setData({
+                    displayMsgs: tempDis,
+                    doChoice: '0',
+                    uChRely: [],
+                    uChoices: [],
+                    justEnter: '0',
+                    taskFinish: false,
+                    
+                })
             }
-
-            if (choiceIndex === '0') this.matchingQuestion();
             else this.notMatchingQuestion();
-
         }
+        else if (this.data.whetherDetermineMatch === '0') {
+                this.getInitialUpdateData(choiceIndex);
+                return   
+        }
+        else {
+            swan.showModal({
+                title: '请求失败',
+                content: 'selectChoice Wrong'
+            })
+        }
+
+
+
+
     },
     initial: function() {
         swan.request({
@@ -278,44 +318,21 @@ Page({
         })
 
     },
-    scrollToTop(e) {
-        this.setData({ scrollTop: 0 });
-
-    },
-    scrollToBottomTemp() {
-        // console.log(e);
-        console.log("scrollToBottomTemp");
-        this.setData({ scrollTop: 8000000000 });
-    },
-
-    pageScrollToBottom: function() {
-        var that = this;
-        var height = swan.getSystemInfoSync().windowHeight;
-        console.log('pageScrollToBottom', height);
-        swan.createSelectorQuery().select('#page').boundingClientRect(function(rect) {
-          if (rect){
-            that.setData({
-              windowHeight: height,
-              scrollTop: rect.height
-            })
-          };
-          console.log('pageScrollToBottom', that.data.scrollTop);
-        }).exec()
-    },
     getInitialUpdateData: function(chIndex) { // 还未向服务器请求question
         let tempDis = this.data.displayMsgs;
 
-        if (this.data.doChoice === '1' &&  this.data.taskFinish == false && chIndex == 1) {
+        if (this.data.doChoice === '1' &&  this.data.taskFinish == false && chIndex == 0) {
             // 非初次进入+上次话题未结束+想继续聊
             // get last question 
             this.getLastQuestion();
+
             this.setData({
                 justEnter: '0',
             })
             return;
         }
         
-        if (this.data.taskFinish === true) {    // 非初次进入+话题已经结束
+        if (this.data.taskFinish == true) {    // 非初次进入+话题已经结束
             this.setData({
                 justEnter: '0',
             });
@@ -340,7 +357,8 @@ Page({
             uChoices: ["有", "没有"],
             uChRely: ["有", "没有"],
             doChoice: '1',
-            whetherDetermineMatch: '1'
+            whetherDetermineMatch: '1',
+            taskFinish: true
         },() => {this.scrollToBottomTemp()})
 
         
@@ -459,9 +477,17 @@ Page({
     notMatchingQuestion: function(){
         swan.request({
             url: getApp().getUrl('/message/get_question/'),
-            method: 'GET',
+            method: 'POST',
+            header: {
+                // POST 携带
+                'X-CSRFToken': cookies.get('csrftoken')
+            },
             success: res => {
                 this.allQuestionUpdate(res);
+                this.setData({
+                    taskFinish: false,
+                    justEnter: '0',
+                })
             },
             fail: err => {
                 swan.showModal({
@@ -475,10 +501,18 @@ Page({
     matchingQuestion: function() {
         swan.request({
             url: getApp().getUrl('/message/get_question/'),
-            method: 'GET',
+            method: 'POST',
+            header: {
+                // POST 携带
+                'X-CSRFToken': cookies.get('csrftoken')
+            },
             data: {matching: this.data.thisSenderMsg},
             success: res => {
                 this.allQuestionUpdate(res);
+                this.setData({
+                    taskFinish: false,
+                    justEnter: '0',
+                })
             },
             fail: err => {
                 swan.showModal({
@@ -495,7 +529,46 @@ Page({
             url: getApp().getUrl('/message/get_last_question/'),
             method: 'GET',
             success: res => {
-                this.allQuestionUpdate(res);
+                if (res.statusCode != 200) {
+                    swan.showModal({
+                        title: '请求失败',
+                        content: 'getLastQuestion fail'
+                    })
+                }
+                let tempDis = this.data.displayMsgs;
+                tempDis.push({
+                    type: '1',
+                    msg: res.data.title
+                })
+                let tempCh = [];
+                let tempChRe = [];
+                if (res.data.process_type == '2') {    // 心情日记
+                    console.log("LastQuestion心情日记");
+                    this.setData({ 
+                        displayMsgs: tempDis,
+                        uChoices: tempCh,
+                        uChRely: ['smile', 'like', 'happy', 'upset', 'sad', 'angry', 'ok'],
+                        doChoice: '2',
+                        justEnter: '0',
+                    },() => {this.scrollToBottomTemp()})
+                    return;
+                }
+                else if (res.data.reply_type == '1') {
+                    res.data.choices.forEach( element => {
+                        tempCh.push(element.title);
+                        tempChRe.push(element.reply_content);
+                    })
+                }
+                this.setData({
+                    displayMsgs: tempDis,
+                    uChoices: tempChRe,
+                    uChRely: tempChRe,
+                    taskFinish: false,
+                    doChoice: res.data.reply_type,
+                }, () => {
+                    this.scrollToBottomTemp();
+                })
+
             },
             fail: err => {
                 swan.showModal({
@@ -506,6 +579,7 @@ Page({
         })
     },
     allQuestionUpdate: function(res) {
+        console.log("allQuestionUpdate: ", res);
         if (res.statusCode != 200) {
             swan.showModal({
                 title: '请求失败',
@@ -516,24 +590,61 @@ Page({
         let tempDis = this.data.displayMsgs;
         tempDis.push({
             type: "1",
-            msg: res.data.title
+            msg: res.data.message.content
         });
         let tempCh = [];
         let tempChRe = [];
+        if (res.data.question.process_type == '2') {    // 心情日记
+            console.log("allQuestionUpdate心情日记");
+            this.setData({ 
+                displayMsgs: tempDis,
+                uChoices: tempCh,
+                uChRely: ['smile', 'like', 'happy', 'upset', 'sad', 'angry', 'ok'],
+                doChoice: '2',
+                justEnter: '0',
+            },() => {this.scrollToBottomTemp()})
+            return;
+        }
 
-        if (res.data.reply_type == 1) {
-            res.data.choices.forEach(element => {
+        else if (res.data.question.reply_type == 1) {
+            res.data.question.choices.forEach(element => {
                 tempCh.push(element.title),
                 tempChRe.push(element.reply_content)
             })
         }
+        console.log(res.data.question.reply_type);
         this.setData({ 
             displayMsgs: tempDis,
             uChoices: tempCh,
             uChRely: tempChRe,
-            doChoice: res.data.reply_type
+            doChoice: res.data.question.reply_type,
+            justEnter: '0',
         },() => {this.scrollToBottomTemp()})
     },
     
+    scrollToTop(e) {
+        this.setData({ scrollTop: 0 });
+
+    },
+    scrollToBottomTemp() {
+        // console.log(e);
+        console.log("scrollToBottomTemp");
+        this.setData({ scrollTop: 8000000000 });
+    },
+
+    pageScrollToBottom: function() {
+        var that = this;
+        var height = swan.getSystemInfoSync().windowHeight;
+        console.log('pageScrollToBottom', height);
+        swan.createSelectorQuery().select('#page').boundingClientRect(function(rect) {
+          if (rect){
+            that.setData({
+              windowHeight: height,
+              scrollTop: rect.height
+            })
+          };
+          console.log('pageScrollToBottom', that.data.scrollTop);
+        }).exec()
+    },
     
 });

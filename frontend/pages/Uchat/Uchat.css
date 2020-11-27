@@ -19,7 +19,7 @@
 
 .portrait {
     align-self: center;
-    margin-left: 280rpx;
+    margin-left: 260rpx;
 }
 
 /* 聊天文字 */
@@ -159,6 +159,23 @@
     font-size: .2rem;
     font-family: PingFangSC-Medium, sans-serif;
     color: rgba(128 186 161);
+}
+
+.all-choices-image {
+    width: 750rpx;
+    margin: 0 40rpx 50rpx 40rpx;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+}
+
+.each-choice-image {
+    display: flex;
+    padding: 0 10rpx 10rpx 0;
+
 }
 
 .suspend-button {

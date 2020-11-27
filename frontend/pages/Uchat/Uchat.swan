@@ -6,7 +6,7 @@
     <image
         class="portrait"
         mode="widthFix"
-        style="width: 85rpx"
+        style="width: 83rpx"
         src="../../images/portrait.svg"
         bindtap="scrollToTop"
      />
@@ -44,7 +44,7 @@
 
     </scroll-view>
 
-    <block s-if="{{doChoice === '0'}}">
+    <block s-if="{{doChoice == '0'}}">
         <view class="chat-bottom" bind:tap="scrollToBottomTemp">
             <image
                 class="chat-icon"
@@ -65,7 +65,7 @@
             </form>
         </view>
     </block>
-    <block s-if="{{doChoice === '1'}}">
+    <block s-if="{{doChoice == '1'}}">
         <view class="choice-buttom" bind:tap="scrollToBottomTemp">
 
             <view class="all-choices">
@@ -75,14 +75,15 @@
             </view>
         </view>
     </block>
-    <block s-if="{{doChoice === '2'}}">
+    <block s-if="{{doChoice == '2'}}">
         <view class="choice-buttom" bind:tap="scrollToBottomTemp">
 
-            <view class="all-choices">
+            <view class="all-choices-image">
                 <view s-for="moodname, chIndex in MoodName">
                 <image
                     mode="widthFix"
-                    class="each-choice"
+                    style="width: 90rpx"
+                    class="each-choice-image"
                     src="../../images/mood_{{moodname}}.svg"
                     bind:tap="selectChoice" data-choice-index="{{chIndex}}"/>
                 </view> 
