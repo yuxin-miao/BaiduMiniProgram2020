@@ -1,22 +1,38 @@
 <view class="wrap">
+<!-- <view class="background-image"> -->
     <view class="top">
         <view class="welcome-text">
         <text class="big-text">  你好，\n 我是小U
         <text class="small-text"> 快来和我聊聊吧～</text>
         </view>
+        <image
+            mode="widthFix"
+            class="portrait"
+            src="../../images/portrait.svg"
+            style="width: 350rpx;"
+            bind:tap="goIntro"/>
     </view>
     <view class="middle">
         <view class="intro-text">
-            <view class="square"  bind:tap="goMoodRecord">
-            </view>
+            <image
+                    mode="widthFix"
+                    class="square"
+                    src="../../images/icon-02.svg"
+                    style="width: 55rpx;"
+                    bind:tap="goMoodRecord"/>
+
             <view class="prodc-text" bind:tap="goMoodRecord">
             我的日志
             </view>
         </view>
         <view class="intro-text">
-            <view class="square">
-            </view>
-            <view class="prodc-text">
+            <image
+                    mode="widthFix"
+                    class="square"
+                    src="../../images/icon-03.svg"
+                    style="width: 55rpx;"
+                    bind:tap="goIntro"/>
+            <view class="prodc-text" bind:tap="goIntro">
             Ucho产品介绍
             </view>
         </view>
@@ -26,5 +42,5 @@
             <view class="chat-text">开始聊天 </view>
         </view>
     </view>
-
+<!-- </view> -->
 </view>

@@ -5,26 +5,21 @@ const app = getApp();
 
 Page({
     data: {
-        username: '',
-        avatar: '',
-        moodtype: [ "smile", "like",  "happy", "upset", "sad", "angry", "ok"
-        ],
+        nickname: '',
+        moodtype: [ "smile", "like",  "happy", "upset", "sad", "angry", "ok"],
         selectedMood: "",
         moodDescription: ''
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
+        this.getNickName();
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
     },
     onShow: function() {
         // 监听页面显示的生命周期函数
-        this.setData({
-            username: app.getLocalStorage('username'),
-            avatar: app.getLocalStorage('avatar')
-         });
-         console.log(app.isAuthenticated());
+        //  console.log(app.isAuthenticated());
     },
     onHide: function() {
         // 监听页面隐藏的生命周期函数
@@ -47,7 +42,7 @@ Page({
     },
     createMood() {
         // let type = this.data.selectedMood;
-        // console.log(MoodNumber[type]);
+        let thisDis = this.data.moodDescription == "" ? this.data.selectedMood : this.data.moodDescription;
         if (this.data.selectedMood == "") {
             swan.showToast({
                 title: '请选择心情！',
@@ -56,18 +51,8 @@ Page({
             })
             return;
         }
-        if (this.data.moodDescription == "") {
-            swan.showToast({
-                title: '请填写描述！',
-                icon: 'none',
-                duration: 1500,
-            })
-            return;
-        }
 
-        console.log(this.data.selectedMood);
         let moodType = MoodNumber[this.data.selectedMood];
-        console.log(moodType);
         let pages = getCurrentPages();
         let prevPage = pages[pages.length - 2];
         createMoodRecord({
@@ -75,42 +60,48 @@ Page({
             month: prevPage.data.thisMonth,
             day: prevPage.data.selectDay,
             type: moodType,
-            description: this.data.moodDescription
+            description: thisDis,
         });
+        // console.log("selectDay:", prevPage.data.selectDay);
         swan.showToast({
             title: '记录成功',
             icon: 'none',
             duration: 1500
-        }) 
-        console.log("createmood");
-        // let tempMonthDays = thisMonthDays;
-        // tempMonthDays[selectDay-1].mood = this.data.selectedMood;
+        });
 
-        // prevPage.setData({
-        //     // thisMonthDays: tempMonthDays, 
-        //     "thisMonthDays[selectDay-1].mood": this.data.selectedMood,
-        //     thisDescription: this.data.moodDescription,
-        // })
-        console.log(prevPage.data.thisMonthDays[prevPage.data.selectDay-1].mood);
-        console.log(prevPage.data.thisDescription);
-        console.log("finish create mood");
-        prevPage.updateMood(this.data.selectedMood, this.data.moodDescription);
-        
-        
-        // console.log(res);
-        // prevPage.setData({
-        //     selectDay: res.data.
-        // })
-        // res.data.description
-
-        // swan.redirectTo({
-        //     url: '/pages/myCalender/myCalender'
-        // });
-        // }
     },
     MoodDescription: function(e) {
         this.setData({
             moodDescription: e.detail.value
         })
-    }
+    },
+    getNickName: function() {
+        swan.request({
+            url: getApp().getUrl('/account/user/'),
+            method: 'GET',
+            success: res => {
+                // console.log(res);
+                if (res.statusCode != 200) {
+                    swan.showModal({
+                        title: '请求失败',
+                        content: 'getNickName Fail'
+                    })
+                };
+                let tempNick = ' ' + res.data.nickname;
+
+                if (res.data.nickname === null || res.data.nickname.length === 0) {
+                    tempNick = ' ' + "百度网友";
+                } 
+                this.setData({
+                    nickname: tempNick,
+                })
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        })
+    }, 
 });

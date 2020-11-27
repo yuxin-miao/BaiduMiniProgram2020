@@ -5,7 +5,8 @@
         "pages/Uchat/Uchat",
         "pages/record/record",
         "pages/myCalender/myCalender",
-        "pages/mysetting/mysetting"
+        "pages/mysetting/mysetting",
+        "pages/intro/intro"
     ],
     "window": {
         "navigationBarBackgroundColor": "#ffffff",

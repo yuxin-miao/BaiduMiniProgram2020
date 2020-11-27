@@ -10,10 +10,11 @@ import cookies from 'weapp-cookie';
 
 App({
     globalData: {
-        host: API
+        host: API,
     },
     onLaunch(options) {
-        // do something when launch
+
+
     },
     onShow(options) {
         // do something when show
@@ -53,11 +54,60 @@ App({
         const username = swan.getStorageSync('username');
         return !(username === null || username.length === 0);
     },
+    setNavigationData() {
+        let menuHeight = '';
+        swan.getMenuButtonBoundingClientRect({
+            success: res => {
+                console.log('menuHeight', res);
+                if(res.top) {
+                    menuHeight = res.top;
+                }
+                else {
+                    console.log("胶囊高度获取失败");
+                    menuHeight = 32;
+                }
+
+            }
+        })
+
+        swan.getSystemInfo({
+            success: res => {
+                console.log('getSystemInfo', res);
+                let isIOS = res.model.indexOf('iOS') > -1;
+                let tempHeight = 44;
+                if (!isIOS) {
+                    tempHeight = 48;
+                }
+                this.setData({
+                    navHeight: tempHeight,
+                    statusHeight: res.statusBarHeight,
+                });
+
+                if (res.model && (res.model.indexOf('iPhone X') > -1) || (res.model === 'iPhone Simulator <x86-64>' && res.screenWidth === 375)) {
+                    this.setData({
+                        isIPhoneX: true
+                    })
+                }
+                else {
+                    this.setData({
+                        isIPhoneX: false
+                    })
+                }
+            },
+            fail: res => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        })
+    },
 
     // *****************************
     // ********** Actions **********
     // *****************************
     login(userInfo) {
+        cookies.clearCookies();
         swan.login({
             success: res => {
                 swan.showLoading({

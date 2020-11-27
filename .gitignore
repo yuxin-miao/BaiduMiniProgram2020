@@ -7,3 +7,4 @@ node_modules
 venv/
 
 db.sqlite3
+project.swan.json
