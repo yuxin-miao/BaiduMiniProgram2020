@@ -101,7 +101,7 @@ class QuestionTemplate(models.Model):
         # return the next question
         if self.choice_set.count() == 0:
             return None
-        return self.choice_set.first().question
+        return self.choice_set.first().dest_question
 
     class Meta:
         verbose_name = '问题模板'
