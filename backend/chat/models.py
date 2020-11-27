@@ -75,13 +75,23 @@ class QuestionTemplate(models.Model):
                 root_questions = root_questions.exclude(id=question.id)
         return root_questions
 
-    def next_question(self, choice_idx=None):
-        if choice_idx:
-            pass
-        else:
-            if self.choice_set.count() == 0:
-                return self.gen_question()
-            return self.choice_set.first().question
+    def get_choice(self, index):
+        i = 0
+        selected_choice = None
+        for choice in self.choice_set.all():
+            selected_choice = choice
+            if i == index:
+                break
+            i += 1
+        if i == index:
+            return selected_choice
+        return None
+
+    def next_question(self):
+        # return the next question
+        if self.choice_set.count() == 0:
+            return None
+        return self.choice_set.first().question
 
     class Meta:
         verbose_name = '问题模板'
