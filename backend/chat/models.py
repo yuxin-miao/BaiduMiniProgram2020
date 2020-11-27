@@ -61,15 +61,15 @@ class QuestionTemplate(models.Model):
         else:
             matched = cls.get_matched_questions(matching)
             if len(matched) == 0:
-                return None
+                return choice(cls.objects.filter(root=True))
             return choice(matched)
 
     @classmethod
     def get_matched_questions(cls, matching):
-        root_questions = cls.objects.filter(root=True)
-        if root_questions.count() == 0:
+        questions = cls.objects.all()
+        if questions.count() == 0:
             return []
-        for question in root_questions:
+        for question in questions:
             matched = False
             keywords = question.get_keywords()
             for keyword in keywords:
@@ -77,8 +77,8 @@ class QuestionTemplate(models.Model):
                     matched = True
                     break
             if not matched:
-                root_questions = root_questions.exclude(id=question.id)
-        return root_questions
+                questions = questions.exclude(id=question.id)
+        return questions
 
     def get_keywords(self):
         if self.keyword is None:
