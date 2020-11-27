@@ -1,6 +1,8 @@
 import 'weapp-cookie';
 import cookies from 'weapp-cookie';
 var util = require('../../utils/util.js');
+import {MoodName} from '../../utils/constants.js';
+
 
 Page({
     data: {
@@ -15,16 +17,11 @@ Page({
         taskFinish: false,
         talkMatching: '0',
         whetherDetermineMatch: '1',
-        // getInitialMsg:[], // get_question 开始新话题 匹配关键词或者不匹配
-        // getInitialCh: [], 
-        // getInitialChRe: [],
-        // getInitialDoCh: "0",
         nickname: "", // 通过是否有名字判断是否初次进入
-        doChoice: "0", // 选择选项：1 / 纯输入：0,
+        doChoice: '0', // 选择选项：1 / 纯输入：0 / 心情记录: 2
         uChoices: [], // choices given, array of strings
         uChRely: [], // reply by U after select a choice 
         
-        // lastId: thisDisplayMsg[thisDisplayMsg - 1]
     },
     onLoad: function () {
         console.log('load')
@@ -308,7 +305,7 @@ Page({
     getInitialUpdateData: function(chIndex) { // 还未向服务器请求question
         let tempDis = this.data.displayMsgs;
 
-        if (this.data.doChoice == '1' &&  this.data.taskFinish == false && chIndex == 1) {
+        if (this.data.doChoice === '1' &&  this.data.taskFinish == false && chIndex == 1) {
             // 非初次进入+上次话题未结束+想继续聊
             // get last question 
             this.getLastQuestion();

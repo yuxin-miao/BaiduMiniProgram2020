@@ -6,8 +6,8 @@
     <image
         class="portrait"
         mode="widthFix"
-        style="width: 70rpx"
-        src="../../images/chat-send.svg"
+        style="width: 85rpx"
+        src="../../images/portrait.svg"
         bindtap="scrollToTop"
      />
     </view>
@@ -43,17 +43,8 @@
         </view>
 
     </scroll-view>
-    <block s-if="{{doChoice == 1}}">
-        <view class="choice-buttom" bind:tap="scrollToBottomTemp">
 
-            <view class="all-choices">
-                <view s-for="choice, chIndex in uChoices" class="each-choice" bind:tap="selectChoice" data-choice-index="{{chIndex}}">
-                    <text class="choice-text">{{choice}} </text>
-                </view> 
-            </view>
-        </view>
-    </block>
-    <block s-else>
+    <block s-if="{{doChoice === '0'}}">
         <view class="chat-bottom" bind:tap="scrollToBottomTemp">
             <image
                 class="chat-icon"
@@ -72,6 +63,30 @@
                     src="../../images/chat-send.svg"/>
                 </button>
             </form>
+        </view>
+    </block>
+    <block s-if="{{doChoice === '1'}}">
+        <view class="choice-buttom" bind:tap="scrollToBottomTemp">
+
+            <view class="all-choices">
+                <view s-for="choice, chIndex in uChoices" class="each-choice" bind:tap="selectChoice" data-choice-index="{{chIndex}}">
+                    <text class="choice-text">{{choice}} </text>
+                </view> 
+            </view>
+        </view>
+    </block>
+    <block s-if="{{doChoice === '2'}}">
+        <view class="choice-buttom" bind:tap="scrollToBottomTemp">
+
+            <view class="all-choices">
+                <view s-for="moodname, chIndex in MoodName">
+                <image
+                    mode="widthFix"
+                    class="each-choice"
+                    src="../../images/mood_{{moodname}}.svg"
+                    bind:tap="selectChoice" data-choice-index="{{chIndex}}"/>
+                </view> 
+            </view>
         </view>
     </block>
     <!-- <view><smt-icon name="arrow-down" size="40rpx" class="suspend-button" bindtap="scrollToBottomTemp"/></view> -->

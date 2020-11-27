@@ -31,7 +31,7 @@ body {
     position: fixed; */
 
     display: flex;
-    padding-top:60rpx;
+    padding-top:70rpx;
     flex-direction: row;
     width: 100%;
     height: 160rpx;
@@ -39,7 +39,7 @@ body {
     z-index: 995;
 }
 .back-arrow {
-    padding-top: 30rpx;
+    padding-top: 40rpx;
     padding-left: 30rpx;
     padding-bottom: 30rpx;
     align-self: center;
