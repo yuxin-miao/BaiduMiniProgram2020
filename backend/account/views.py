@@ -13,7 +13,8 @@ from django.contrib.auth import (
 from account.serializers import (
     LoginSerializer,
     ChangePasswordSerializer,
-    UserDetailSerializer
+    UserDetailSerializer,
+    ChangeNicknameSerializer
 )
 
 from account.models import User
@@ -69,7 +70,6 @@ class AccountViewSet(viewsets.ViewSet):
                 print('百度用户数据错误')
                 return Response({'detail': '百度用户数据错误'}, status=status.HTTP_400_BAD_REQUEST)
 
-
         if user is None:
             print('登陆失败')
             return Response({'detail': '登陆失败'}, status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -114,3 +114,12 @@ class AccountViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_403_FORBIDDEN)
         serializer = UserDetailSerializer(request.user)
         return Response(serializer.data)
+
+    @action(detail=False, methods=['POST'])
+    def nickname(self, request):
+        serializer = ChangeNicknameSerializer(data=request.data)
+        if serializer.is_valid():
+            request.user.nickname = serializer.validated_data['nickname']
+            request.user.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(data={'detail': '昵称长度大于5个字符'}, status=status.HTTP_400_BAD_REQUEST)

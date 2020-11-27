@@ -1,3 +1,4 @@
+import re
 from random import choice
 from django.db import models
 
@@ -48,21 +49,59 @@ class QuestionTemplate(models.Model):
     title = models.CharField(max_length=256, verbose_name="问题内容")
     reply_type = models.IntegerField(choices=ReplyType.choices, verbose_name="回复类型")
     process_type = models.IntegerField(choices=ProcessType.choices, verbose_name="处理类型")
+    keyword = models.CharField(max_length=128, verbose_name="关键词", null=True, blank=True)
 
     def __str__(self):
         return self.title
 
     @classmethod
-    def gen_question(cls):
-        return choice(cls.objects.filter(root=True))
-
-    def next_question(self, choice_idx=None):
-        if choice_idx:
-            pass
+    def gen_question(cls, matching=None):
+        if matching is None:
+            return choice(cls.objects.filter(root=True))
         else:
-            if self.choice_set.count() == 0:
-                return self.gen_question()
-            return self.choice_set.first().question
+            matched = cls.get_matched_questions(matching)
+            if len(matched) == 0:
+                return choice(cls.objects.filter(root=True))
+            return choice(matched)
+
+    @classmethod
+    def get_matched_questions(cls, matching):
+        questions = cls.objects.all()
+        if questions.count() == 0:
+            return []
+        for question in questions:
+            matched = False
+            keywords = question.get_keywords()
+            for keyword in keywords:
+                if keyword in matching:
+                    matched = True
+                    break
+            if not matched:
+                questions = questions.exclude(id=question.id)
+        return questions
+
+    def get_keywords(self):
+        if self.keyword is None:
+            return []
+        return re.split('\，|\,', self.keyword)
+
+    def get_choice(self, index):
+        i = 0
+        selected_choice = None
+        for choice in self.choice_set.all():
+            selected_choice = choice
+            if i == index:
+                break
+            i += 1
+        if i == index:
+            return selected_choice
+        return None
+
+    def next_question(self):
+        # return the next question
+        if self.choice_set.count() == 0:
+            return None
+        return self.choice_set.first().dest_question
 
     class Meta:
         verbose_name = '问题模板'
