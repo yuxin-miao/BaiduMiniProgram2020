@@ -1,3 +1,4 @@
+import re
 from random import choice
 from django.db import models
 
@@ -48,6 +49,7 @@ class QuestionTemplate(models.Model):
     title = models.CharField(max_length=256, verbose_name="问题内容")
     reply_type = models.IntegerField(choices=ReplyType.choices, verbose_name="回复类型")
     process_type = models.IntegerField(choices=ProcessType.choices, verbose_name="处理类型")
+    keyword = models.CharField(max_length=128, verbose_name="关键词", null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -60,20 +62,28 @@ class QuestionTemplate(models.Model):
             matched = cls.get_matched_questions(matching)
             if len(matched) == 0:
                 return None
-            return choice(cls.get_matched_questions(matching))
+            return choice(matched)
 
     @classmethod
     def get_matched_questions(cls, matching):
         root_questions = cls.objects.filter(root=True)
+        if root_questions.count() == 0:
+            return []
         for question in root_questions:
             matched = False
-            for keyword in question.keyword_set.all():
-                if keyword.title in matching:
+            keywords = question.get_keywords()
+            for keyword in keywords:
+                if keyword in matching:
                     matched = True
                     break
             if not matched:
                 root_questions = root_questions.exclude(id=question.id)
         return root_questions
+
+    def get_keywords(self):
+        if self.keyword is None:
+            return []
+        return re.split('\，|\,', self.keyword)
 
     def get_choice(self, index):
         i = 0
@@ -140,16 +150,4 @@ class Choice(models.Model):
 
     class Meta:
         verbose_name = '问题选项'
-        verbose_name_plural = verbose_name
-
-
-class Keyword(models.Model):
-    question = models.ForeignKey(QuestionTemplate, on_delete=models.CASCADE, verbose_name="所属问题")
-    title = models.CharField(max_length=32, verbose_name="关键词")
-
-    def __str__(self):
-        return '[{0}] {1}'.format(self.question.id, self.title)
-
-    class Meta:
-        verbose_name = '匹配关键词'
         verbose_name_plural = verbose_name

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from chat.models import QuestionTemplate, QuestionRecord, Choice, Message, Keyword
+from chat.models import QuestionTemplate, QuestionRecord, Choice, Message
 
 
 class QuestionTemplateAdmin(admin.ModelAdmin):
@@ -22,4 +22,3 @@ admin.site.register(QuestionTemplate, QuestionTemplateAdmin)
 admin.site.register(QuestionRecord, QuestionRecordAdmin)
 admin.site.register(Choice, ChoiceAdmin)
 admin.site.register(Message)
-admin.site.register(Keyword)
