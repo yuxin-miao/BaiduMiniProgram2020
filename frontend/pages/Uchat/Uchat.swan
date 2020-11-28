@@ -7,7 +7,7 @@
         class="portrait"
         mode="widthFix"
         style="width: 83rpx"
-        src="../../images/portrait.svg"
+        src="../../images/portrait.png"
         bindtap="scrollToTop"
      />
     </view>

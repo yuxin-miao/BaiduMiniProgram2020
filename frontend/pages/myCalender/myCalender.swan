@@ -21,7 +21,7 @@
                         <image
                         class="mood-image {{item.date==selectDay ? 'select' : '' }}"
                         mode="widthFix"
-                        style="width: 70%"
+                        style="width: 68%"
                         src="../../images/mood_{{item.mood}}.svg"
                         data-day = "{{item.date}}"
                         bind:tap="toSelectDay"

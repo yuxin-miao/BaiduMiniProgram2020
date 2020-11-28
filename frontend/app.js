@@ -106,7 +106,7 @@ App({
     // *****************************
     // ********** Actions **********
     // *****************************
-    login(userInfo) {
+    login(toSuc, toFail) {
         cookies.clearCookies();
         swan.login({
             success: res => {
@@ -120,8 +120,7 @@ App({
                     url: this.getUrl('/account/login/'),
                     method: 'POST',
                     data: {
-                        code,
-                        ...userInfo
+                        code
                     },
                     success: res => {
                         let openID = res.data && res.data.openid;
@@ -142,6 +141,7 @@ App({
                         swan.showToast({
                             title: '登录成功'
                         });
+                        toSuc();
                     },
                     fail: err => {
                         swan.showModal({
@@ -149,6 +149,7 @@ App({
                             content: '请检查网络连接'
                         });
                         swan.hideLoading();
+                        toFail();
                     }
                 });
             },

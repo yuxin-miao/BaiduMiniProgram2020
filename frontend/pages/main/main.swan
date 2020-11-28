@@ -8,8 +8,8 @@
         <image
             mode="widthFix"
             class="portrait"
-            src="../../images/portrait.svg"
-            style="width: 350rpx;"
+            src="../../images/portrait.png"
+            style="width: 550rpx;"
             bind:tap="goIntro"/>
     </view>
     <view class="middle">

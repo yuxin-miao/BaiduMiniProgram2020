@@ -38,7 +38,7 @@ Page({
             swan.authorize({
                 scope: 'scope.userInfo',
                 success: res => {
-                    getApp().login();
+                    getApp().login(this.toMood);
                 },
                 fail: err => {
                     swan.showToast({
@@ -47,17 +47,10 @@ Page({
                     })
                 }
             })
-            // swan.navigateTo ({
-            //     url: '/pages/mysetting/mysetting'
-            // })
-            // getApp().login();
         }
     },
     startChat(e) {
         if (getApp().isAuthenticated()) {
-            // swan.navigateTo ({
-            //     url: '/pages/mysetting/mysetting'
-            // })
             swan.navigateTo ({
                 url: '/pages/Uchat/Uchat'
             })
@@ -65,7 +58,7 @@ Page({
             swan.authorize({
                 scope: 'scope.userInfo',
                 success: res => {
-                    getApp().login();
+                    getApp().login(this.toChat);
                 },
                 fail: err => {
                     swan.showToast({
@@ -79,6 +72,16 @@ Page({
     goIntro(e) {
         swan.navigateTo ({
             url: '/pages/intro/intro'
+        })
+    },
+    toChat: function() {
+        swan.navigateTo ({
+            url: '/pages/Uchat/Uchat'
+        })
+    },
+    toMood: function() {
+        swan.navigateTo ({
+            url: '/pages/myCalender/myCalender'
         })
     }
 });

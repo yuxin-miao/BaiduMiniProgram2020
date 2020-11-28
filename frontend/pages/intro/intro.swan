@@ -1,4 +1,11 @@
 <view class="wrap">
+    <image
+    class="intro-arrow"
+    mode="widthFix"
+    style="width: 50rpx"
+    src="../../images/arrow.svg"
+    bind:tap="returnNav"
+    />
     <view class="all-text">
         <view class="ucho-text">
         关于Ucho

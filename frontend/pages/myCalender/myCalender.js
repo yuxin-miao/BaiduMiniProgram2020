@@ -308,7 +308,7 @@ Page({
                     });
                     return;
                 }
-                if(res.data.description == '') res.data.description = "快来添加你的心情吧";
+                if(res.data.description == '') res.data.description = "快来点击相应日期添加心情吧";
                 this.setData({
                     thisDescription: res.data.description
                 })
