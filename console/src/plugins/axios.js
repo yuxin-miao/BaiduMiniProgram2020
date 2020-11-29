@@ -12,9 +12,12 @@
 import Vue from 'vue';
 import Axios from 'axios';
 import store from '@/store';
+import Cookies from 'js-cookie';
 
-// Axios.defaults.baseURL = process.env.VUE_APP_API_LOCATION;
+Axios.defaults.baseURL = 'https://xiaou.tech/api/';
+// Axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
 Axios.defaults.headers.common.Accept = 'application/json';
+Axios.defaults.withCredentials = true;
 Axios.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -30,6 +33,7 @@ Axios.interceptors.response.use(
 Vue.$http = Axios;
 Object.defineProperty(Vue.prototype, '$http', {
   get() {
+    Axios.defaults.headers['X-CSRFToken'] = Cookies.get('csrftoken');
     return Axios;
   },
 });

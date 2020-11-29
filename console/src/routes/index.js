@@ -37,9 +37,9 @@ export default [
     component: () => import('@/views/Login/Index.vue'),
 
     // If the user needs to be a guest to view this page.
-    meta: {
-      guest: true,
-    },
+    // meta: {
+    //   guest: true,
+    // },
   },
 
   // Register
@@ -52,6 +52,14 @@ export default [
     meta: {
       guest: true,
     },
+  },
+
+  // Question
+  {
+    path: '/question',
+    name: 'question.index',
+    component: () => import('@/views/Question/Index.vue'),
+
   },
 
   {

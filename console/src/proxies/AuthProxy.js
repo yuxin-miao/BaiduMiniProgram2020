@@ -7,7 +7,7 @@ class AuthProxy extends Proxy {
    * @param {Object} parameters The query parameters.
    */
   constructor(parameters = {}) {
-    super('oauth', parameters);
+    super('account', parameters);
   }
 
   /**
@@ -22,13 +22,9 @@ class AuthProxy extends Proxy {
     const data = {
       username,
       password,
-      client_id: process.env.VUE_APP_API_CLIENT_ID,
-      client_secret: process.env.VUE_APP_API_CLIENT_SECRET,
-      grant_type: 'password',
-      scope: '',
     };
 
-    return this.submit('post', `${this.endpoint}/token`, data);
+    return this.submit('post', `${this.endpoint}/super_login/`, data);
   }
 
   /**

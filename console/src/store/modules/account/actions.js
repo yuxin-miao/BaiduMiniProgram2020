@@ -6,22 +6,26 @@
  * account module.
  */
 
-import Transformer from '@/transformers/AccountTransformer';
 import * as types from './mutation-types';
+import store from '@/store';
+import { Message } from 'element-ui';
+import AccountProxy from '@/proxies/AccountProxy';
 
 export const find = ({ commit }) => {
-  /*
-   * Normally you would use a proxy to fetch the account:
-   *
-   * new Proxy()
-   *  .find()
-   *  .then((response) => {
-   *    commit(types.FIND, Transformer.fetch(response));
-   *  })
-   *  .catch(() => {
-   *    console.log('Request failed...');
-   *  });
-   */
+  new AccountProxy()
+    .login(payload)
+    .then((response) => {
+      commit(types.LOGIN, response);
+      store.dispatch('account/find');
+      Vue.router.push({
+        name: 'home.index',
+      });
+    })
+    .catch(() => {
+      console.log('Request failed...');
+      Message.error('获取用户信息失败');
+    });
+
   const account = {
     first_name: 'John',
     last_name: 'Doe',

@@ -1,56 +1,19 @@
 <template>
-  <v-layout>
-    <v-card contextual-style="dark">
-      <span slot="header">
-        Login
-      </span>
-      <div slot="body">
-        <form @submit.prevent="login(user)">
-          <div class="form-group">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fa fa-envelope fa-fw" />
-                </span>
-              </div>
-              <input
-                v-model="user.email"
-                type="email"
-                placeholder="Email"
-                class="form-control"
-              >
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fa fa-lock fa-fw" />
-                </span>
-              </div>
-              <input
-                v-model="user.password"
-                type="password"
-                placeholder="Password"
-                class="form-control"
-              >
-            </div>
-          </div>
-          <div class="form-group">
-            <button class="btn btn-outline-primary">
-              Login
-            </button>
-          </div>
-        </form>
-      </div>
-      <div slot="footer">
-        No account?
-        <router-link :to="{ name: 'register.index' }">
-          Register
-        </router-link>
-      </div>
-    </v-card>
-  </v-layout>
+  <el-row type="flex" align="middle" justify="center">
+  <el-col :span="12">
+  <el-form ref="loginForm" :model="user" label-width="80px">
+    <el-form-item label="用户名">
+      <el-input v-model="user.username"></el-input>
+    </el-form-item>
+    <el-form-item label="密码">
+      <el-input type="password" v-model="user.password"></el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" style="width: 100%" @click="onLogin">登录</el-button>
+    </el-form-item>
+  </el-form>
+  </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -61,9 +24,6 @@
  * Page where the user can login.
  */
 
-import VLayout from '@/layouts/Minimal.vue';
-import VCard from '@/components/Card.vue';
-
 export default {
   /**
    * The name of the page.
@@ -73,11 +33,6 @@ export default {
   /**
    * The components the page can use.
    */
-  components: {
-    VLayout,
-    VCard,
-  },
-
   /**
    * The data that can be used by the page.
    *
@@ -86,8 +41,8 @@ export default {
   data() {
     return {
       user: {
-        email: null,
-        password: null,
+        username: null,
+        password: null
       },
     };
   },
@@ -101,8 +56,8 @@ export default {
      *
      * @param {Object} user The user to be logged in.
      */
-    login(user) {
-      this.$store.dispatch('auth/login', user);
+    onLogin() {
+      this.$store.dispatch('auth/login', this.user);
     },
   },
 };

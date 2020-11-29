@@ -13,6 +13,7 @@
     "core-js": "^3.6.5",
     "element-ui": "^2.14.1",
     "font-awesome": "^4.7.0",
+    "js-cookie": "^2.2.1",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-i18n": "^8.18.2",
