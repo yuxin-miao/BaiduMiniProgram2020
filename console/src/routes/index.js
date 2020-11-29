@@ -37,9 +37,9 @@ export default [
     component: () => import('@/views/Login/Index.vue'),
 
     // If the user needs to be a guest to view this page.
-    // meta: {
-    //   guest: true,
-    // },
+    meta: {
+      guest: true,
+    },
   },
 
   // Register

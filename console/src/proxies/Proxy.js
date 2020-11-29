@@ -102,7 +102,7 @@ class BaseProxy {
    * @returns {Promise} The result in a promise.
    */
   all() {
-    return this.submit('get', `/${this.endpoint}`);
+    return this.submit('get', `/${this.endpoint}/`);
   }
 
   /**
@@ -113,7 +113,7 @@ class BaseProxy {
    * @returns {Promise} The result in a promise.
    */
   find(id) {
-    return this.submit('get', `/${this.endpoint}/${id}`);
+    return this.submit('get', `/${this.endpoint}/${id}/`);
   }
 
   /**
@@ -124,7 +124,7 @@ class BaseProxy {
    * @returns {Promise} The result in a promise.
    */
   create(item) {
-    return this.submit('post', `/${this.endpoint}`, item);
+    return this.submit('post', `/${this.endpoint}/`, item);
   }
 
   /**
@@ -136,7 +136,7 @@ class BaseProxy {
    * @returns {Promise} The result in a promise.
    */
   update(id, item) {
-    return this.submit('put', `/${this.endpoint}/${id}`, item);
+    return this.submit('put', `/${this.endpoint}/${id}/`, item);
   }
 
   /**
@@ -147,7 +147,7 @@ class BaseProxy {
    * @returns {Promise} The result in a promise.
    */
   destroy(id) {
-    return this.submit('delete', `/${this.endpoint}/${id}`);
+    return this.submit('delete', `/${this.endpoint}/${id}/`);
   }
 
   /**

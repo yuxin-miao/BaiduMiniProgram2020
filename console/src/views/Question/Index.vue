@@ -14,6 +14,7 @@
       <el-table-column
         label="ID"
         prop="id"
+        width="100"
       >
       </el-table-column>
       <el-table-column
@@ -42,6 +43,15 @@
             :type="procTypeColor[scope.row.process_type]"
             disable-transitions>{{ PROC_TYPE_STR[scope.row.process_type] }}
           </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="root"
+        label="根问题"
+        width="120">
+        <template slot-scope="scope">
+          <i class="el-icon-check" v-if="scope.row.root"></i>
+          <i class="el-icon-close" v-else></i>
         </template>
       </el-table-column>
       <el-table-column
@@ -141,7 +151,17 @@ export default {
         });
     },
     handleSearch() {
-      console.log(this.search);
+      new QuestionProxy({ title: this.search }).getList({
+        page: 0,
+        count: 10
+      })
+        .then(res => {
+          this.tableData = res;
+        })
+        .catch(err => {
+          console.log(err);
+          this.$message.error('获取问题数据失败');
+        });
     }
   },
 };

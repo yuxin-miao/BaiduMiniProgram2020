@@ -10,9 +10,7 @@ import Vue from 'vue';
 import store from '@/store';
 import * as types from './mutation-types';
 import AuthProxy from '@/proxies/AuthProxy';
-import { Message } from 'element-ui';
-import Cookies from 'js-cookie';
-import { config } from '@vue/test-utils';
+import { Message, Notification } from 'element-ui';
 
 export const check = ({ commit }) => {
   commit(types.CHECK);
@@ -59,6 +57,10 @@ export const info = ({ commit }) => {
     .getInfo()
     .then((response) => {
       commit(types.USERINFO, response.username);
+      Notification.success({
+        title: '成功',
+        message: '登录成功'
+      });
     })
     .catch(() => {
       console.log('Request failed...');

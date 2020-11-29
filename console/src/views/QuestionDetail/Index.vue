@@ -1,5 +1,5 @@
 <template>
-  <el-row type="flex">
+  <el-row type="flex" v-loading="loading">
     <el-col :span="24">
       <el-button @click="drawerVisible = true" type="primary" style="margin-left: 16px;">
         看提示
@@ -23,19 +23,41 @@
             <el-option v-for="(value, name) in PROC_TYPE_STR" :label="value" :value="name * 1" :key="name"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="根问题">
+          <el-switch
+            v-model="form.root"
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+          </el-switch>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" style="width: 100%" @click="updateQuestion">更新</el-button>
         </el-form-item>
       </el-form>
       <el-divider>问题选项</el-divider>
-      <el-row :gutter="12">
+      <el-button
+        @click="initChoice"
+        type="primary"
+        icon="el-icon-plus"
+      >
+        新建选项
+      </el-button>
+      <el-row :gutter="12" style="margin-top: 20px">
         <el-col :span="6" v-for="item in form.choices" :key="item.id">
           <el-card shadow="hover">
             <div slot="header">
               <span>{{ item.title }}</span>
+              <el-button
+                style="float: right; padding: 3px 0"
+                type="text"
+                @click="editChoice(item)"
+              >
+                编辑
+              </el-button>
             </div>
             <div>
-              {{ item.reply_content }}
+              <p>回复: {{ item.reply_content }}</p>
+              <p>下个问题: {{ item.dest_question ? item.dest_question__title : '无' }}</p>
               <el-row :gutter="10" style="margin-top: 10px">
                 <el-col :span="12">
                   <el-button
@@ -63,6 +85,7 @@
         </el-col>
       </el-row>
     </el-col>
+
     <el-drawer
       title="提示"
       :visible.sync="drawerVisible"
@@ -89,26 +112,69 @@
         </ul>
       </el-row>
     </el-drawer>
+
+    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+      <el-form :model="editingChoice">
+        <el-form-item label="选项标题">
+          <el-input v-model="editingChoice.title"></el-input>
+        </el-form-item>
+        <el-form-item label="回复内容">
+          <el-input v-model="editingChoice.reply_content"></el-input>
+        </el-form-item>
+        <el-form-item label="指向问题">
+          <el-select
+            v-model="editingChoice.dest_question"
+            filterable
+            remote
+            placeholder="请输入问题关键词"
+            :remote-method="remoteMethod"
+            :loading="selectLoading">
+            <el-option
+              v-for="item in options"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="createOrUpdateChoice">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-row>
 </template>
 
 <script>
 import QuestionProxy from '@/proxies/QuestionProxy';
 import { REPLY_TYPE, REPLY_TYPE_STR, PROC_TYPE, PROC_TYPE_STR } from '@/constants';
+import ChoiceProxy from '@/proxies/ChoiceProxy';
 
 export default {
   name: 'QuestionDetail',
 
   data() {
     return {
+      loading: false,
       drawerVisible: false,
+      dialogFormVisible: false,
+      selectLoading: false,
       form: {
         title: '',
         keyword: '',
         reply_type: 0,
         process_type: 0,
+        root: false,
         choices: []
       },
+      editingChoice: {
+        id: null,
+        title: '',
+        reply_content: '',
+        dest_question: null
+      },
+      options: [],
       search: '',
       procTypeColor: {
         [PROC_TYPE.ORDINARY]: 'primary',
@@ -133,16 +199,20 @@ export default {
   },
   methods: {
     fetchDetail() {
+      this.loading = true;
       new QuestionProxy().getItem(this.$route.params.id)
         .then(res => {
           Object.assign(this.form, res);
         })
         .catch(err => {
-          console.log(err);
           this.$message.error('获取问题数据失败');
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     updateQuestion() {
+      this.loading = true;
       new QuestionProxy().updateItem(this.form)
         .then(res => {
           this.$notify({
@@ -150,15 +220,16 @@ export default {
             message: '修改问题数据成功',
             type: 'success'
           });
-          Object.assign(this.form, res);
+          this.fetchDetail();
         })
         .catch(err => {
-          console.log(err);
           this.$message.error('修改问题数据失败');
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     jumpQuestion(questionID) {
-      console.log(questionID);
       this.$router.push({
         name: 'question.detail',
         params: {
@@ -168,8 +239,107 @@ export default {
       this.fetchDetail();
     },
     deleteChoice(choiceId) {
-      console.log(choiceId);
+      this.loading = true;
+      new ChoiceProxy().delete(choiceId)
+        .then(res => {
+          this.$notify.success({
+            title: '成功',
+            message: '成功删除选项'
+          });
+          this.fetchDetail();
+        })
+        .catch(err => {
+          this.$message.error('获取问题数据失败');
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    remoteMethod(query) {
+      if (query !== '') {
+        this.selectLoading = true;
+        new QuestionProxy({ title: query }).getList({
+          page: 0,
+          count: 10
+        })
+          .then(res => {
+            this.options = res;
+          })
+          .catch(err => {
+            this.$message.error('获取问题数据失败');
+          })
+          .finally(() => {
+            this.selectLoading = false;
+          });
+      } else {
+        this.options = [];
+      }
+    },
+    initChoice() {
+      this.editingChoice = {
+        id: null,
+        title: '',
+        reply_content: '',
+        dest_question: null
+      };
+      this.dialogFormVisible = true;
+    },
+    editChoice(item) {
+      this.editingChoice.id = item.id;
+      this.editingChoice.title = item.title;
+      this.editingChoice.reply_content = item.reply_content;
+      this.editingChoice.dest_question = item.dest_question;
+      this.remoteMethod(item.dest_question__title);
+      this.dialogFormVisible = true;
+    },
+    createOrUpdateChoice() {
+      this.loading = true;
+      if (this.editingChoice.id) {
+        new ChoiceProxy().update(this.editingChoice.id, {
+          question: this.$route.params.id,
+          ...this.editingChoice,
+        })
+          .then(res => {
+            this.$notify.success({
+              title: '成功',
+              message: '成功更新选项'
+            });
+            this.fetchDetail();
+          })
+          .catch(err => {
+            this.$message.error('更新选项失败');
+          })
+          .finally(() => {
+            this.loading = false;
+            this.dialogFormVisible = false;
+          });
+      } else {
+        new ChoiceProxy().create({
+          question: this.$route.params.id,
+          ...this.editingChoice,
+        })
+          .then(res => {
+            this.$notify.success({
+              title: '成功',
+              message: '成功创建选项'
+            });
+            this.fetchDetail();
+          })
+          .catch(err => {
+            this.$message.error('创建选项失败');
+          })
+          .finally(() => {
+            this.loading = false;
+            this.dialogFormVisible = false;
+          });
+      }
     }
   },
 };
 </script>
+
+<style>
+.el-card__body {
+  padding-top: 0 !important;
+}
+</style>

@@ -35,7 +35,14 @@ class QuestionTemplateEditSerializer(serializers.ModelSerializer):
         fields = ('id', 'root', 'title', 'reply_type', 'process_type', 'keyword', 'choices')
 
     def get_choices(self, instance):
-        return instance.choice_set.values('id', 'title', 'reply_content', 'question', 'dest_question')
+        return instance.choice_set.values(
+            'id',
+            'title',
+            'reply_content',
+            'question',
+            'dest_question',
+            'dest_question__title'
+        )
 
 
 class QuestionTemplateMiniSerializer(serializers.ModelSerializer):

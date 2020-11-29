@@ -41,7 +41,7 @@ export default {
 
 .main-content {
   height: 100vh;
-  padding-top: 5%;
-  overflow: hidden;
+  padding: 5% 0;
+  overflow: scroll;
 }
 </style>
