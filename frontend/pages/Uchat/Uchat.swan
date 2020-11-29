@@ -6,8 +6,8 @@
     <image
         class="portrait"
         mode="widthFix"
-        style="width: 83rpx"
-        src="../../images/portrait.png"
+        style="width: 60rpx"
+        src="../../images/portrait-chat.png"
         bindtap="scrollToTop"
      />
     </view>

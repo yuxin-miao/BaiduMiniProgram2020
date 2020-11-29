@@ -19,7 +19,8 @@
 
 .portrait {
     align-self: center;
-    margin-left: 260rpx;
+    margin-left: 270rpx;
+    margin-bottom: 5rpx;
 }
 
 /* 聊天文字 */
