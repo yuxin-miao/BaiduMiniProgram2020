@@ -29,11 +29,18 @@ Axios.interceptors.response.use(
   },
 );
 
+Axios.interceptors.request.use(function (config) {
+  config.headers['X-CSRFToken'] = Cookies.get('csrftoken');
+  return config;
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error);
+});
+
 // Bind Axios to Vue.
 Vue.$http = Axios;
 Object.defineProperty(Vue.prototype, '$http', {
   get() {
-    Axios.defaults.headers['X-CSRFToken'] = Cookies.get('csrftoken');
     return Axios;
   },
 });

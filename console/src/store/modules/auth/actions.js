@@ -11,6 +11,8 @@ import store from '@/store';
 import * as types from './mutation-types';
 import AuthProxy from '@/proxies/AuthProxy';
 import { Message } from 'element-ui';
+import Cookies from 'js-cookie';
+import { config } from '@vue/test-utils';
 
 export const check = ({ commit }) => {
   commit(types.CHECK);

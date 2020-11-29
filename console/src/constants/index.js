@@ -16,7 +16,7 @@ export const PROC_TYPE = {
 };
 
 export const PROC_TYPE_STR = {
-  [PROC_TYPE.ORDINARY]: '普通匹配',
+  [PROC_TYPE.ORDINARY]: '普通',
   [PROC_TYPE.GRATITUDE_JOURNAL]: '感恩日志',
   [PROC_TYPE.MOOD_RECORD]: '心情记录',
   [PROC_TYPE.NICKNAME]: '输入昵称',

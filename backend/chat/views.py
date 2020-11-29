@@ -16,7 +16,8 @@ from chat.serializers import (
     QuestionTemplateSerializer,
     QuestionTemplateMiniSerializer,
     QuestionTemplateEditSerializer,
-    MessageMatchingSerializer
+    MessageMatchingSerializer,
+    ChoiceSerializer
 )
 from chat.constants import ReplyType, ProcessType
 from mood.constants import MoodType
@@ -254,3 +255,11 @@ class QuestionViewSet(ModelViewSet):
         if self.action == 'list':
             return QuestionTemplateMiniSerializer
         return QuestionTemplateEditSerializer
+
+
+class ChoiceViewSet(ModelViewSet):
+    queryset = Choice.objects.all().order_by('id')
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        return ChoiceSerializer

@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import Cookies from 'js-cookie';
 
 class BaseProxy {
   /**
@@ -20,9 +21,10 @@ class BaseProxy {
    * @returns {BaseProxy} The instance of the proxy.
    */
   setParameters(parameters) {
-    Object.keys(parameters).forEach((key) => {
-      this.parameters[key] = parameters[key];
-    });
+    Object.keys(parameters)
+      .forEach((key) => {
+        this.parameters[key] = parameters[key];
+      });
 
     return this;
   }

@@ -49,13 +49,22 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
+            style="margin-right: 5px"
             @click="handleEdit(scope.$index, scope.row)">编辑
           </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除
-          </el-button>
+          <el-popconfirm
+            title="确定删除吗？"
+            icon-color="red"
+            @confirm="handleDelete(scope.$index, scope.row)"
+          >
+            <el-button
+              size="mini"
+              type="danger"
+              slot="reference"
+            >
+              删除
+            </el-button>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
