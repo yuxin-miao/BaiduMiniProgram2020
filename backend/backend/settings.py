@@ -148,6 +148,7 @@ APP_SECRET = getenv('APP_SECRET', '')
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
+    "http://127.0.0.1:8080",
     "http://xiaou.tech",
     "https://xiaou.tech",
     'https://106.12.91.240'
@@ -173,3 +174,5 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+CORS_ALLOW_CREDENTIALS = True

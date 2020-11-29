@@ -11,6 +11,7 @@ from django.contrib.auth import (
 )
 
 from account.serializers import (
+    SuperLoginSerializer,
     LoginSerializer,
     ChangePasswordSerializer,
     UserDetailSerializer,
@@ -22,6 +23,20 @@ from backend.settings import APP_KEY, APP_SECRET
 
 
 class AccountViewSet(viewsets.ViewSet):
+    @action(detail=False, methods=['POST'])
+    def super_login(self, request):
+        serializer = SuperLoginSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        user = authenticate(
+            username=serializer.validated_data['username'],
+            password=serializer.validated_data['password']
+        )
+        if user is None:
+            return Response({'detail': '登陆失败'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        django_login(request, user)
+        return Response(status=status.HTTP_200_OK)
+
     @action(detail=False, methods=['POST'])
     def login(self, request):
         serializer = LoginSerializer(data=request.data)
