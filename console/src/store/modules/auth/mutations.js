@@ -11,7 +11,7 @@ import {
   CHECK,
   REGISTER,
   LOGIN,
-  LOGOUT,
+  LOGOUT, USERINFO,
 } from './mutation-types';
 
 /* eslint-disable no-param-reassign */
@@ -33,5 +33,10 @@ export default {
 
   [LOGOUT](state) {
     state.authenticated = false;
+    state.username = null;
   },
+
+  [USERINFO](state, username) {
+    state.username = username;
+  }
 };

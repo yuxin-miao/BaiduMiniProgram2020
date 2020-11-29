@@ -26,6 +26,23 @@ class QuestionTemplateSerializer(serializers.ModelSerializer):
     def get_choices(self, instance):
         return instance.choice_set.values('title', 'reply_content')
 
+
+class QuestionTemplateEditSerializer(serializers.ModelSerializer):
+    choices = serializers.SerializerMethodField()
+
+    class Meta:
+        model = QuestionTemplate
+        fields = ('id', 'title', 'reply_type', 'process_type', 'keyword', 'choices')
+
+    def get_choices(self, instance):
+        return instance.choice_set.values('title', 'reply_content')
+
+
+class QuestionTemplateMiniSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QuestionTemplate
+        fields = ('id', 'title', 'reply_type', 'process_type',)
+
 #
 # class MoodRecordDetailSerializer(serializers.ModelSerializer):
 #     year = serializers.IntegerField(required=False)

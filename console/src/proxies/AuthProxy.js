@@ -27,6 +27,14 @@ class AuthProxy extends Proxy {
     return this.submit('post', `${this.endpoint}/super_login/`, data);
   }
 
+  getInfo() {
+    return this.submit('get', `${this.endpoint}/user/`);
+  };
+
+  logout() {
+    return this.submit('post', `${this.endpoint}/logout/`);
+  }
+
   /**
    * Method used to register the user.
    *

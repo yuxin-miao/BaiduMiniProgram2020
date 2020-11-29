@@ -1,9 +1,8 @@
 <template>
   <v-layout>
-    <el-switch
-      v-model="value"
-      active-color="#13ce66"
-      inactive-color="#ff4949"/>
+    <h1>{{this.$store.state.auth.authenticated}}</h1>
+    <h1>{{this.$store.state.auth.username}}</h1>
+    <el-button @click="onLogout">Logout</el-button>
     <v-card contextual-style="dark">
       <span slot="header">
         {{ $t('general.welcome') }}
@@ -108,6 +107,11 @@ export default {
     return {
       value: true,
     };
+  },
+  methods: {
+    onLogout() {
+      this.$store.dispatch('auth/logout');
+    },
   },
 };
 </script>

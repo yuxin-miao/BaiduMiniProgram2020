@@ -9,6 +9,7 @@
 
 import Vuex from 'vuex';
 import createLogger from 'vuex/dist/logger';
+import createPersistedState from "vuex-persistedstate";
 
 // Modules
 import account from './modules/account';
@@ -21,7 +22,7 @@ export default new Vuex.Store({
    * Assign the modules to the store.
    */
   modules: {
-    account,
+    // account,
     auth,
   },
 
@@ -33,5 +34,5 @@ export default new Vuex.Store({
   /**
    * Plugins used in the store.
    */
-  plugins: debug ? [createLogger()] : [],
+  plugins: debug ? [createLogger(), createPersistedState()] : [createPersistedState()],
 });

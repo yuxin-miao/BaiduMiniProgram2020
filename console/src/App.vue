@@ -26,10 +26,6 @@ export default {
     //   // fetch the data from the API
     //   this.$store.dispatch('account/find');
     // }
-
-    this.$http.get('account/user/').then(res => {
-      // console.log(res);
-    })
   },
 };
 </script>

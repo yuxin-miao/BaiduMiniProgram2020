@@ -59,7 +59,18 @@ export default [
     path: '/question',
     name: 'question.index',
     component: () => import('@/views/Question/Index.vue'),
+    meta: {
+      auth: true,
+    },
+  },
 
+  {
+    path: '/question/:id',
+    name: 'question.detail',
+    component: () => import('@/views/QuestionDetail/Index.vue'),
+    meta: {
+      auth: true,
+    },
   },
 
   {

@@ -40,10 +40,11 @@ export const login = ({ commit }, payload) => {
     .login(payload)
     .then((response) => {
       commit(types.LOGIN, response);
-      // store.dispatch('account/find');
-      Vue.router.push({
-        name: 'home.index',
-      });
+      store.dispatch('auth/info').then(() => {
+        Vue.router.push({
+          name: 'home.index',
+        });
+      })
     })
     .catch(() => {
       console.log('Request failed...');
@@ -51,11 +52,32 @@ export const login = ({ commit }, payload) => {
     });
 };
 
+export const info = ({ commit }) => {
+  new AuthProxy()
+    .getInfo()
+    .then((response) => {
+      commit(types.USERINFO, response.username);
+    })
+    .catch(() => {
+      console.log('Request failed...');
+      Message.error('无法获取用户信息');
+    });
+};
+
 export const logout = ({ commit }) => {
-  commit(types.LOGOUT);
-  Vue.router.push({
-    name: 'login.index',
-  });
+  new AuthProxy()
+    .logout()
+    .then((response) => {
+      commit(types.LOGOUT);
+      Vue.router.push({
+        name: 'login.index',
+      });
+    })
+    .catch(() => {
+      console.log('Request failed...');
+      Message.error('无法注销');
+    });
+
 };
 
 export default {
@@ -63,4 +85,5 @@ export default {
   register,
   login,
   logout,
+  info
 };
