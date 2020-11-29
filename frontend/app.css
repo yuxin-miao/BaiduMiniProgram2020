@@ -45,27 +45,8 @@ body {
     align-self: center;
     /* width: 10%; */
 }
-/* radio样式 */
-.radio {
-    display: block;
-    margin: 0 .17rem;
-    padding: .17rem 0;
-    background-color: #fff;
-}
 
-.block {
-    display: block;
-    margin: 0 .17rem;
-    padding: .17rem 0;
-    background-color: #fff;
-}
 
-.item-scroll {
-    display: flex;
-    margin: 0 .17rem;
-
-    justify-content: space-between;
-}
 
 /* 卡片区域 */
 .card-area {

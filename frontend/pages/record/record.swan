@@ -1,4 +1,17 @@
 <view class="wrap">
+
+    <view class="top-navigation">
+
+
+        <image
+        class="back-arrow"
+        mode="widthFix"
+        style="width: 120rpx"
+        src="../../images/arrow.svg"
+         bindtap="returnNav"
+     />
+     </view>
+
 <view class="drawer_box">
     <view class="card-area">
         <view class="text">

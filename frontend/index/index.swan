@@ -1,0 +1,10 @@
+<view class="wrap">
+    <animation-view 
+        class="controls" 
+        path="/anims/1.json" 
+        loop="false"
+        autoplay="true" 
+        action="play"
+        hidden="false" >
+    </animation-view>
+</view>

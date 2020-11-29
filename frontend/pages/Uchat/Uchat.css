@@ -19,8 +19,10 @@
 
 .portrait {
     align-self: center;
-    margin-left: 270rpx;
+    margin-left: 205rpx;
     margin-bottom: 5rpx;
+    /* border: 1px solid rgba(128 186 161 );
+    border-radius: 50%; */
 }
 
 /* 聊天文字 */

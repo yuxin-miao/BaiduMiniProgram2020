@@ -1,6 +1,10 @@
 {
     "debug": false,
     "pages": [
+        "pages/logo/logo",
+        "index/index",
+        "index2/index2",
+        "index3/index3",
         "pages/main/main",
         "pages/Uchat/Uchat",
         "pages/record/record",
@@ -15,6 +19,5 @@
         "backgroundTextStyle": "light"
     },
     "usingComponents": {
-        "smt-icon": "@smt-ui/component/src/icon"
     }
 }

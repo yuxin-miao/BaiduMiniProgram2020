@@ -14,10 +14,11 @@ App({
     },
     onLaunch(options) {
 
-
+        // this.firstOrNot();
     },
     onShow(options) {
         // do something when show
+        this.firstOrNot();
     },
     onHide() {
         // do something when hide
@@ -188,5 +189,21 @@ App({
             }
         });
         swan.hideLoading();
+    },
+    firstOrNot: function() {
+        // swan.navigateTo({
+        //     url: '/pages/record/record'
+        // })
+        // let data = this.getLocalStorage('username');
+        if (this.isAuthenticated()) {
+            swan.redirectTo({
+                url: '/pages/main/main'
+            });
+        }
+        else {
+            swan.redirectTo({
+                url: '/index/index'
+            });
+        }
     }
 });

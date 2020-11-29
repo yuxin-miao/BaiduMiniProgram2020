@@ -1,13 +1,20 @@
 <view class="chat-page">
     <view class="chat-top">
     <view class="top-navigation">
-    <smt-icon class="back-arrow" name="arrow-left" size="38rpx" bindtap="returnNav" />
+        <image
+        class="back-arrow"
+        mode="widthFix"
+        style="width: 120rpx"
+        src="../../images/arrow.svg"
+         bindtap="returnNav"
+     />
+    <!-- <smt-icon class="back-arrow" name="arrow-left" size="38rpx" bindtap="returnNav" /> -->
 
     <image
         class="portrait"
         mode="widthFix"
-        style="width: 60rpx"
-        src="../../images/portrait-chat.png"
+        style="width: 100rpx"
+        src="../../images/portrait-chat.svg"
         bindtap="scrollToTop"
      />
     </view>
