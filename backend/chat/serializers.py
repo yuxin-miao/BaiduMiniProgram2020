@@ -32,7 +32,7 @@ class QuestionTemplateEditSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = QuestionTemplate
-        fields = ('id', 'title', 'reply_type', 'process_type', 'keyword', 'choices')
+        fields = ('id', 'root', 'title', 'reply_type', 'process_type', 'keyword', 'choices')
 
     def get_choices(self, instance):
         return instance.choice_set.values('id', 'title', 'reply_content', 'question', 'dest_question')
@@ -41,7 +41,7 @@ class QuestionTemplateEditSerializer(serializers.ModelSerializer):
 class QuestionTemplateMiniSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuestionTemplate
-        fields = ('id', 'title', 'reply_type', 'process_type',)
+        fields = ('id', 'root', 'title', 'reply_type', 'process_type',)
 
 
 class ChoiceSerializer(serializers.ModelSerializer):

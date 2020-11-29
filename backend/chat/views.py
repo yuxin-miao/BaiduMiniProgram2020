@@ -23,6 +23,7 @@ from chat.constants import ReplyType, ProcessType
 from mood.constants import MoodType
 
 from backend.permissions import IsAuthenticated
+from backend.filters import TitleFilterBackend
 
 
 class MessageViewSet(
@@ -250,6 +251,7 @@ class MessageViewSet(
 class QuestionViewSet(ModelViewSet):
     queryset = QuestionTemplate.objects.all().order_by('-id')
     permission_classes = [IsAuthenticated]
+    filter_backends = (TitleFilterBackend,)
 
     def get_serializer_class(self):
         if self.action == 'list':
