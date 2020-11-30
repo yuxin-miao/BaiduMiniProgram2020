@@ -12,12 +12,13 @@ Page({
         hidden3: 'true'
     },
     playArrow(e) {
+        console.log("playArrow");
         this.setData({
             hiddenarrow: 'false',
         })
     },
     goNext1(e) {
-        console.log("xx")
+        console.log("goNext1");
         this.setData({
             hidden1: 'true',
             hidden2: 'false',
@@ -27,12 +28,14 @@ Page({
         })
     },    
     playArrow2(e) {
+        console.log("play2");
+
         this.setData({
             hiddenarrow2: 'false',
         })
     },
     goNext2(e) {
-        console.log("xx")
+        console.log("go2")
         this.setData({
             hidden2: 'true',
             hiddenarrow2: 'true',
@@ -42,6 +45,8 @@ Page({
         })
     },
     playArrow3(e) {
+        console.log("play3")
+
         swan.redirectTo({
             url: '/pages/main/main'
         })
