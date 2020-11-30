@@ -40,7 +40,7 @@
             path="/anims/data.json" 
             loop="true"
             action="play"
-            hidden="{{hiddenarrow}}}" 
+            hidden="false" 
             >
         </animation-view>
     </view>
@@ -61,7 +61,7 @@
             path="/anims/data.json" 
             loop="true"
             action="play"
-            hidden="{{hiddenarrow2}}}" 
+            hidden="{{hiddenarrow2}}" 
             >
         </animation-view>
     </view>

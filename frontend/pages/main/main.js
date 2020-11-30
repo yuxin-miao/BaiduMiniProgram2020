@@ -85,6 +85,7 @@ Page({
         })
     },
     goAni(e) {
+        console.log("ff")
         swan.redirectTo({
             url: '/index/index'
         })
