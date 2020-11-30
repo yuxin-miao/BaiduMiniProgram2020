@@ -165,7 +165,7 @@ Page({
                                 doChoice: '1',
                                 uChoices: tempCh,
                                 uChRely: tempChRe,
-                                taskFinish: '1',
+                                taskFinish: 'true',
                             }, () => {
                                 this.scrollToBottomTemp();
                             })
@@ -185,7 +185,9 @@ Page({
         else if (this.data.taskFinish == true) {
             console.log("sendMsg taskFinish", this.data.thisSenderMsg);
             this.matchingQuestion();
-        
+            this.setData({
+                taskFinish: false
+            })
         }
 
     },
@@ -230,7 +232,7 @@ Page({
                         doChoice: '1',
                         uChoices: tempCh,
                         uChRely: tempChRe,
-                        taskFinish: '1',
+                        taskFinish: 'true',
                     }, () => {
                         this.scrollToBottomTemp();
                     })
@@ -259,7 +261,7 @@ Page({
                     uChRely: [],
                     uChoices: [],
                     justEnter: '0',
-                    taskFinish: false,
+                    taskFinish: true,
                     
                 })
             }
