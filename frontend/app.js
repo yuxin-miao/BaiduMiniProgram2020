@@ -18,7 +18,7 @@ App({
     },
     onShow(options) {
         // do something when show
-        this.firstOrNot();
+        // this.firstOrNot();
     },
     onHide() {
         // do something when hide
@@ -53,7 +53,7 @@ App({
     isAuthenticated() {
         // 返回用户是否登录
         const username = swan.getStorageSync('username');
-        return !(username === null || username.length === 0);
+        return !(username === undefined || username === null || username.length === 0);
     },
     setNavigationData() {
         let menuHeight = '';

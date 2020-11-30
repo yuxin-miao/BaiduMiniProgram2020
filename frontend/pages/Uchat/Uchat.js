@@ -416,6 +416,7 @@ Page({
         })
     },
     userEnter: function() {
+        console.log("userEnter")
         this.setData({
             justEnter: "1",
         })
@@ -435,6 +436,7 @@ Page({
             let tempDis = [
                 { type: "1", msg: tempMsg },
             ];
+            
             swan.request({
                 url: getApp().getUrl('/message/talk_finished/'),
                 method: 'GET',
@@ -448,7 +450,6 @@ Page({
                         return;
                     }
                     if (res.data.talk_finished === false) {
-                        let tempDis = this.data.displayMsgs;
                         tempDis.push({
                             type: '1',
                             msg: '你想要和我接着聊上次的话题吗？'
@@ -464,7 +465,6 @@ Page({
                         })
                     }
                     else {
-                        let tempDis = this.data.displayMsgs;
                         this.bye();
                         tempDis.push({
                             type: '1',

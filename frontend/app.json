@@ -1,7 +1,6 @@
 {
     "debug": false,
     "pages": [
-        "pages/logo/logo",
         "pages/main/main",
         "index/index",
         "pages/Uchat/Uchat",
