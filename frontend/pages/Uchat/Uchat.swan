@@ -1,26 +1,23 @@
-<view class="chat-page">
+<view class="chat-page" id="uchat">
     <view class="chat-top">
-    <view class="top-navigation">
-        <image
-        class="back-arrow"
-        mode="widthFix"
-        style="width: 120rpx"
-        src="../../images/arrow.svg"
-         bindtap="returnNav"
-     />
-    <!-- <smt-icon class="back-arrow" name="arrow-left" size="38rpx" bindtap="returnNav" /> -->
+        <view class="top-navigation">
+            <image
+            class="back-arrow"
+            mode="widthFix"
+            style="width: 120rpx"
+            src="../../images/arrow.svg"
+            bindtap="returnNav"/>
 
-    <image
-        class="portrait"
-        mode="widthFix"
-        style="width: 100rpx"
-        src="../../images/portrait-chat.svg"
-        bindtap="scrollToTop"
-     />
+            <image
+            class="portrait"
+            mode="widthFix"
+            style="width: 100rpx"
+            src="../../images/portrait-chat.svg"
+            bindtap="scrollToTop"/>
+        </view>
     </view>
-    </view>
-    <scroll-view class="chat-body" scroll-y="true" scroll-top="{= scrollTop =}" scroll-with-animation="true">
 
+    <view class="chat-body">
         <view s-for="item, index in prevMsgs">
             <block s-if="{{item.type == 1}}">
                 <view class="chat-row">
@@ -35,7 +32,6 @@
         </view>
         <view class="chat-time">{{time}}</view>
 
-
         <view s-for="item, index in displayMsgs">
             <block s-if="{{item.type == 1}}">
                 <view class="chat-row">
@@ -48,8 +44,7 @@
                 </view>
             </block>
         </view>
-
-    </scroll-view>
+    </view>
 
     <block s-if="{{doChoice == '0'}}">
         <view class="chat-bottom" bind:tap="scrollToBottomTemp">
@@ -63,7 +58,7 @@
 
             <form class="msg-input" bindtap="scrollToBottomTemp">
                 <input class="normalInput" bindinput="SenderMsg"/>
-                <button class="image-button" formType="reset" bindtap="sendMsg"  style="height:80rpx"> 
+                <button class="image-button" formType="reset" bindtap="sendMsg"  style="height:80rpx">
                 <image
                     mode="widthFix"
                     class="msg-send"
@@ -78,7 +73,7 @@
             <view class="all-choices">
                 <view s-for="choice, chIndex in uChoices" class="each-choice" bind:tap="selectChoice" data-choice-index="{{chIndex}}">
                     <text class="choice-text">{{choice}} </text>
-                </view> 
+                </view>
             </view>
         </view>
     </block>
@@ -93,7 +88,7 @@
                     class="each-choice-image"
                     src="../../images/mood_{{moodname}}.svg"
                     bind:tap="selectChoice" data-choice-index="{{chIndex}}"/>
-                </view> 
+                </view>
             </view>
         </view>
     </block>
