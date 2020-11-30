@@ -2,49 +2,20 @@
 Page({
     data: {
         anmi: 1,
-        hiddenarrow: 'true',
-        hidden1: 'false',
-        hidden2: 'true',
-        play2: 'false',
-        hiddenarrow2: 'true',
-        autoplay2: 'false',
-        autoplay3: 'false',
-        play3: 'false',
-        hidden3: 'true'
     },
     playArrow(e) {
         console.log("playArrow");
+        let tempAnmi = this.data.anmi ==  1 ? 2 : this.data.anmi;
         this.setData({
             hiddenarrow: 'false',
-            anmi: 2,
+            anmi: tempAnmi,
         })
     },
-    goNext1(e) {
-        console.log("goNext1");
-        this.setData({
-            hidden1: 'true',
-            hidden2: 'false',
-            hiddenarrow: 'true',
-            play2: 'play',
-            autoplay2: 'true',
-            anmi: 2
-        })
-    },    
     playArrow2(e) {
         console.log("play2");
+        let tempAnmi = this.data.anmi ==  2 ? 3 : this.data.anmi;
         this.setData({
             hiddenarrow2: 'false',
-            anmi: 3
-        })
-    },
-    goNext2(e) {
-        console.log("go2")
-        this.setData({
-            hidden2: 'true',
-            hiddenarrow2: 'true',
-            play3: 'play',
-            autoplay3: 'true',
-            hidden3: 'false',
             anmi: 3
         })
     },
@@ -55,4 +26,17 @@ Page({
             url: '/pages/main/main'
         })
     },
+    nextAni(e) {
+        if(this.data.anmi === 3) {
+            swan.redirectTo({
+                url: '/pages/main/main'
+            })
+        }
+        else {
+            let tempAnmi = this.data.anmi + 1;
+            this.setData({
+                anmi: tempAnmi
+            })
+        }
+    }
 });

@@ -1,5 +1,5 @@
- <view class="wrap" bind:tap="goNext1">
-    <view s-if="{{anmi === 1}}" bind:tap="goNext1">
+ <view class="wrap" bind:tap="nextAni">
+    <view s-if="{{anmi === 1}}">
         <animation-view 
             class="controls" 
             path="/anims/1.json" 
@@ -10,7 +10,7 @@
             bindended="playArrow">
         </animation-view>
     </view>
-    <view s-elif="{{anmi === 2}}" bind:tap="goNext2">
+    <view s-elif="{{anmi === 2}}" >
         <animation-view 
             class="controls" 
             path="/anims/2.json" 
@@ -32,81 +32,4 @@
             bindended="playArrow3">
         </animation-view>
     </view>
-    <!-- <animation-view 
-        class="controls" 
-        path="/anims/1.json" 
-        loop="false"
-        autoplay="true" 
-        action="play"
-        hidden="false" 
-        bindended="playArrow">
-    </animation-view> -->
-    <!-- <animation-view 
-        class="back-ani" 
-        path="/anims/data.json" 
-        loop="true"
-        autoplay="true" 
-        action="play"
-        hidden="false">
-    </animation-view> -->
-    <!-- <image
-        class="back"
-        mode="widthFix"
-        style="width: 80rpx"
-        src="../../images/intro-arrow.svg"
-         bindtap="returnNav"
-    /> -->
-    <!-- <view bind:tap="goNext1">
-    <animation-view 
-        class="controls1" 
-        path="/anims/1.json" 
-        loop="false"
-        autoplay="true" 
-        action="play"
-        hidden="{{hidden1}}" 
-        bindended="playArrow">
-    </animation-view>
-    </view> -->
-    <!-- <view bind:tap="goNext1">
-        <animation-view 
-            class="controls-arrow" 
-            path="/anims/data.json" 
-            loop="true"
-            action="play"
-            hidden="false" 
-            >
-        </animation-view>
-    </view> -->
-    <!-- <view bind:tap="goNext2">
-    <animation-view 
-        class="controls2" 
-        path="/anims/2.json" 
-        loop="false"
-        autoplay="{{autoplay2}}" 
-        action="{{play2}}"
-        hidden="{{hidden2}}" 
-        bindended="playArrow2">
-    </animation-view>
-    </view> -->
-    <!-- <view bind:tap="goNext2">
-        <animation-view 
-            class="controls-arrow" 
-            path="/anims/data.json" 
-            loop="true"
-            action="play"
-            hidden="{{hiddenarrow2}}" 
-            >
-        </animation-view>
-    </view> -->
-    <!-- <view bind:tap="goNext3">
-    <animation-view 
-        class="controls3" 
-        path="/anims/3.json" 
-        loop="false"
-        autoplay="{{autoplay3}}" 
-        action="{{play3}}"
-        hidden="{{hidden3}}" 
-        bindended="playArrow3">
-    </animation-view>
-    </view> -->
 </view>
