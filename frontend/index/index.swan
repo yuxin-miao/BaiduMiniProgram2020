@@ -1,5 +1,37 @@
- <view class="wrap">      
-
+ <view class="wrap" bind:tap="goNext1">
+    <view s-if="{{anmi === 1}}" bind:tap="goNext1">
+        <animation-view 
+            class="controls" 
+            path="/anims/1.json" 
+            loop="false"
+            autoplay="true" 
+            action="play"
+            hidden="false" 
+            bindended="playArrow">
+        </animation-view>
+    </view>
+    <view s-elif="{{anmi === 2}}" bind:tap="goNext2">
+        <animation-view 
+            class="controls" 
+            path="/anims/2.json" 
+            loop="false"
+            autoplay="true" 
+            action="play"
+            hidden="false" 
+            bindended="playArrow2">
+        </animation-view>
+    </view>
+    <view s-elif="{{anmi === 3}}">
+        <animation-view 
+            class="controls" 
+            path="/anims/3.json" 
+            loop="false"
+            autoplay="true" 
+            action="play"
+            hidden="false" 
+            bindended="playArrow3">
+        </animation-view>
+    </view>
     <!-- <animation-view 
         class="controls" 
         path="/anims/1.json" 
@@ -24,9 +56,9 @@
         src="../../images/intro-arrow.svg"
          bindtap="returnNav"
     /> -->
-
+    <!-- <view bind:tap="goNext1">
     <animation-view 
-        class="controls" 
+        class="controls1" 
         path="/anims/1.json" 
         loop="false"
         autoplay="true" 
@@ -34,7 +66,8 @@
         hidden="{{hidden1}}" 
         bindended="playArrow">
     </animation-view>
-    <view bind:tap="goNext1">
+    </view> -->
+    <!-- <view bind:tap="goNext1">
         <animation-view 
             class="controls-arrow" 
             path="/anims/data.json" 
@@ -43,10 +76,10 @@
             hidden="false" 
             >
         </animation-view>
-    </view>
-
+    </view> -->
+    <!-- <view bind:tap="goNext2">
     <animation-view 
-        class="controls" 
+        class="controls2" 
         path="/anims/2.json" 
         loop="false"
         autoplay="{{autoplay2}}" 
@@ -54,8 +87,8 @@
         hidden="{{hidden2}}" 
         bindended="playArrow2">
     </animation-view>
-
-    <view bind:tap="goNext2">
+    </view> -->
+    <!-- <view bind:tap="goNext2">
         <animation-view 
             class="controls-arrow" 
             path="/anims/data.json" 
@@ -64,10 +97,10 @@
             hidden="{{hiddenarrow2}}" 
             >
         </animation-view>
-    </view>
-
+    </view> -->
+    <!-- <view bind:tap="goNext3">
     <animation-view 
-        class="controls" 
+        class="controls3" 
         path="/anims/3.json" 
         loop="false"
         autoplay="{{autoplay3}}" 
@@ -75,5 +108,5 @@
         hidden="{{hidden3}}" 
         bindended="playArrow3">
     </animation-view>
-
+    </view> -->
 </view>

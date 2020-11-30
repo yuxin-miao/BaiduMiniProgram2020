@@ -153,6 +153,7 @@ Page({
                         } 
                         else {
                             console.log("sendMsg: thisTaskFinsh: ", this.data.taskFinish);
+                            this.bye();
                             let tempDis = this.data.displayMsgs;
                             tempDis.push({
                                 type: '1',
@@ -165,7 +166,7 @@ Page({
                                 doChoice: '1',
                                 uChoices: tempCh,
                                 uChRely: tempChRe,
-                                taskFinish: 'true',
+                                taskFinish: true,
                             }, () => {
                                 this.scrollToBottomTemp();
                             })
@@ -220,6 +221,7 @@ Page({
                         this.allQuestionUpdate(res);
                         return
                     }
+                    this.bye();
                     let tempDis = this.data.displayMsgs;
                     tempDis.push({
                         type: '1',
@@ -232,7 +234,7 @@ Page({
                         doChoice: '1',
                         uChoices: tempCh,
                         uChRely: tempChRe,
-                        taskFinish: 'true',
+                        taskFinish: true,
                     }, () => {
                         this.scrollToBottomTemp();
                     })
@@ -350,6 +352,7 @@ Page({
         };
 
           // 初次进入 或 再次进入不想继续上次的话题
+        this.bye();
         tempDis.push({
             type: '1',
             msg: '有想和我聊聊的话题吗'
@@ -440,6 +443,7 @@ Page({
                     }
                     else {
                         let tempDis = this.data.displayMsgs;
+                        this.bye();
                         tempDis.push({
                             type: '1',
                             msg: '有想和我聊聊的话题吗？'
@@ -648,5 +652,29 @@ Page({
           console.log('pageScrollToBottom', that.data.scrollTop);
         }).exec()
     },
-    
+    bye: function() {
+        swan.request({
+            url: getApp().getUrl('/message/bye/'),
+            method: 'POST',
+            header: {
+                // POST 携带
+                'X-CSRFToken': cookies.get('csrftoken')
+            },
+            success: res => {
+                if (res.statusCode != 200) {
+                    swan.showModal({
+                        title: '请求失败',
+                        content: 'bye fail'
+                    })
+                }
+                console.log("bye", res);
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        })
+    },
 });

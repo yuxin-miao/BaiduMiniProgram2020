@@ -1,6 +1,7 @@
 
 Page({
     data: {
+        anmi: 1,
         hiddenarrow: 'true',
         hidden1: 'false',
         hidden2: 'true',
@@ -15,6 +16,7 @@ Page({
         console.log("playArrow");
         this.setData({
             hiddenarrow: 'false',
+            anmi: 2,
         })
     },
     goNext1(e) {
@@ -24,14 +26,15 @@ Page({
             hidden2: 'false',
             hiddenarrow: 'true',
             play2: 'play',
-            autoplay2: 'true'
+            autoplay2: 'true',
+            anmi: 2
         })
     },    
     playArrow2(e) {
         console.log("play2");
-
         this.setData({
             hiddenarrow2: 'false',
+            anmi: 3
         })
     },
     goNext2(e) {
@@ -41,7 +44,8 @@ Page({
             hiddenarrow2: 'true',
             play3: 'play',
             autoplay3: 'true',
-            hidden3: 'false'
+            hidden3: 'false',
+            anmi: 3
         })
     },
     playArrow3(e) {
