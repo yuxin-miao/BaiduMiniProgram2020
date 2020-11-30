@@ -1,0 +1,88 @@
+{
+  "name": "vue-2-boilerplate",
+  "version": "0.0.0",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "test": "vue-cli-service test",
+    "e2e": "vue-cli-service e2e",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "core-js": "^3.6.5",
+    "element-ui": "^2.14.1",
+    "font-awesome": "^4.7.0",
+    "js-cookie": "^2.2.1",
+    "register-service-worker": "^1.7.1",
+    "vue": "^2.6.11",
+    "vue-i18n": "^8.18.2",
+    "vue-router": "^3.3.4",
+    "vuex": "^3.4.0",
+    "vuex-persistedstate": "^4.0.0-beta.1",
+    "vuex-router-sync": "^5.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.4.6",
+    "@vue/cli-plugin-e2e-nightwatch": "^4.4.6",
+    "@vue/cli-plugin-eslint": "^4.4.6",
+    "@vue/cli-plugin-pwa": "^4.4.6",
+    "@vue/cli-plugin-router": "~4.4.0",
+    "@vue/cli-plugin-vuex": "~4.4.0",
+    "@vue/cli-plugin-unit-mocha": "^4.4.6",
+    "@vue/cli-service": "^4.4.6",
+    "@vue/eslint-config-airbnb": "^5.1.0",
+    "@vue/test-utils": "^1.0.3",
+    "babel-eslint": "^10.1.0",
+    "chai": "^4.2.0",
+    "eslint": "^7.3.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "lint-staged": "^10.2.11",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "author": "Peter van Meijgaard <petervanmeijgaard@hotmail.com>",
+  "description": "A boilerplate for medium to large Vue 2 single page applications",
+  "bugs": {
+    "url": "https://github.com/petervmeijgaard/vue-2-boilerplate/issues"
+  },
+  "homepage": "https://github.com/petervmeijgaard/vue-2-boilerplate#readme",
+  "lint-staged": {
+    "*.js": [
+      "vue-cli-service lint",
+      "git add"
+    ],
+    "*.vue": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/petervmeijgaard/vue-2-boilerplate.git"
+  },
+  "keywords": [
+    "Vue",
+    "Next",
+    "Boilerplate",
+    "Webpack",
+    "Lint",
+    "Medium",
+    "Large",
+    "SPA",
+    "Single",
+    "Page",
+    "Application"
+  ],
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "license": "MIT"
+}

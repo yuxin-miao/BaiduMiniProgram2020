@@ -2,6 +2,11 @@ from rest_framework import serializers
 from account.models import User
 
 
+class SuperLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+
 class LoginSerializer(serializers.Serializer):
     code = serializers.CharField()
 

@@ -6,6 +6,7 @@ from rest_framework import viewsets, response, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin, CreateModelMixin
+from rest_framework.viewsets import ModelViewSet
 
 from mood.models import MoodRecord
 from chat.models import QuestionTemplate, Message, QuestionRecord, Choice
@@ -13,12 +14,16 @@ from chat.serializers import (
     MessageSerializer,
     MessageReplySerializer,
     QuestionTemplateSerializer,
-    MessageMatchingSerializer
+    QuestionTemplateMiniSerializer,
+    QuestionTemplateEditSerializer,
+    MessageMatchingSerializer,
+    ChoiceSerializer
 )
 from chat.constants import ReplyType, ProcessType
 from mood.constants import MoodType
 
 from backend.permissions import IsAuthenticated
+from backend.filters import TitleFilterBackend
 
 
 class MessageViewSet(
@@ -241,3 +246,22 @@ class MessageViewSet(
         except Exception as e:
             print(str(e))
             return Response({'detail': '处理失败'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class QuestionViewSet(ModelViewSet):
+    queryset = QuestionTemplate.objects.all().order_by('-id')
+    permission_classes = [IsAuthenticated]
+    filter_backends = (TitleFilterBackend,)
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return QuestionTemplateMiniSerializer
+        return QuestionTemplateEditSerializer
+
+
+class ChoiceViewSet(ModelViewSet):
+    queryset = Choice.objects.all().order_by('id')
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        return ChoiceSerializer
