@@ -113,7 +113,7 @@
       </el-row>
     </el-drawer>
 
-    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+    <el-dialog title="新建选项" :visible.sync="dialogFormVisible">
       <el-form :model="editingChoice">
         <el-form-item label="选项标题">
           <el-input v-model="editingChoice.title"></el-input>

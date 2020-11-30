@@ -7,10 +7,21 @@
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
       </el-form-item>
+      <el-form-item>
+        <el-button
+          @click="initQuestion"
+          type="primary"
+          icon="el-icon-plus"
+        >
+          新建问题
+        </el-button>
+      </el-form-item>
     </el-form>
     <el-table
       :data="tableData"
-      style="width: 100%">
+      style="width: 100%"
+      v-loading="loading"
+    >
       <el-table-column
         label="ID"
         prop="id"
@@ -78,6 +89,37 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog title="新建问题" :visible.sync="dialogFormVisible">
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="问题标题">
+          <el-input v-model="form.title"></el-input>
+        </el-form-item>
+        <el-form-item label="关键词">
+          <el-input v-model="form.keyword" placeholder="以逗号分隔"></el-input>
+        </el-form-item>
+        <el-form-item label="回复类型">
+          <el-select v-model="form.reply_type" placeholder="请选择回复类型">
+            <el-option v-for="(value, name) in REPLY_TYPE_STR" :label="value" :value="name * 1" :key="name"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="处理类型">
+          <el-select v-model="form.process_type" placeholder="请选择处理类型">
+            <el-option v-for="(value, name) in PROC_TYPE_STR" :label="value" :value="name * 1" :key="name"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="根问题">
+          <el-switch
+            v-model="form.root"
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+          </el-switch>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="createQuestion">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-row>
 </template>
 
@@ -92,6 +134,15 @@ export default {
     return {
       tableData: [],
       search: '',
+      loading: false,
+      dialogFormVisible: false,
+      form: {
+        title: '',
+        keyword: '',
+        reply_type: 0,
+        process_type: 0,
+        root: false,
+      },
       procTypeColor: {
         [PROC_TYPE.ORDINARY]: 'primary',
         [PROC_TYPE.GRATITUDE_JOURNAL]: 'warning',
@@ -115,6 +166,7 @@ export default {
   },
   methods: {
     fetchQuestions() {
+      this.loading = true;
       new QuestionProxy().getList({
         page: 0,
         count: 10
@@ -125,6 +177,9 @@ export default {
         .catch(err => {
           console.log(err);
           this.$message.error('获取问题数据失败');
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     handleEdit(index, row) {
@@ -161,6 +216,32 @@ export default {
         .catch(err => {
           console.log(err);
           this.$message.error('获取问题数据失败');
+        });
+    },
+    initQuestion() {
+      this.form = {
+        title: '',
+        keyword: '',
+        reply_type: 0,
+        process_type: 0,
+        root: false,
+      };
+      this.dialogFormVisible = true;
+    },
+    createQuestion() {
+      new QuestionProxy().create(this.form)
+        .then(res => {
+          this.$notify({
+            title: '成功',
+            message: '新建成功',
+            type: 'success'
+          });
+          this.fetchQuestions();
+          this.dialogFormVisible = false;
+        })
+        .catch(err => {
+          console.log(err);
+          this.$message.error('新建问题失败');
         });
     }
   },
