@@ -73,6 +73,8 @@ class QuestionTemplate(models.Model):
             matched = False
             keywords = question.get_keywords()
             for keyword in keywords:
+                if len(keyword) == 0:
+                    continue
                 if keyword in matching:
                     matched = True
                     break
