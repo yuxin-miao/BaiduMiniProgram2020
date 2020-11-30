@@ -175,7 +175,6 @@ export default {
           this.tableData = res;
         })
         .catch(err => {
-          console.log(err);
           this.$message.error('获取问题数据失败');
         })
         .finally(() => {
@@ -201,7 +200,6 @@ export default {
           this.fetchQuestions();
         })
         .catch(err => {
-          console.log(err);
           this.$message.error('删除问题失败');
         });
     },
@@ -214,7 +212,6 @@ export default {
           this.tableData = res;
         })
         .catch(err => {
-          console.log(err);
           this.$message.error('获取问题数据失败');
         });
     },
@@ -240,7 +237,6 @@ export default {
           this.dialogFormVisible = false;
         })
         .catch(err => {
-          console.log(err);
           this.$message.error('新建问题失败');
         });
     }
