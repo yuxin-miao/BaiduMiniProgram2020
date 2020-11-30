@@ -20,9 +20,9 @@ Page({
         nickname: "", // 通过是否有名字判断是否初次进入
         doChoice: '0', // 选择选项：1 / 纯输入：0 / 心情记录: 2 process_type
         uChoices: [], // choices given, array of strings
-        uChRely: [], // reply by U after select a choice 
+        uChRely: [], // reply by U after select a choice
         MoodName: ["smile", "like", "happy", "upset", "sad", "angry", "ok"],
-        
+
     },
     onLoad: function () {
         console.log('load')
@@ -32,25 +32,15 @@ Page({
         this.setData({
             time: time
         });
-        this.initial();
+        this.initial(this.scrollToBottomTemp);
         this.getNickName(); // 获取用户信息并且进行是否第一次使用判断
-
     },
     onReady: function() {
         console.log('ready')
-        // 监听页面初次渲染完成的生命周期函数
-        var height = swan.getSystemInfoSync().windowHeight;
-        this.setData({
-          windowHeight: height,
-          scrollTop: 8000000000
-        });
-        this.scrollToBottomTemp();
-
     },
     onShow: function() {
         // 监听页面显示的生命周期函数
         console.log('show')
-
     },
     onHide: function() {
         // 监听页面隐藏的生命周期函数
@@ -76,13 +66,45 @@ Page({
         });
     },
 
-     // SENDER input 
+    scrollToBottomTemp(){
+        swan.pageScrollTo({
+            scrollTop: 8000000, // 写一个大于当前页面高度的值
+            duration: 500,
+            success: () => {
+                console.log('pageScrollTo success');
+            },
+            fail: err => {
+                console.log('pageScrollTo fail', err);
+            }
+        });
+
+
+        // swan.createSelectorQuery()
+        // .select("#uchat")
+        // .boundingClientRect(function(rect) {
+        //     swan.pageScrollTo({
+        //         scrollTop: rect.bottom,
+        //         duration: 300,
+        //         success: res => {
+        //             console.log(rect);
+        //             console.log('pageScrollTo success', res);
+        //         },
+        //         fail: err => {
+        //             console.log('pageScrollTo fail', err);
+        //         }
+        //     });
+        // })
+        // .exec();
+
+    },
+
+     // SENDER input
     SenderMsg:function(e){
         this.setData({
         thisSenderMsg:e.detail.value
         });
     },
-    // RAW input: SEND data and GET NEW  
+    // RAW input: SEND data and GET NEW
     sendMsg:function(){
         if(this.data.thisSenderMsg == ''){
             swan.showToast({
@@ -94,7 +116,7 @@ Page({
         }
         let tempMsgs = this.data.displayMsgs;
         tempMsgs.push ({
-            type:'', 
+            type:'',
             msg: this.data.thisSenderMsg
         }); // for user msg
         this.setData({
@@ -150,9 +172,10 @@ Page({
                         if (res.data.message.content.length != 0) {
                             this.allQuestionUpdate(res);
                             return;
-                        } 
+                        }
                         else {
                             console.log("sendMsg: thisTaskFinsh: ", this.data.taskFinish);
+                            this.bye();
                             let tempDis = this.data.displayMsgs;
                             tempDis.push({
                                 type: '1',
@@ -165,7 +188,7 @@ Page({
                                 doChoice: '1',
                                 uChoices: tempCh,
                                 uChRely: tempChRe,
-                                taskFinish: '1',
+                                taskFinish: true,
                             }, () => {
                                 this.scrollToBottomTemp();
                             })
@@ -180,25 +203,27 @@ Page({
                 })
             }
 
-        
+
         }
         else if (this.data.taskFinish == true) {
             console.log("sendMsg taskFinish", this.data.thisSenderMsg);
             this.matchingQuestion();
-        
+            this.setData({
+                taskFinish: false
+            })
         }
 
     },
-    // CHOICE: send choice 
+    // CHOICE: send choice
     selectChoice(e) {
-        // update user's reply and u's reply 
+        // update user's reply and u's reply
         console.log('select choice: ', this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
         let choiceIndex = e.currentTarget.dataset.choiceIndex;
         let tempMsgs = this.data.displayMsgs;
         tempMsgs.push ({
-            type:'0', 
+            type:'0',
             msg: this.data.uChRely[choiceIndex],
-        }); 
+        });
         this.setData({
             displayMsgs: tempMsgs,
         })
@@ -218,6 +243,7 @@ Page({
                         this.allQuestionUpdate(res);
                         return
                     }
+                    this.bye();
                     let tempDis = this.data.displayMsgs;
                     tempDis.push({
                         type: '1',
@@ -230,7 +256,7 @@ Page({
                         doChoice: '1',
                         uChoices: tempCh,
                         uChRely: tempChRe,
-                        taskFinish: '1',
+                        taskFinish: true,
                     }, () => {
                         this.scrollToBottomTemp();
                     })
@@ -244,7 +270,7 @@ Page({
             })
         }
         else if (this.data.taskFinish == true) {
-            
+
             console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
 
             if (choiceIndex == '0') {
@@ -259,15 +285,15 @@ Page({
                     uChRely: [],
                     uChoices: [],
                     justEnter: '0',
-                    taskFinish: false,
-                    
+                    taskFinish: true,
+
                 })
             }
             else this.notMatchingQuestion();
         }
         else if (this.data.whetherDetermineMatch === '0') {
                 this.getInitialUpdateData(choiceIndex);
-                return   
+                return
         }
         else {
             swan.showModal({
@@ -280,7 +306,7 @@ Page({
 
 
     },
-    initial: function() {
+    initial: function(onSuc) {
         swan.request({
             url: getApp().getUrl('/message/'),
             method: 'GET',
@@ -303,11 +329,11 @@ Page({
                 })
                 this.setData({
                     prevMsgs: tempPrevM,
+                }, () => {
+                    // 数据设置完，渲染完成后再scroll
+                    onSuc();
                 })
-                setTimeout(() => {
-                    this.scrollToBottomTemp()
-                }, 2000);
-
+                // 不要用setTimeout
             },
             fail: err => {
                 swan.showModal({
@@ -323,7 +349,7 @@ Page({
 
         if (this.data.doChoice === '1' &&  this.data.taskFinish == false && chIndex == 0) {
             // 非初次进入+上次话题未结束+想继续聊
-            // get last question 
+            // get last question
             this.getLastQuestion();
 
             this.setData({
@@ -331,23 +357,24 @@ Page({
             })
             return;
         }
-        
+
         if (this.data.taskFinish == true) {    // 非初次进入+话题已经结束
             this.setData({
                 justEnter: '0',
             });
             if (chIndex == '0') {
-                //matching 
+                //matching
                 this.matchingQuestion();
             }
             else {
-                // not matching 
+                // not matching
                 this.notMatchingQuestion();
             }
             return;
         };
 
           // 初次进入 或 再次进入不想继续上次的话题
+        this.bye();
         tempDis.push({
             type: '1',
             msg: '有想和我聊聊的话题吗'
@@ -361,7 +388,7 @@ Page({
             taskFinish: true
         },() => {this.scrollToBottomTemp()})
 
-        
+
     },
     getNickName: function() {
         swan.request({
@@ -387,17 +414,18 @@ Page({
                 });
             }
         })
-    }, 
+    },
     userEnter: function() {
+        console.log("userEnter")
         this.setData({
             justEnter: "1",
         })
-        if(this.data.nickname == "") { // first enter 
+        if(this.data.nickname == "") { // first enter
             let tempDis = [
                 { type: "1", msg: "你好，我是小U" },
                 { type: "1", msg: "怎么称呼你呢？"}
             ];
-            
+
             this.setData({
                 displayMsgs: tempDis,
                 doChoice: '0',
@@ -408,6 +436,7 @@ Page({
             let tempDis = [
                 { type: "1", msg: tempMsg },
             ];
+            
             swan.request({
                 url: getApp().getUrl('/message/talk_finished/'),
                 method: 'GET',
@@ -421,7 +450,6 @@ Page({
                         return;
                     }
                     if (res.data.talk_finished === false) {
-                        let tempDis = this.data.displayMsgs;
                         tempDis.push({
                             type: '1',
                             msg: '你想要和我接着聊上次的话题吗？'
@@ -437,7 +465,7 @@ Page({
                         })
                     }
                     else {
-                        let tempDis = this.data.displayMsgs;
+                        this.bye();
                         tempDis.push({
                             type: '1',
                             msg: '有想和我聊聊的话题吗？'
@@ -473,7 +501,7 @@ Page({
                 })
             }
         })
-    },    
+    },
     notMatchingQuestion: function(){
         swan.request({
             url: getApp().getUrl('/message/get_question/'),
@@ -497,7 +525,7 @@ Page({
             }
         })
     },
-    
+
     matchingQuestion: function() {
         swan.request({
             url: getApp().getUrl('/message/get_question/'),
@@ -544,7 +572,7 @@ Page({
                 let tempChRe = [];
                 if (res.data.process_type == '2') {    // 心情日记
                     console.log("LastQuestion心情日记");
-                    this.setData({ 
+                    this.setData({
                         displayMsgs: tempDis,
                         uChoices: tempCh,
                         uChRely: ['smile', 'like', 'happy', 'upset', 'sad', 'angry', 'ok'],
@@ -596,7 +624,7 @@ Page({
         let tempChRe = [];
         if (res.data.question.process_type == '2') {    // 心情日记
             console.log("allQuestionUpdate心情日记");
-            this.setData({ 
+            this.setData({
                 displayMsgs: tempDis,
                 uChoices: tempCh,
                 uChRely: ['smile', 'like', 'happy', 'upset', 'sad', 'angry', 'ok'],
@@ -613,7 +641,7 @@ Page({
             })
         }
         console.log(res.data.question.reply_type);
-        this.setData({ 
+        this.setData({
             displayMsgs: tempDis,
             uChoices: tempCh,
             uChRely: tempChRe,
@@ -621,15 +649,10 @@ Page({
             justEnter: '0',
         },() => {this.scrollToBottomTemp()})
     },
-    
+
     scrollToTop(e) {
         this.setData({ scrollTop: 0 });
 
-    },
-    scrollToBottomTemp() {
-        // console.log(e);
-        console.log("scrollToBottomTemp");
-        this.setData({ scrollTop: 8000000000 });
     },
 
     pageScrollToBottom: function() {
@@ -646,5 +669,29 @@ Page({
           console.log('pageScrollToBottom', that.data.scrollTop);
         }).exec()
     },
-    
+    bye: function() {
+        swan.request({
+            url: getApp().getUrl('/message/bye/'),
+            method: 'POST',
+            header: {
+                // POST 携带
+                'X-CSRFToken': cookies.get('csrftoken')
+            },
+            success: res => {
+                if (res.statusCode != 200) {
+                    swan.showModal({
+                        title: '请求失败',
+                        content: 'bye fail'
+                    })
+                }
+                console.log("bye", res);
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        })
+    },
 });

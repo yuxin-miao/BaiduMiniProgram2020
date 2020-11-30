@@ -7,6 +7,8 @@ Page({
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
+        this.firstOrNot();
+
     },
     onShow: function() {
         // 监听页面显示的生命周期函数
@@ -26,7 +28,20 @@ Page({
     onShareAppMessage: function () {
         // 用户点击右上角转发
     },
-    returnNav(e) {
-        swan.navigateBack();
+    firstOrNot: function() {
+        // swan.navigateTo({
+        //     url: '/pages/record/record'
+        // })
+        // let data = this.getLocalStorage('username');
+        if (getApp().isAuthenticated()) {
+            swan.redirectTo({
+                url: '/pages/main/main'
+            });
+        }
+        else {
+            swan.redirectTo({
+                url: '/index/index'
+            });
+        }
     }
 });

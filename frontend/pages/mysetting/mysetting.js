@@ -35,7 +35,7 @@ Page({
 
     login(e) {
         let userInfo = e.detail;
-        getApp().login(userInfo);
+        getApp().login();
     },
     logout() {
         getApp().logout();

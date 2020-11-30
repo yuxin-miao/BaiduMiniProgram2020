@@ -1,7 +1,18 @@
 <view class="wrap">
 
     <view class="top-navigation">
-        <smt-icon class="back-arrow" name="arrow-left" size="38rpx" bindtap="returnNav" />
+
+
+        <image
+        class="back-arrow"
+        mode="widthFix"
+        style="width: 120rpx"
+        src="../../images/arrow.svg"
+         bindtap="returnNav"
+        />
+
+
+        <!-- <smt-icon class="back-arrow" name="arrow-left" size="38rpx" bindtap="returnNav" /> -->
         <view class="month-change">
             <view class="triangle-left" bindtap="changePrevMonth"/>
             <view class="month-display">{{thisYear}}.{{thisMonth}}</view>
@@ -21,7 +32,7 @@
                         <image
                         class="mood-image {{item.date==selectDay ? 'select' : '' }}"
                         mode="widthFix"
-                        style="width: 70%"
+                        style="width: 68%"
                         src="../../images/mood_{{item.mood}}.svg"
                         data-day = "{{item.date}}"
                         bind:tap="toSelectDay"

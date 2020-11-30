@@ -1,16 +1,17 @@
 <view class="wrap">
 <!-- <view class="background-image"> -->
     <view class="top">
+        <image
+        mode="widthFix"
+        class="portrait"
+        src="../../images/portrait.png"
+        style="width: 550rpx;"
+        bind:tap="goAni"/>
         <view class="welcome-text">
         <text class="big-text">  你好，\n 我是小U
         <text class="small-text"> 快来和我聊聊吧～</text>
         </view>
-        <image
-            mode="widthFix"
-            class="portrait"
-            src="../../images/portrait.svg"
-            style="width: 350rpx;"
-            bind:tap="goIntro"/>
+
     </view>
     <view class="middle">
         <view class="intro-text">
