@@ -138,6 +138,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = BASE_DIR / 'static'
+
 # Baidu MiniProgram Settings
 
 APP_ID = getenv('APP_ID', '')
