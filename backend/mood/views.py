@@ -112,6 +112,11 @@ class MoodRecordViewSet(
 
             # only reserve the latest record of each day
             mood_values = mood_records.values('id', 'created_at')
+            tz = timezone.get_current_timezone()
+
+            for i in range(len(mood_values)):
+                mood_values[i]['created_at'] = tz.normalize(mood_values[i]['created_at'])
+
             for i in range(len(mood_values)):
                 if i > 0 and mood_values[i]['created_at'].day == mood_values[i - 1]['created_at'].day:
                     mood_records = mood_records.exclude(id=mood_values[i]['id'])
