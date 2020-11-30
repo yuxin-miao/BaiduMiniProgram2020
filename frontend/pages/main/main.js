@@ -83,5 +83,10 @@ Page({
         swan.navigateTo ({
             url: '/pages/myCalender/myCalender'
         })
+    },
+    goAni(e) {
+        swan.redirectTo({
+            url: '/index/index'
+        })
     }
 });

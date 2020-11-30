@@ -6,7 +6,7 @@
         class="portrait"
         src="../../images/portrait.png"
         style="width: 550rpx;"
-        bind:tap="goIntro"/>
+        bind:tap="goAni"/>
         <view class="welcome-text">
         <text class="big-text">  你好，\n 我是小U
         <text class="small-text"> 快来和我聊聊吧～</text>

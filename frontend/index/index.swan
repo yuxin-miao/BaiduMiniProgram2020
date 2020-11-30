@@ -9,14 +9,14 @@
         hidden="false" 
         bindended="playArrow">
     </animation-view> -->
-    <animation-view 
+    <!-- <animation-view 
         class="back-ani" 
         path="/anims/data.json" 
         loop="true"
         autoplay="true" 
         action="play"
         hidden="false">
-    </animation-view>
+    </animation-view> -->
     <!-- <image
         class="back"
         mode="widthFix"
@@ -24,4 +24,56 @@
         src="../../images/intro-arrow.svg"
          bindtap="returnNav"
     /> -->
+
+    <animation-view 
+        class="controls" 
+        path="/anims/1.json" 
+        loop="false"
+        autoplay="true" 
+        action="play"
+        hidden="{{hidden1}}" 
+        bindended="playArrow">
+    </animation-view>
+    <view bind:tap="goNext1">
+        <animation-view 
+            class="controls-arrow" 
+            path="/anims/data.json" 
+            loop="true"
+            action="play"
+            hidden="{{hiddenarrow}}}" 
+            >
+        </animation-view>
+    </view>
+
+    <animation-view 
+        class="controls" 
+        path="/anims/2.json" 
+        loop="false"
+        autoplay="{{autoplay2}}" 
+        action="{{play2}}"
+        hidden="{{hidden2}}" 
+        bindended="playArrow2">
+    </animation-view>
+
+    <view bind:tap="goNext2">
+        <animation-view 
+            class="controls-arrow" 
+            path="/anims/data.json" 
+            loop="true"
+            action="play"
+            hidden="{{hiddenarrow2}}}" 
+            >
+        </animation-view>
+    </view>
+
+    <animation-view 
+        class="controls" 
+        path="/anims/3.json" 
+        loop="false"
+        autoplay="{{autoplay3}}" 
+        action="{{play3}}"
+        hidden="{{hidden3}}" 
+        bindended="playArrow3">
+    </animation-view>
+
 </view>

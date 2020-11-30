@@ -18,7 +18,7 @@ App({
     },
     onShow(options) {
         // do something when show
-        // this.firstOrNot();
+        this.firstOrNot();
     },
     onHide() {
         // do something when hide
