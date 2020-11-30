@@ -1,6 +1,31 @@
+.wrap {
+    height: 100%;
+}
 .controls {
+    position: fixed;
+    z-index: 1;
     width: 100%;
+    height: auto;
     margin: 0 auto;
+}
+
+
+.back {
+    position: fixed;
+    bottom: 50%;
+    right: 80rpx;
+    z-index: 4;
+
+}
+
+.back-ani {
+    z-index: 2;
+    position: fixed;
+    bottom:0;
+    right: 0;
+    width: 300rpx;
+    height: 100rpx;
+
 }
 
 swan-animation-view {

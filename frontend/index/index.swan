@@ -1,10 +1,27 @@
-<view class="wrap">
-    <animation-view 
+ <view class="wrap">      
+
+    <!-- <animation-view 
         class="controls" 
         path="/anims/1.json" 
         loop="false"
         autoplay="true" 
         action="play"
-        hidden="false" >
+        hidden="false" 
+        bindended="playArrow">
+    </animation-view> -->
+    <animation-view 
+        class="back-ani" 
+        path="/anims/data.json" 
+        loop="true"
+        autoplay="true" 
+        action="play"
+        hidden="false">
     </animation-view>
+    <!-- <image
+        class="back"
+        mode="widthFix"
+        style="width: 80rpx"
+        src="../../images/intro-arrow.svg"
+         bindtap="returnNav"
+    /> -->
 </view>

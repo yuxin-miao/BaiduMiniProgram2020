@@ -17,7 +17,5 @@
         "navigationBarTextStyle": "black",
         "navigationBarTitleText": "Ucho",
         "backgroundTextStyle": "light"
-    },
-    "usingComponents": {
     }
 }
