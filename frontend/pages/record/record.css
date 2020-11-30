@@ -1,3 +1,7 @@
+.wrap {
+    overflow: hidden;
+}
+
 .drawer_box {
     height: 100%;
     z-index: 999;
@@ -24,7 +28,7 @@
 
 .card-area:nth-child(1) .text{
     /* margin-left: 5rpx; */
-    margin-top: 27.17rpx;
+    margin-top: 5rpx;
     padding-left: 50rpx;
     /* align-self: center; */
     font-size: 60rpx;

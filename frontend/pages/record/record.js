@@ -104,4 +104,7 @@ Page({
             }
         })
     }, 
+    returnNav(e) {
+        swan.navigateBack();
+    }
 });
