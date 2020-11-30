@@ -24,7 +24,7 @@
     text-align: center;
 }
 .triangle-left {
-    margin-left: 171rpx;
+    padding-left: 184rpx;
     /* padding-top: 20rpx; */
     width: 0;
     height: 0;
@@ -33,6 +33,7 @@
     border-bottom: 15rpx solid transparent;
 }
 .triangle-right {
+    padding-right: 50rpx;
     width: 0;
     height: 0;
     border-top: 15rpx solid transparent;
@@ -120,7 +121,7 @@
     /* flex-grow: 1; */
     display: flex;
     flex-direction: column;
-    padding: 0rpx 30rpx 0rpx 30rpx;
+    /* padding: 0rpx 30rpx 0rpx 30rpx; */
     background-color: #ffffff;
     /* box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
     /* -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);for IOS  */
@@ -147,9 +148,11 @@
 }
 
 .record-row {
+    padding: 20rpx;
+    margin: 0 30rpx 0 30rpx;
     display: flex;
     align-items: flex-start;
-    padding: 20rpx;
+
 }
 .gratitude {
     height: 60rpx;
@@ -163,7 +166,7 @@
 
 }
 .row-text {
-    padding: 0rpx 20rpx 0 20rpx;
+    padding: 0rpx 0rpx 0 20rpx;
     width: 670rpx;
     align-self: flex-start;
     text-align: top;

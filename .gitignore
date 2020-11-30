@@ -9,3 +9,4 @@ venv/
 db.sqlite3
 
 backend/static/
+project.swan.json

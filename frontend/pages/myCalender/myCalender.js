@@ -14,20 +14,20 @@ Page({
         thisMonth: '',
         thisDay: '',
         selectDay: '',
-        thisMonthDays: [], // attention for difference in index and date 
+        thisMonthDays: [], // attention for difference in index and date
         emptyGridsBefore: [],
         emptyGridsAfter: [],
         weekText: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 
-        // GET data 
-        // moodTypeList: {}, // item {day: , type: } in array 
-        gratitudeRecord: [], // item {day: , description: } in array 
+        // GET data
+        // moodTypeList: {}, // item {day: , type: } in array
+        gratitudeRecord: [], // item {day: , description: } in array
         thisDescription: '', // string of description for thisDay
 
         returnMoodRecord: [],
 
 
-        // test 
+        // test
         testMoodRecord: [{
             type: 3,
             description: "long test messagethis is a long long long long long test messagethis is a long long long long long test message"
@@ -86,10 +86,8 @@ Page({
         }
     },
 
-    onLoad: function () {
-        // swan.setNavigationBarTitle({
-        //     title: thisMonth
-        // });
+    onShow: function () {
+
         // 监听页面加载的生命周期函数
 
         let timestamp = Date.parse(new Date());
@@ -100,14 +98,11 @@ Page({
         let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
         //获取当日日期 
         let D = date.getDate();
-        // D = D < 10 ? "0" + D : D;
-
 
         // call function to create grids
         let mday = this.methods.gridThisMonth(Y, M);
         let emptys = this.methods.emptyGrid(Y, M);
 
-        // console.log(emptys.after);
         // set the default selectDay as today
         this.setData({
             thisMonthDays: mday,
@@ -119,25 +114,23 @@ Page({
             thisMonth: M,
             thisYear: Y,
             selectDay: D,
+        }, () => {
+            this.moodTypeGratitude({
+                year: Y,
+                month: M
+            });
+            this.dayMoodDescrip({
+                year: Y,
+                month: M,
+                day: D,
+            });
         });
-        this.moodTypeGratitude({
-            year: this.data.thisYear,
-            month: this.data.thisMonth
-        });
-        this.dayMoodDescrip({
-            year: this.data.thisYear,
-            month: this.data.thisMonth,
-            day: this.data.thisDay,
-        });
-
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
-        // this.today();
-        // console.log(this.data.moodTypeList);
-        // console.log(this.data.gratitudeRecord);
+
     },
-    onShow: function() {
+    onLoad: function() {
         // 监听页面显示的生命周期函数
     },
     onHide: function() {
@@ -156,16 +149,16 @@ Page({
         // 用户点击右上角转发
     },
 
-    // navigation bar used 
+    // navigation bar used
     returnNav(e) {
         swan.navigateBack();
     },
 
 
     toSelectDay(e) {
-        // used when select a new day in this month 
-        // jump to the day if 
-        console.log('Clicked', e.currentTarget.dataset.day);
+        // used when select a new day in this month
+        // jump to the day if
+        // console.log('Clicked', e.currentTarget.dataset.day);
 
         if (e.currentTarget.dataset.day > this.data.constDay & this.data.thisMonth == this.data.constMonth) {
             // cant jump to futrue
@@ -176,21 +169,11 @@ Page({
             })
             return;
         }
-        // let tempSelDay = e.currentTarget.dataset.day;
-        // tempSelDay = tempSelDay < 10 ? "0" + tempSelDay : tempSelDay;
+
         this.setData({selectDay: e.currentTarget.dataset.day});
-        // console.log("Hey! whether to change?");
-        // console.log(this.data.selectDay);
-        // console.log(this.data.thisMonthDays);
-        // console.log(this.data.thisMonthDays[this.data.selectDay - 1].mood);
-        
-        if (this.data.thisMonthDays[this.data.selectDay - 1].mood == 0) {
-            // when day no mood record, record first 
-            // swan.showToast({
-            //     title: '跳转心情记录',
-            //     icon: 'none',
-            //     duration: 500
-            // })
+
+
+        if (this.data.thisMonthDays[e.currentTarget.dataset.day - 1].mood == 0) {
             swan.navigateTo({
                 url: '/pages/record/record'
             })
@@ -200,12 +183,12 @@ Page({
         this.dayMoodDescrip({
             year: this.data.thisYear,
             month: this.data.thisMonth,
-            day: this.data.selectDay,
+            day: e.currentTarget.dataset.day
         });
 
 
     },
-    // when change month 
+    // when change month
     changePrevMonth(e) {
         this.setData({
             selectDay: this.data.thisDay,
@@ -215,26 +198,24 @@ Page({
         // call function to create grids
         let mday = this.methods.gridThisMonth(this.data.thisYear, this.data.thisMonth);
         let emptys = this.methods.emptyGrid(this.data.thisYear, this.data.thisMonth);
-        // console.log(emptys.after);
         // set the default selectDay as today
         this.setData({
             thisMonthDays: mday,
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
+        }, () => {
+            this.moodTypeGratitude({
+                year: this.data.thisYear,
+                month: this.data.thisMonth
+            });
+            this.dayMoodDescrip({
+                year: this.data.thisYear,
+                month: this.data.thisMonth,
+                day: this.data.thisDay,
+            });
         });
-        this.moodTypeGratitude({
-            year: this.data.thisYear,
-            month: this.data.thisMonth
-        });
-        this.dayMoodDescrip({
-            year: this.data.thisYear,
-            month: this.data.thisMonth,
-            day: this.data.thisDay,
-        });
-        
     },
     changeNextMonth(e) {
-        // console.log("after");
         if(this.data.thisMonth == this.data.constMonth) return;
         this.setData({
             selectDay: this.data.thisDay,
@@ -244,7 +225,6 @@ Page({
         // call function to create grids
         let mday = this.methods.gridThisMonth(this.data.thisYear, this.data.thisMonth);
         let emptys = this.methods.emptyGrid(this.data.thisYear, this.data.thisMonth);
-        // console.log(emptys.after);
         // set the default selectDay as today
         this.setData({
             thisMonthDays: mday,
@@ -265,46 +245,41 @@ Page({
     /* util functions for getting data */
     moodTypeGratitude: function (selectMonth) {
         // send data: selectMonth(year & month)
-        // return the moodType & gratitudeRecord 
-        // used when first enter / change month 
+        // return the moodType & gratitudeRecord
+        // used when first enter / change month
         swan.request({
             url: `${API}/mood/month/`,
             method: 'GET',
             data: selectMonth,
             success: res => {
-                let returnMood = []; //used to return 
+                let returnMood = []; //used to return
                 if (res.statusCode != 200) {
                     swan.showModal({
                         title: '请求失败',
                         content: 'moodTypeGratitude Fail 1'
                     });
-                    return;                    
+                    return;
                 }
                 let tempMonthList = this.data.thisMonthDays;
                 let tempGradList = [];
                 let gratitudeRecord = res.data.gratitudeList;
-                
+
                 res.data.moodList.forEach(mood => {
-                    let tempDate = (new Date(mood.created_at)).toLocaleDateString().split('/');
-                    let tempD = tempDate[2];
-                    tempMonthList[tempD - 1].mood = MoodName[mood.type];
+                    let tempDate = (new Date(mood.created_at)).getDate();
+                    tempMonthList[tempDate - 1].mood = MoodName[mood.type];
                 });
                 res.data.gratitudeList.forEach(graRecord => {
-                    let tempDate = (new Date(graRecord.created_at)).toLocaleDateString().split('/');
-                    let tempM = tempDate[1];
-                    let tempD = tempDate[2];
-                    // tempD = tempD < 10 ? '0'+tempD : tempD;
+                    let tempDate = (new Date(graRecord.created_at)).getDate();
                     tempGradList.push({
-                        day: tempD,
+                        day: tempDate,
                         description: graRecord.description,
                     })
                 });
-                
+
                 this.setData({
                     thisMonthDays: tempMonthList,
                     gratitudeRecord: tempGradList,
                 });
-                console.log(this.data.thisMonthDays);
 
             },
             fail: err => {
@@ -319,27 +294,25 @@ Page({
     dayMoodDescrip: function (selectDay) {
         // send data: selectDay(year&month&day)
         // return this day's mood description
-        // used when first enter / change day 
+        // used when first enter / change day
         swan.request({
             url: `${API}/mood/day/`,
             method: 'GET',
             data: selectDay,
             success: res => {
-                console.log(selectDay),
-                console.log(res);
+
                 if (res.statusCode != 200) {
                     swan.showModal({
                         title: '请求失败',
                         content: 'dayMoodDescrip Fail'
                     });
-                    return;                     
+                    return;
                 }
                 if(res.data.description == '') res.data.description = "快来添加你的心情吧";
                 this.setData({
                     thisDescription: res.data.description
                 })
-                console.log(this.data.thisDescription);
-                
+
 
             },
             fail: err => {
@@ -352,15 +325,10 @@ Page({
         })
     },
     updateMood(a, b) {
-        console.log('!!!!!');
         this.setData({
             "thisMonthDays[selectDay-1].mood": a,
             thisDescription: b
         })
     },
-    // testUsed(e) {
-    //     console.log("TEST");
-    //     console.log(this.data.selectDay);
-    //     console.log(this.data.thisMonthDays[this.data.selectDay - 1].mood);
-    // }
+
 });

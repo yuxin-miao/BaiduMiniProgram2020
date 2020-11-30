@@ -21,7 +21,6 @@ export function createMoodRecord(moodData) {
             'X-CSRFToken': cookies.get('csrftoken')
         },
         success: res => {
-            console.log(moodData);
             swan.navigateBack();
         },
         fail: err => {
