@@ -6,6 +6,8 @@
     src="../../images/arrow.svg"
     bind:tap="returnNav"
     />
+    <view class="empty"/>
+    
     <view class="all-text">
         <view class="ucho-text">
         关于Ucho

@@ -420,7 +420,7 @@ Page({
         this.setData({
             justEnter: "1",
         })
-        if(this.data.nickname == "") { // first enter
+        if(this.data.nickname === undefined || this.data.nickname === null || this.data.nickname === "" ) { // first enter
             let tempDis = [
                 { type: "1", msg: "你好，我是小U" },
                 { type: "1", msg: "怎么称呼你呢？"}
