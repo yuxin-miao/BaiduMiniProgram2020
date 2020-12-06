@@ -3,18 +3,19 @@
     padding: 0;
 }
 
-html,
+/* html,
 body {
     height: 100%;
     font-family: PingFangSC-Regular, sans-serif;
     font-size: 100px;
     color: #333;
-}
+} */
 
 /* 全局整页面 */
 .wrap {
     font-family: PingFangSC-Regular, sans-serif;
     max-height: 100vh;
+    /* height: 100vh; */
     font-size: .16rem;
 }
 

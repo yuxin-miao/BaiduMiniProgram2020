@@ -32,7 +32,7 @@
 .wrap {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 100vh;
     margin: 0; 
     background-size: cover;
     /* background-image: url("https://github.com/yuxin-miao/BaiduMiniProgram2020/blob/chat/frontend/images/main_background.svg") no-repeat; */
