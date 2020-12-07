@@ -1,3 +1,6 @@
+// import Poster from '../../miniprogram_dist/poster/poster';
+
+
 Page({
     data: {
 
