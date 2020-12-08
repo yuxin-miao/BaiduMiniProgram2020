@@ -2,6 +2,31 @@
 Page({
     data: {
         anmi: 1,
+        path1: '',
+        path2: '',
+        path3: '',
+    },
+    onShow() {
+        swan.downloadFile({
+            url: 'http://cdn.xiaou.tech/1.json',
+            // header: {
+            //     'content-type': 'application/json'
+            // },
+            success: res => {
+                console.log("download success")
+                const filePath = res.tempFilePath;
+                this.setData({
+                    path1: filePath
+                });
+                console.log(res.tempFilePath)
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '请求失败',
+                    content: '初始动画下载失败！'
+                })
+            }
+        });
     },
     playArrow(e) {
         console.log("playArrow");
