@@ -8,7 +8,7 @@
     /* justify-content: space-between; */
 }
 /* top bar */
-.chat-top {
+#uchat-top {
     position: fixed;
     top: 0;
     width: 100%;
@@ -27,8 +27,9 @@
 
 /* 聊天文字 */
 .chat-body {
+    overflow: scroll;
     padding-top: 13vh;
-    padding-bottom: 10vh;
+    /* padding-bottom: 10vh; */
     width: 100%;
     font-size: 30rpx;
     background-color: rgba(245 251 245);
@@ -45,7 +46,7 @@
 .chat-row {
     display: inline-block;
     width: 100%;
-    margin: 10rpx 0;
+    padding: 10rpx 0;
 }
 
 .m-right {
@@ -84,7 +85,7 @@
 
 /* 输入框 */
 .chat-bottom {
-    position: fixed;
+    /* position: fixed; */
     bottom: 0;
     padding: 20rpx 0 50rpx 0;
     display: flex;
@@ -130,7 +131,7 @@
 
 /* 选项选择框 */
 .choice-buttom {
-    position: fixed;
+    /* position: fixed; */
     bottom: 0;
     width: 100%;
     display: flex;

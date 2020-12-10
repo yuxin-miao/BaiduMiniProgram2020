@@ -8,7 +8,6 @@ Page({
     data: {
         time: '',
         scrollTop: 0,
-        windowHeight: 0,
         prevMsgs: [], // previous messages
         thisSenderMsg: '', // 即时输入
         thisDisplayMsg: '', // 发送/显示的用户信息
@@ -22,12 +21,14 @@ Page({
         uChoices: [], // choices given, array of strings
         uChRely: [], // reply by U after select a choice
         MoodName: ["smile", "like", "happy", "upset", "sad", "angry", "ok"],
-
+        chatPaddingBottom: "10vh",
+        chatHeight: 0,
     },
     onLoad: function () {
-        console.log('load')
-        // console.log(messages);
-        // 监听页面加载的生命周期函数
+        swan.showLoading({
+            title: '努力加载中',
+            mask: true
+        });
         var time = util.chatTime(new Date());
         this.setData({
             time: time
@@ -67,43 +68,35 @@ Page({
     },
 
     scrollToBottomTemp(){
-        // swan.pageScrollTo({
-        //     scrollTop: 8000000, // 写一个大于当前页面高度的值
-        //     duration: 500,
-        //     success: () => {
-        //         console.log('pageScrollTo success');
-        //     },
-        //     fail: err => {
-        //         console.log('pageScrollTo fail', err);
-        //     }
-        // });
+        let bottomHeight = 0;
+        swan.createSelectorQuery().select('#uchat-bottom').boundingClientRect(rect => {
+            console.log("节点信息", rect);
+            bottomHeight = rect.height;
+        }).exec();
 
-        swan.createSelectorQuery()
-        .select("#uchat")
-        .boundingClientRect(rect => {
-            const prevHeight = this.data.windowHeight;
-            if (rect.bottom < prevHeight) {
-                // 某些情况下高度检测失效，向下滑动一段固定距离
-                swan.pageScrollTo({
-                    scrollTop: prevHeight + 1000,
-                    duration: 500,
-                    success: () => {
-                        this.setData({ windowHeight: prevHeight + 1000 });
-                    }
-                });
-            } else {
-                // 若高度检测生效，则使用系统高度
-                swan.pageScrollTo({
-                    scrollTop: rect.bottom,
-                    duration: 200,
-                    success: res => {
-                        this.setData({ windowHeight: rect.bottom });
-                    }
-                });
-            }
-        })
-        .exec();
+        let info = swan.getSystemInfoSync();
+        if ((info instanceof Error)) {
+            swan.showModal({
+                title: '获取系统信息失败',
+                content: '无法初始化聊天窗口',
+            });
+            return;
+        }
 
+        this.setData({ chatHeight: info.windowHeight - bottomHeight }, () => {
+            const selectorQuery = swan.createSelectorQuery();
+            selectorQuery.selectAll('.chat-row').boundingClientRect();
+            selectorQuery.exec(res => {
+                const prevHeight = this.data.scrollTop;
+                if (res[0][res[0].length-1].bottom < prevHeight) {
+                    // 若高度检测未生效
+                    this.setData({ scrollTop: prevHeight + 1000 });
+                } else {
+                    // 若高度检测生效，则使用系统高度
+                    this.setData({ scrollTop: res[0][res[0].length-1].bottom });
+                }
+            });
+        });
     },
 
      // SENDER input
@@ -310,10 +303,6 @@ Page({
                 content: 'selectChoice Wrong'
             })
         }
-
-
-
-
     },
     initial: function() {
         swan.request({
@@ -347,6 +336,9 @@ Page({
                     title: '网络异常',
                     content: '请检查网络连接'
                 });
+            },
+            complete: () => {
+                swan.hideLoading();
             }
         })
 
@@ -393,7 +385,9 @@ Page({
             doChoice: '1',
             whetherDetermineMatch: '1',
             taskFinish: true
-        },() => {this.scrollToBottomTemp()})
+        },() => {
+            this.scrollToBottomTemp();
+        })
 
 
     },
@@ -590,7 +584,9 @@ Page({
                         uChRely: ['smile', 'like', 'happy', 'upset', 'sad', 'angry', 'ok'],
                         doChoice: '2',
                         justEnter: '0',
-                    },() => {this.scrollToBottomTemp()})
+                    },() => {
+                        this.scrollToBottomTemp();
+                    })
                     return;
                 }
                 else if (res.data.reply_type == '1') {
@@ -641,7 +637,9 @@ Page({
                 uChRely: ['smile', 'like', 'happy', 'upset', 'sad', 'angry', 'ok'],
                 doChoice: '2',
                 justEnter: '0',
-            },() => {this.scrollToBottomTemp()})
+            },() => {
+                this.scrollToBottomTemp();
+            })
             return;
         }
 
@@ -658,7 +656,9 @@ Page({
             uChRely: tempChRe,
             doChoice: res.data.question.reply_type,
             justEnter: '0',
-        },() => {this.scrollToBottomTemp()})
+        },() => {
+            this.scrollToBottomTemp();
+        })
     },
 
     scrollToTop(e) {
