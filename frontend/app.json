@@ -9,7 +9,8 @@
         "pages/myCalender/myCalender",
         "pages/mysetting/mysetting",
         "pages/intro/intro",
-        "pages/logo/logo"
+        "pages/logo/logo",
+        "pages/index/index"
     ],
     "window": {
         "navigationBarBackgroundColor": "#ffffff",

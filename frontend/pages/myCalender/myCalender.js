@@ -1,4 +1,5 @@
 var moods = require('../../utils/constants.js');
+const wxml2canvas = require('../../utils/wxml2canvas.js');
 import {MoodName, MoodType} from '../../utils/constants.js';
 
 import 'weapp-cookie';
@@ -26,15 +27,29 @@ Page({
 
         returnMoodRecord: [],
 
+        // used for poster share
+        whetherShare: 0,
+        totHeight: 0,
+        topHeight: 0,
+        bottomHeight: 0,
+        // safeArea: 0,
+        cardInfo: {
+            avater: "http://cdn.xiaou.tech/sad_bottom.png",
+            //需要https图片路径
+            qrCode: "http://cdn.xiaou.tech/logo16_9.png",
+            //需要https图片路径
+            TagText: "Ucho",
+            //标签
+            Name: 'Ucho',
+            //姓名
+            Position: "程序员鼓励师",
+            //职位
+            Mobile: "13888888888",
+            //手机
+            Company: "才华无限有限公司" //公司
 
-        // test
-        testMoodRecord: [{
-            type: 3,
-            description: "long test messagethis is a long long long long long test messagethis is a long long long long long test message"
-        }],
-        tesMoodRecord: {},
-        testGratitute: ["这是一段很长的文字这是一段很这是一段很长的文字这是一段很", "这是一段很长的文字这是一段很这是一段很长的文字这是一段很", "这是一段很长的文字这是一段很", "长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字", "long test messagethis is a long long long long long test messagethis is a long long", "rrrrrrr", " 3333333", "f"],
-        test1: ["1", "2"]
+        }
+
 
     },
     methods : {
@@ -165,6 +180,7 @@ Page({
     },
     onLoad: function() {
         // 监听页面显示的生命周期函数
+        this.getSystemInfo()
     },
     onHide: function() {
         // 监听页面隐藏的生命周期函数
@@ -363,5 +379,296 @@ Page({
             thisDescription: b
         })
     },
+        // function for poster share
+    shareThis(e) {
+        this.setData({
+            whetherShare: 1,
+        }, () => this.getAvaterInfo())
 
+    },
+
+    /**
+     * 先下载图片
+     */
+    getAvaterInfo: function () {
+        swan.showLoading({
+        title: '生成中...',
+        mask: true
+        });
+        var that = this;
+        swan.downloadFile({
+        url: that.data.cardInfo.avater,
+        //头像图片路径
+        success: function (res) {
+            swan.hideLoading();
+
+            if (res.statusCode === 200) {
+            var avaterSrc = res.tempFilePath; //下载成功返回结果
+
+            that.getQrCode(avaterSrc); //继续下载二维码图片
+            } else {
+            swan.showToast({
+                title: '头像下载失败！',
+                icon: 'none',
+                duration: 2000,
+                success: function () {
+                var avaterSrc = "";
+                that.getQrCode(avaterSrc);
+                }
+            });
+            }
+        }
+        });
+    },
+
+    /**
+     * 下载二维码图片
+     */
+    getQrCode: function (avaterSrc) {
+        swan.showLoading({
+        title: '生成中...',
+        mask: true
+        });
+        var that = this;
+        swan.downloadFile({
+        url: that.data.cardInfo.qrCode,
+        //二维码路径
+        success: function (res) {
+            swan.hideLoading();
+
+            if (res.statusCode === 200) {
+            var codeSrc = res.tempFilePath;
+            that.sharePosteCanvas(avaterSrc, codeSrc);
+            } else {
+            swan.showToast({
+                title: '二维码下载失败！',
+                icon: 'none',
+                duration: 2000,
+                success: function () {
+                var codeSrc = "";
+                that.sharePosteCanvas(avaterSrc, codeSrc);
+                }
+            });
+            }
+        }
+        });
+    },
+
+    /**
+     * 开始用canvas绘制分享海报
+     * @param avaterSrc 下载的头像图片路径
+     * @param codeSrc   下载的二维码图片路径
+     */
+    sharePosteCanvas: function (avaterSrc, codeSrc) {
+        swan.showLoading({
+        title: '生成中...',
+        mask: true
+        });
+        var that = this;
+        var cardInfo = that.data.cardInfo; //需要绘制的数据集合
+
+        const ctx = swan.createCanvasContext('myCanvas'); //创建画布
+
+        var width = "";
+        swan.createSelectorQuery().select('#canvas-container').boundingClientRect(function (rect) {
+            console.log("height:", rect.height);
+            var height = rect.height;
+            var right = rect.right;
+            let topProp = 0.5;
+            width = rect.width * 0.8;
+            var left = rect.left + 5;
+            let topPart = rect.height * topProp;
+            let bottomPart = rect.height * (1 - topProp);
+            ctx.setFillStyle('#fff');
+            ctx.fillRect(0, 0, rect.width, height); 
+
+            if (avaterSrc) {
+                ctx.drawImage(avaterSrc, 0, topPart, rect.width, bottomPart);
+                ctx.setFontSize(14);
+                ctx.setFillStyle('#fff');
+                ctx.setTextAlign('left');
+        } //标签
+
+
+        // if (cardInfo.TagText) {
+        //   ctx.fillText(cardInfo.TagText, left + 20, width - 4);
+        //   const metrics = ctx.measureText(cardInfo.TagText); //测量文本信息
+
+        //   ctx.stroke();
+        //   ctx.rect(left + 10, width - 20, metrics.width + 20, 25);
+        //   ctx.setFillStyle('rgba(255,255,255,0.4)');
+        //   ctx.fill();
+        // } //姓名
+
+
+        // if (cardInfo.Name) {
+        //   ctx.setFontSize(14);
+        //   ctx.setFillStyle('#000');
+        //   ctx.setTextAlign('left');
+        //   ctx.fillText(cardInfo.Name, left, width + 60);
+        // } //职位
+
+
+        // if (cardInfo.Position) {
+        //   ctx.setFontSize(12);
+        //   ctx.setFillStyle('#666');
+        //   ctx.setTextAlign('left');
+        //   ctx.fillText(cardInfo.Position, left, width + 85);
+        // } //电话
+
+
+        // if (cardInfo.Mobile) {
+        //   ctx.setFontSize(12);
+        //   ctx.setFillStyle('#666');
+        //   ctx.setTextAlign('left');
+        //   ctx.fillText(cardInfo.Mobile, left, width + 105);
+        // } // 公司名称
+
+
+        // if (cardInfo.Company) {
+        //   const CONTENT_ROW_LENGTH = 24; // 正文 单行显示字符长度
+
+        //   let [contentLeng, contentArray, contentRows] = that.textByteLength(cardInfo.Company, CONTENT_ROW_LENGTH);
+        //   ctx.setTextAlign('left');
+        //   ctx.setFillStyle('#000');
+        //   ctx.setFontSize(10);
+        //   let contentHh = 22 * 1;
+
+        //   for (let m = 0; m < contentArray.length; m++) {
+        //     ctx.fillText(contentArray[m], left, width + 150 + contentHh * m);
+        //   }
+        // } //  绘制二维码
+
+
+        // if (codeSrc) {
+        //   ctx.drawImage(codeSrc, left + 160, width + 40, width / 3, width / 3);
+        //   ctx.setFontSize(10);
+        //   ctx.setFillStyle('#000');
+        //   ctx.fillText("微信扫码或长按识别", left + 160, width + 150);
+        // }
+        }).exec();
+        setTimeout(function () {
+            ctx.draw();
+            swan.hideLoading();
+        }, 1000);
+    },  
+
+    /**
+     * 多行文字处理，每行显示数量
+     * @param text 为传入的文本
+     * @param num  为单行显示的字节长度
+     */
+    textByteLength(text, num) {
+        let strLength = 0; // text byte length
+
+        let rows = 1;
+        let str = 0;
+        let arr = [];
+
+        for (let j = 0; j < text.length; j++) {
+        if (text.charCodeAt(j) > 255) {
+            strLength += 2;
+
+            if (strLength > rows * num) {
+            strLength++;
+            arr.push(text.slice(str, j));
+            str = j;
+            rows++;
+            }
+        } else {
+            strLength++;
+
+            if (strLength > rows * num) {
+            arr.push(text.slice(str, j));
+            str = j;
+            rows++;
+            }
+        }
+        }
+
+        arr.push(text.slice(str, text.length));
+        return [strLength, arr, rows]; //  [处理文字的总字节长度，每行显示内容的数组，行数]
+    },
+
+    //点击保存到相册
+    saveShareImg: function () {
+        var that = this;
+        swan.showLoading({
+        title: '正在保存',
+        mask: true
+        });
+        setTimeout(function () {
+        swan.canvasToTempFilePath({
+            canvasId: 'myCanvas',
+            success: function (res) {
+            swan.hideLoading();
+            var tempFilePath = res.tempFilePath;
+            swan.saveImageToPhotosAlbum({
+                filePath: tempFilePath,
+
+                success(res) {
+                utils.aiCardActionRecord(19);
+                swan.showModal({
+                    content: '图片已保存到相册，赶紧晒一下吧~',
+                    showCancel: false,
+                    confirmText: '好的',
+                    confirmColor: '#333',
+                    success: function (res) {
+                    if (res.confirm) {}
+                    },
+                    fail: function (res) {}
+                });
+                },
+
+                fail: function (res) {
+                swan.showToast({
+                    title: res.errMsg,
+                    icon: 'none',
+                    duration: 2000
+                });
+                }
+            });
+            }
+        });
+        }, 1000);
+    },
+    getSystemInfo() {
+        swan.getSystemInfo({
+            success: res => {
+            let posterProp = 0.75;
+            let topProp = 0.5;
+            let windowRpx = res.windowHeight * (750 / res.windowWidth); // convert px to rpx 
+            let temp1 = windowRpx * posterProp + 'rpx';
+            let tempTop = windowRpx * posterProp * topProp;
+            let tempBottom = windowRpx * posterProp * (1-topProp);
+
+            // let temp3 = res.safeArea + 'px';
+            this.setData({
+                totHeight: temp1,
+                topHeight: tempTop,
+                bottomHeight: tempBottom,
+                // safeArea: temp3,
+            });
+            console.log(temp1);
+            console.log(tempTop)
+
+                
+            },
+            fail: err => {
+                swan.showToast({
+                    title: '获取失败',
+                    icon: 'none'
+                });
+            }
+        })
+    },
+    drawCanvas: function () {
+        console.log("drawCanvas");
+        const wrapperId = '#wrapper';
+        const drawClassName = '.draw';
+        const canvasId = 'canvas-map';
+        wxml2canvas(wrapperId, drawClassName, canvasId).then(() => {// canvas has been drawn
+        // can save the image with wx.canvasToTempFilePath and wx.saveImageToPhotosAlbum 
+    });
+  }
 });

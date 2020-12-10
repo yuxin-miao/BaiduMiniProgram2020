@@ -1,8 +1,6 @@
 <view class="wrap">
 
     <view class="top-navigation">
-
-
         <image
         class="back-arrow"
         mode="widthFix"
@@ -11,8 +9,6 @@
          bindtap="returnNav"
         />
 
-
-        <!-- <smt-icon class="back-arrow" name="arrow-left" size="38rpx" bindtap="returnNav" /> -->
         <view class="month-change">
             <view class="triangle-left" bindtap="changePrevMonth"/>
             <view class="month-display">{{thisYear}}.{{thisMonth}}</view>
@@ -20,7 +16,8 @@
         </view>
     </view>
     <view class="no-navigation">
-        <view class="calender">
+        <view class="calender" id="wrapper" bind:tap="drawCanvas">
+          <!-- <text class="title draw" data-text="Hello there">Hello there</text> -->
             <view class="calender-week">
                 <view class="grid" s-for="item, index in weekText">{{item}}</view>
             </view>
@@ -49,7 +46,7 @@
             </view>
         </view>
 
-        <view class="today">
+        <view class="today" bind:tap="shareThis">
             <scroll-view class="journal" scroll-y>
                 <view class="record-row">
                     <image
@@ -87,3 +84,12 @@
 
     </view>
 </view>
+
+<block s-if="{{whetherShare == 1}}">
+<view class='mask'/>
+    <view class='poste_box' id='canvas-container'>
+        <canvas canvas-id="myCanvas" style="width:100%;height:{{totHeight}}" />
+    </view>
+</block>
+
+<!-- <canvas canvas-id="canvas-map" class="share-canvas"></canvas> -->
