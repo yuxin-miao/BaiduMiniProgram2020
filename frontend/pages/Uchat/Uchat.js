@@ -31,9 +31,9 @@ Page({
         var time = util.chatTime(new Date());
         this.setData({
             time: time
+        }, () => {
+            this.initial();
         });
-        this.initial(this.scrollToBottomTemp);
-        this.getNickName(); // 获取用户信息并且进行是否第一次使用判断
     },
     onReady: function() {
         console.log('ready')
@@ -67,41 +67,49 @@ Page({
     },
 
     scrollToBottomTemp(){
-        swan.pageScrollTo({
-            scrollTop: 8000000, // 写一个大于当前页面高度的值
-            duration: 500,
-            success: () => {
-                console.log('pageScrollTo success');
-            },
-            fail: err => {
-                console.log('pageScrollTo fail', err);
+        // swan.pageScrollTo({
+        //     scrollTop: 8000000, // 写一个大于当前页面高度的值
+        //     duration: 500,
+        //     success: () => {
+        //         console.log('pageScrollTo success');
+        //     },
+        //     fail: err => {
+        //         console.log('pageScrollTo fail', err);
+        //     }
+        // });
+
+        swan.createSelectorQuery()
+        .select("#uchat")
+        .boundingClientRect(rect => {
+            const prevHeight = this.data.windowHeight;
+            if (rect.bottom < prevHeight) {
+                // 某些情况下高度检测失效，向下滑动一段固定距离
+                swan.pageScrollTo({
+                    scrollTop: prevHeight + 1000,
+                    duration: 500,
+                    success: () => {
+                        this.setData({ windowHeight: prevHeight + 1000 });
+                    }
+                });
+            } else {
+                // 若高度检测生效，则使用系统高度
+                swan.pageScrollTo({
+                    scrollTop: rect.bottom,
+                    duration: 200,
+                    success: res => {
+                        this.setData({ windowHeight: rect.bottom });
+                    }
+                });
             }
-        });
-
-
-        // swan.createSelectorQuery()
-        // .select("#uchat")
-        // .boundingClientRect(function(rect) {
-        //     swan.pageScrollTo({
-        //         scrollTop: rect.bottom,
-        //         duration: 300,
-        //         success: res => {
-        //             console.log(rect);
-        //             console.log('pageScrollTo success', res);
-        //         },
-        //         fail: err => {
-        //             console.log('pageScrollTo fail', err);
-        //         }
-        //     });
-        // })
-        // .exec();
+        })
+        .exec();
 
     },
 
      // SENDER input
     SenderMsg:function(e){
         this.setData({
-        thisSenderMsg:e.detail.value
+            thisSenderMsg:e.detail.value
         });
     },
     // RAW input: SEND data and GET NEW
@@ -286,7 +294,8 @@ Page({
                     uChoices: [],
                     justEnter: '0',
                     taskFinish: true,
-
+                }, () => {
+                    this.scrollToBottomTemp();
                 })
             }
             else this.notMatchingQuestion();
@@ -306,7 +315,7 @@ Page({
 
 
     },
-    initial: function(onSuc) {
+    initial: function() {
         swan.request({
             url: getApp().getUrl('/message/'),
             method: 'GET',
@@ -322,18 +331,16 @@ Page({
                 let tempPrevM = [];
                 res.data.forEach(record => {
                     let tempType = record.sender === null ? "1" : "0";
-                   tempPrevM.push({
-                       type: tempType,
-                       msg: record.content
-                   })
+                    tempPrevM.push({
+                        type: tempType,
+                        msg: record.content
+                    })
                 })
                 this.setData({
                     prevMsgs: tempPrevM,
                 }, () => {
-                    // 数据设置完，渲染完成后再scroll
-                    onSuc();
-                })
-                // 不要用setTimeout
+                    this.getNickName();
+                });
             },
             fail: err => {
                 swan.showModal({
@@ -390,7 +397,7 @@ Page({
 
 
     },
-    getNickName: function() {
+    getNickName: function () {
         swan.request({
             url: getApp().getUrl('/account/user/'),
             method: 'GET',
@@ -399,8 +406,10 @@ Page({
                     swan.showModal({
                         title: '请求失败',
                         content: 'getNickName Fail'
-                    })
+                    });
+                    return;
                 }
+
                 this.setData({
                     nickname: res.data.nickname
                 }, () => {
@@ -416,7 +425,6 @@ Page({
         })
     },
     userEnter: function() {
-        console.log("userEnter")
         this.setData({
             justEnter: "1",
         })
@@ -429,6 +437,8 @@ Page({
             this.setData({
                 displayMsgs: tempDis,
                 doChoice: '0',
+            }, () => {
+                this.scrollToBottomTemp();
             })
         }
         else {
@@ -436,12 +446,11 @@ Page({
             let tempDis = [
                 { type: "1", msg: tempMsg },
             ];
-            
+
             swan.request({
                 url: getApp().getUrl('/message/talk_finished/'),
                 method: 'GET',
                 success: res => {
-                    console.log('tempTaskFinish', res);
                     if (res.statusCode != 200) {
                         swan.showModal({
                             title: "请求错误",
@@ -462,6 +471,8 @@ Page({
                             uChoices: tempCh,
                             uChRely: tempChRe,
                             taskFinish: res.data.talk_finished,
+                        }, () => {
+                            this.scrollToBottomTemp();
                         })
                     }
                     else {
@@ -478,7 +489,9 @@ Page({
                             uChoices: tempCh,
                             uChRely: tempChRe,
                             taskFinish: res.data.talk_finished,
-                        })
+                        }, () => {
+                            this.scrollToBottomTemp();
+                        });
                     }
                 }
             })
@@ -571,7 +584,6 @@ Page({
                 let tempCh = [];
                 let tempChRe = [];
                 if (res.data.process_type == '2') {    // 心情日记
-                    console.log("LastQuestion心情日记");
                     this.setData({
                         displayMsgs: tempDis,
                         uChoices: tempCh,
@@ -607,7 +619,6 @@ Page({
         })
     },
     allQuestionUpdate: function(res) {
-        console.log("allQuestionUpdate: ", res);
         if (res.statusCode != 200) {
             swan.showModal({
                 title: '请求失败',
@@ -655,20 +666,6 @@ Page({
 
     },
 
-    pageScrollToBottom: function() {
-        var that = this;
-        var height = swan.getSystemInfoSync().windowHeight;
-        console.log('pageScrollToBottom', height);
-        swan.createSelectorQuery().select('#page').boundingClientRect(function(rect) {
-          if (rect){
-            that.setData({
-              windowHeight: height,
-              scrollTop: rect.height
-            })
-          };
-          console.log('pageScrollToBottom', that.data.scrollTop);
-        }).exec()
-    },
     bye: function() {
         swan.request({
             url: getApp().getUrl('/message/bye/'),

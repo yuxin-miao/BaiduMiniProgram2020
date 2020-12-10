@@ -1,4 +1,4 @@
-<view class="chat-page" id="uchat">
+<view class="chat-page">
     <view class="chat-top">
         <view class="top-navigation">
             <image
@@ -17,7 +17,7 @@
         </view>
     </view>
 
-    <view class="chat-body">
+    <view class="chat-body" id="uchat">
         <view s-for="item, index in prevMsgs">
             <block s-if="{{item.type == 1}}">
                 <view class="chat-row">
@@ -30,6 +30,7 @@
                 </view>
             </block>
         </view>
+
         <view class="chat-time">{{time}}</view>
 
         <view s-for="item, index in displayMsgs">
