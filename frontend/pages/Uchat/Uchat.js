@@ -26,6 +26,10 @@ Page({
         toolChoice: 0, // used for toolbox select 
     },
     onLoad: function () {
+        //     // chat Animation
+        // this.chatAni = swan.createAnimation({
+        
+        // })
         swan.showLoading({
             title: '努力加载中',
             mask: true
@@ -488,7 +492,6 @@ Page({
             let tempDis = [
                 { type: "1", msg: tempMsg },
             ];
-
             swan.request({
                 url: getApp().getUrl('/message/talk_finished/'),
                 method: 'GET',
@@ -508,7 +511,7 @@ Page({
                         let tempCh = ["接着聊", "重新开始"];
                         let tempChRe = ["让我们接着聊吧", "我想要聊别的"];
                         this.setData({
-                            displayMsgs: tempDis,
+                            // displayMsgs: tempDis,
                             doChoice: '1',
                             uChoices: tempCh,
                             uChRely: tempChRe,
@@ -516,6 +519,7 @@ Page({
                         }, () => {
                             this.scrollToBottomTemp();
                         })
+                        this.appendMsg(tempDis);
                     }
                     else {
                         this.bye();
@@ -740,4 +744,15 @@ Page({
             }
         })
     },
+    appendMsg: function(tempMsgs) {
+        tempMsgs.forEach(msg => {
+            console.log(msg);
+            let tempDis = this.data.displayMsgs;
+            tempDis.push(msg);
+            this.setData({
+                displayMsgs: tempDis
+            })
+        })
+    },
+
 });

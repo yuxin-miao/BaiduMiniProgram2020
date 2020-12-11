@@ -41,15 +41,15 @@
 
         <view class="chat-time">{{time}}</view>
 
-        <view s-for="item, index in displayMsgs">
+        <view s-for="item, index in displayMsgs"animation="{{chatAni}}">
             <block s-if="{{item.type == 1}}">
                 <view class="chat-row">
-                <view class="u-left {{index >= displayMsgs.length - 2 ? 'shadow-left': '' }}"> {{item.msg}}</view>
+                <view class="u-left {{index >= displayMsgs.length - 2 ? 'shadow-left': '' }} open"> {{item.msg}}</view>
                 </view>
             </block>
             <block s-else>
                 <view class="chat-row">
-                <view class="m-right {{index >= displayMsgs.length - 2 ? 'shadow-right': '' }}"> {{item.msg}}</view>
+                <view class="m-right {{index >= displayMsgs.length - 2 ? 'shadow-right': '' }} open"> {{item.msg}}</view>
                 </view>
             </block>
         </view>
