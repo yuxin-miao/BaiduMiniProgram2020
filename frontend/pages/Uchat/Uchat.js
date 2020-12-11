@@ -23,6 +23,7 @@ Page({
         MoodName: ["smile", "like", "happy", "upset", "sad", "angry", "ok"],
         chatPaddingBottom: "10vh",
         chatHeight: 0,
+        toolChoice: 0, // used for toolbox select 
     },
     onLoad: function () {
         swan.showLoading({
@@ -70,7 +71,7 @@ Page({
     scrollToBottomTemp(){
         let bottomHeight = 0;
         swan.createSelectorQuery().select('#uchat-bottom').boundingClientRect(rect => {
-            console.log("节点信息", rect);
+            // console.log("节点信息", rect);
             bottomHeight = rect.height;
         }).exec();
 
@@ -122,8 +123,8 @@ Page({
         }); // for user msg
         this.setData({
             displayMsgs: tempMsgs,
-        })
-        if (this.data.justEnter == "1") {
+        });
+        if (this.data.justEnter == "1") { // set nickname for first time enter user 
             if(this.data.thisSenderMsg.length > 5){
                 swan.showToast({
                     title: '昵称长度不可大于五个字符',
@@ -143,6 +144,10 @@ Page({
                 },
                 data: {nickname: this.data.thisSenderMsg},
                 success: res => {
+                    console.log("set nickname", this.data.thisSenderMsg);
+                    this.setData({
+                        nickname: this.data.thisSenderMsg
+                    })
                     if (res.statusCode != 200) {
                         swan.showModal({
                             title: '请求失败',
@@ -157,9 +162,8 @@ Page({
         }
         else if (this.data.taskFinish == false) {
             if (this.data.whetherDetermineMatch === '0' || this.data.taskFinish ==  false) {
-                console.log('POST 22:', this.data.thisSenderMsg);
+                // console.log('POST 22:', this.data.thisSenderMsg);
 
-                // let tempTaskFinish = false;
                 swan.request({
                     url: getApp().getUrl('/message/reply/'),
                     method: 'POST',
@@ -175,7 +179,7 @@ Page({
                             return;
                         }
                         else {
-                            console.log("sendMsg: thisTaskFinsh: ", this.data.taskFinish);
+                            console.log("sendMsg: thisTaskFinish: ", this.data.taskFinish);
                             this.bye();
                             let tempDis = this.data.displayMsgs;
                             tempDis.push({
@@ -208,7 +212,7 @@ Page({
         }
         else if (this.data.taskFinish == true) {
             console.log("sendMsg taskFinish", this.data.thisSenderMsg);
-            this.matchingQuestion();
+            this.matchingQuestion(this.data.thisSenderMsg);
             this.setData({
                 taskFinish: false
             })
@@ -218,7 +222,7 @@ Page({
     // CHOICE: send choice
     selectChoice(e) {
         // update user's reply and u's reply
-        console.log('select choice: ', this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
+        console.log('select choice: ', this.data.toolChoice, this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
         let choiceIndex = e.currentTarget.dataset.choiceIndex;
         let tempMsgs = this.data.displayMsgs;
         tempMsgs.push ({
@@ -266,6 +270,12 @@ Page({
                 }
             })
         }
+        else if (this.data.toolChoice == 1) {
+            this.notMatchingQuestion();
+            this.setData({
+                toolChoice: 0
+            })
+        }
         else if (this.data.taskFinish == true) {
 
             console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
@@ -286,7 +296,12 @@ Page({
                     this.scrollToBottomTemp();
                 })
             }
-            else this.notMatchingQuestion();
+            else {
+                this.setData({
+                    toolChoice: 1,
+                })
+                this.notMatchingQuestion();
+            }
         }
         else if (this.data.whetherDetermineMatch === '0') {
                 this.getInitialUpdateData(choiceIndex);
@@ -358,28 +373,66 @@ Page({
             });
             if (chIndex == '0') {
                 //matching
-                this.matchingQuestion();
+                this.matchingQuestion(this.data.thisSenderMsg );
             }
             else {
                 // not matching
+                this.setData({
+                    toolChoice: 1,
+                })
                 this.notMatchingQuestion();
             }
             return;
         };
 
-          // 初次进入 或 再次进入不想继续上次的话题
+          // 初次进入
+        if (this.data.justEnter == "1" && chIndex == -1) { 
+            console.log("初次进入nickname", this.data.nickname);
+            let tempMsg = this.data.nickname + '在我们聊天之前让我先来做个自我介绍吧';
+            // let newDis = [{
+            //     type: '1',
+            //     msg: tempMsg,
+            // }, {
+            //     type: '1',
+            //     msg: '我是对大学生心理困惑进行开导的机器人，通过心情记录、感恩日记、合理书写、等心理学方法，来帮助大学生们进行心理上的调整，缓解心理压力和负面情绪。',
+            // }, {
+            //     type: '1',
+            //     msg: '还有一点要提醒的是，我的聊天对象是存在短暂情绪/心理困扰的大学生群体，如果你感到有严重的心理困扰或者被诊断有心理疾病，请向专业心理医生寻求帮助喔！',
+            // }, ];
+            tempDis.push({
+                type: '1',
+                msg: tempMsg,
+            }, {
+                type: '1',
+                msg: '我是对大学生心理困惑进行开导的机器人，通过心情记录、感恩日记、合理书写、等心理学方法，来帮助大学生们进行心理上的调整，缓解心理压力和负面情绪。',
+            }, {
+                type: '1',
+                msg: '还有一点要提醒的是，我的聊天对象是存在短暂情绪/心理困扰的大学生群体，如果你感到有严重的心理困扰或者被诊断有心理疾病，请向专业心理医生寻求帮助喔！',
+            });
+            this.setData({
+                displayMsgs: tempDis,
+                uChoices: ['好喔'],
+                uChRely: ['好喔'],
+                doChoice: '1',
+                whetherDetermineMatch: '1',
+                taskFinish: true,
+                toolChoice: 1,
+            },() => {
+                this.scrollToBottomTemp();
+            });
+            return;
+        }
+        // 非初次进入且选择重新开始
         this.bye();
-        tempDis.push({
-            type: '1',
-            msg: '有想和我聊聊的话题吗'
-        })
+        this.notMatchingQuestion();
         this.setData({
             displayMsgs: tempDis,
-            uChoices: ["有", "没有"],
-            uChRely: ["有", "没有"],
+            uChoices: [],
+            uChRely: [],
             doChoice: '1',
             whetherDetermineMatch: '1',
-            taskFinish: true
+            taskFinish: true,
+            toolChoice: 1,
         },() => {
             this.scrollToBottomTemp();
         })
@@ -466,20 +519,21 @@ Page({
                     }
                     else {
                         this.bye();
-                        tempDis.push({
-                            type: '1',
-                            msg: '有想和我聊聊的话题吗？'
-                        });
-                        let tempCh = ["有", "没有"];
-                        let tempChRe = ["有", "没有"];
+                        // tempDis.push({
+                        //     type: '1',
+                        //     msg: '有想和我聊聊的话题吗？'
+                        // });
+                        // let tempCh = ["有", "没有"];
+                        // let tempChRe = ["有", "没有"];
                         this.setData({
                             displayMsgs: tempDis,
                             doChoice: '1',
-                            uChoices: tempCh,
-                            uChRely: tempChRe,
+                            uChoices: [],
+                            uChRely: [],
                             taskFinish: res.data.talk_finished,
                         }, () => {
                             this.scrollToBottomTemp();
+                            this.notMatchingQuestion();
                         });
                     }
                 }
@@ -528,7 +582,7 @@ Page({
         })
     },
 
-    matchingQuestion: function() {
+    matchingQuestion: function(toMatchMsg) {
         swan.request({
             url: getApp().getUrl('/message/get_question/'),
             method: 'POST',
@@ -536,7 +590,7 @@ Page({
                 // POST 携带
                 'X-CSRFToken': cookies.get('csrftoken')
             },
-            data: {matching: this.data.thisSenderMsg},
+            data: {matching: toMatchMsg},
             success: res => {
                 this.allQuestionUpdate(res);
                 this.setData({
