@@ -1,5 +1,5 @@
-<view class="chat-page" id="uchat">
-    <view class="chat-top">
+<view class="chat-page">
+    <view id="uchat-top">
         <view class="top-navigation">
             <image
             class="back-arrow"
@@ -17,7 +17,15 @@
         </view>
     </view>
 
-    <view class="chat-body">
+    <scroll-view
+        scroll-y
+        scroll-top="{= scrollTop =}"
+        scroll-with-animation="true"
+        enable-back-to-top="true"
+        class="chat-body"
+        id="uchat-body"
+        style="height: {{chatHeight}}px"
+    >
         <view s-for="item, index in prevMsgs">
             <block s-if="{{item.type == 1}}">
                 <view class="chat-row">
@@ -30,6 +38,7 @@
                 </view>
             </block>
         </view>
+
         <view class="chat-time">{{time}}</view>
 
         <view s-for="item, index in displayMsgs">
@@ -44,54 +53,56 @@
                 </view>
             </block>
         </view>
+    </scroll-view>
+
+    <view id="uchat-bottom">
+        <block s-if="{{doChoice == '0'}}">
+            <view class="chat-bottom" bind:tap="scrollToBottomTemp">
+                <image
+                    class="chat-icon"
+                    mode="widthFix"
+                    style="width: 50rpx"
+                    src="../../images/chat-icon.svg"
+                    bindtap="recordNav" />
+
+
+                <form class="msg-input" bindtap="scrollToBottomTemp">
+                    <input class="normalInput" bindinput="SenderMsg"/>
+                    <button class="image-button" formType="reset" bindtap="sendMsg"  style="height:80rpx">
+                    <image
+                        mode="widthFix"
+                        class="msg-send"
+                        src="../../images/chat-send.svg"/>
+                    </button>
+                </form>
+            </view>
+        </block>
+        <block s-if="{{doChoice == '1'}}">
+            <view class="choice-buttom" bind:tap="scrollToBottomTemp">
+
+                <view class="all-choices">
+                    <view s-for="choice, chIndex in uChoices" class="each-choice" bind:tap="selectChoice" data-choice-index="{{chIndex}}">
+                        <text class="choice-text">{{choice}} </text>
+                    </view>
+                </view>
+            </view>
+        </block>
+        <block s-if="{{doChoice == '2'}}">
+            <view class="choice-buttom" bind:tap="scrollToBottomTemp">
+
+                <view class="all-choices-image">
+                    <view s-for="moodname, chIndex in MoodName">
+                    <image
+                        mode="widthFix"
+                        style="width: 90rpx"
+                        class="each-choice-image"
+                        src="../../images/mood_{{moodname}}.svg"
+                        bind:tap="selectChoice" data-choice-index="{{chIndex}}"/>
+                    </view>
+                </view>
+            </view>
+        </block>
     </view>
-
-    <block s-if="{{doChoice == '0'}}">
-        <view class="chat-bottom" bind:tap="scrollToBottomTemp">
-            <image
-                class="chat-icon"
-                mode="widthFix"
-                style="width: 50rpx"
-                src="../../images/chat-icon.svg"
-                bindtap="recordNav" />
-
-
-            <form class="msg-input" bindtap="scrollToBottomTemp">
-                <input class="normalInput" bindinput="SenderMsg"/>
-                <button class="image-button" formType="reset" bindtap="sendMsg"  style="height:80rpx">
-                <image
-                    mode="widthFix"
-                    class="msg-send"
-                    src="../../images/chat-send.svg"/>
-                </button>
-            </form>
-        </view>
-    </block>
-    <block s-if="{{doChoice == '1'}}">
-        <view class="choice-buttom" bind:tap="scrollToBottomTemp">
-
-            <view class="all-choices">
-                <view s-for="choice, chIndex in uChoices" class="each-choice" bind:tap="selectChoice" data-choice-index="{{chIndex}}">
-                    <text class="choice-text">{{choice}} </text>
-                </view>
-            </view>
-        </view>
-    </block>
-    <block s-if="{{doChoice == '2'}}">
-        <view class="choice-buttom" bind:tap="scrollToBottomTemp">
-
-            <view class="all-choices-image">
-                <view s-for="moodname, chIndex in MoodName">
-                <image
-                    mode="widthFix"
-                    style="width: 90rpx"
-                    class="each-choice-image"
-                    src="../../images/mood_{{moodname}}.svg"
-                    bind:tap="selectChoice" data-choice-index="{{chIndex}}"/>
-                </view>
-            </view>
-        </view>
-    </block>
     <!-- <view><smt-icon name="arrow-down" size="40rpx" class="suspend-button" bindtap="scrollToBottomTemp"/></view> -->
 
 </view>

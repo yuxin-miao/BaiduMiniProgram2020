@@ -8,7 +8,6 @@ Page({
     data: {
         time: '',
         scrollTop: 0,
-        windowHeight: 0,
         prevMsgs: [], // previous messages
         thisSenderMsg: '', // 即时输入
         thisDisplayMsg: '', // 发送/显示的用户信息
@@ -22,18 +21,20 @@ Page({
         uChoices: [], // choices given, array of strings
         uChRely: [], // reply by U after select a choice
         MoodName: ["smile", "like", "happy", "upset", "sad", "angry", "ok"],
-
+        chatPaddingBottom: "10vh",
+        chatHeight: 0,
     },
     onLoad: function () {
-        console.log('load')
-        // console.log(messages);
-        // 监听页面加载的生命周期函数
+        swan.showLoading({
+            title: '努力加载中',
+            mask: true
+        });
         var time = util.chatTime(new Date());
         this.setData({
             time: time
+        }, () => {
+            this.initial();
         });
-        this.initial(this.scrollToBottomTemp);
-        this.getNickName(); // 获取用户信息并且进行是否第一次使用判断
     },
     onReady: function() {
         console.log('ready')
@@ -67,41 +68,41 @@ Page({
     },
 
     scrollToBottomTemp(){
-        swan.pageScrollTo({
-            scrollTop: 8000000, // 写一个大于当前页面高度的值
-            duration: 500,
-            success: () => {
-                console.log('pageScrollTo success');
-            },
-            fail: err => {
-                console.log('pageScrollTo fail', err);
-            }
+        let bottomHeight = 0;
+        swan.createSelectorQuery().select('#uchat-bottom').boundingClientRect(rect => {
+            console.log("节点信息", rect);
+            bottomHeight = rect.height;
+        }).exec();
+
+        let info = swan.getSystemInfoSync();
+        if ((info instanceof Error)) {
+            swan.showModal({
+                title: '获取系统信息失败',
+                content: '无法初始化聊天窗口',
+            });
+            return;
+        }
+
+        this.setData({ chatHeight: info.windowHeight - bottomHeight }, () => {
+            const selectorQuery = swan.createSelectorQuery();
+            selectorQuery.selectAll('.chat-row').boundingClientRect();
+            selectorQuery.exec(res => {
+                const prevHeight = this.data.scrollTop;
+                if (res[0][res[0].length-1].bottom < prevHeight) {
+                    // 若高度检测未生效
+                    this.setData({ scrollTop: prevHeight + 2000 });
+                } else {
+                    // 若高度检测生效，则使用系统高度
+                    this.setData({ scrollTop: res[0][res[0].length-1].bottom });
+                }
+            });
         });
-
-
-        // swan.createSelectorQuery()
-        // .select("#uchat")
-        // .boundingClientRect(function(rect) {
-        //     swan.pageScrollTo({
-        //         scrollTop: rect.bottom,
-        //         duration: 300,
-        //         success: res => {
-        //             console.log(rect);
-        //             console.log('pageScrollTo success', res);
-        //         },
-        //         fail: err => {
-        //             console.log('pageScrollTo fail', err);
-        //         }
-        //     });
-        // })
-        // .exec();
-
     },
 
      // SENDER input
     SenderMsg:function(e){
         this.setData({
-        thisSenderMsg:e.detail.value
+            thisSenderMsg:e.detail.value
         });
     },
     // RAW input: SEND data and GET NEW
@@ -224,9 +225,6 @@ Page({
             type:'0',
             msg: this.data.uChRely[choiceIndex],
         });
-        this.setData({
-            displayMsgs: tempMsgs,
-        })
         if (this.data.justEnter == "0" &&  this.data.taskFinish == false) {
             console.log('POST SC:', choiceIndex);
             swan.request({
@@ -244,15 +242,14 @@ Page({
                         return
                     }
                     this.bye();
-                    let tempDis = this.data.displayMsgs;
-                    tempDis.push({
+                    tempMsgs.push({
                         type: '1',
                         msg: '有想和我聊聊的话题吗？'
                     });
                     let tempCh = ["有", "没有"];
                     let tempChRe = ["有", "没有"];
                     this.setData({
-                        displayMsgs: tempDis,
+                        displayMsgs: tempMsgs,
                         doChoice: '1',
                         uChoices: tempCh,
                         uChRely: tempChRe,
@@ -274,19 +271,19 @@ Page({
             console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
 
             if (choiceIndex == '0') {
-                let tempDis = this.data.displayMsgs;
-                tempDis.push({
+                tempMsgs.push({
                     type: '1',
                     msg: '告诉我一个关键词...'
                 });
                 this.setData({
-                    displayMsgs: tempDis,
+                    displayMsgs: tempMsgs,
                     doChoice: '0',
                     uChRely: [],
                     uChoices: [],
                     justEnter: '0',
                     taskFinish: true,
-
+                }, () => {
+                    this.scrollToBottomTemp();
                 })
             }
             else this.notMatchingQuestion();
@@ -301,12 +298,8 @@ Page({
                 content: 'selectChoice Wrong'
             })
         }
-
-
-
-
     },
-    initial: function(onSuc) {
+    initial: function() {
         swan.request({
             url: getApp().getUrl('/message/'),
             method: 'GET',
@@ -322,24 +315,25 @@ Page({
                 let tempPrevM = [];
                 res.data.forEach(record => {
                     let tempType = record.sender === null ? "1" : "0";
-                   tempPrevM.push({
-                       type: tempType,
-                       msg: record.content
-                   })
+                    tempPrevM.push({
+                        type: tempType,
+                        msg: record.content
+                    })
                 })
                 this.setData({
                     prevMsgs: tempPrevM,
                 }, () => {
-                    // 数据设置完，渲染完成后再scroll
-                    onSuc();
-                })
-                // 不要用setTimeout
+                    this.getNickName();
+                });
             },
             fail: err => {
                 swan.showModal({
                     title: '网络异常',
                     content: '请检查网络连接'
                 });
+            },
+            complete: () => {
+                swan.hideLoading();
             }
         })
 
@@ -386,11 +380,13 @@ Page({
             doChoice: '1',
             whetherDetermineMatch: '1',
             taskFinish: true
-        },() => {this.scrollToBottomTemp()})
+        },() => {
+            this.scrollToBottomTemp();
+        })
 
 
     },
-    getNickName: function() {
+    getNickName: function () {
         swan.request({
             url: getApp().getUrl('/account/user/'),
             method: 'GET',
@@ -399,8 +395,10 @@ Page({
                     swan.showModal({
                         title: '请求失败',
                         content: 'getNickName Fail'
-                    })
+                    });
+                    return;
                 }
+
                 this.setData({
                     nickname: res.data.nickname
                 }, () => {
@@ -416,7 +414,6 @@ Page({
         })
     },
     userEnter: function() {
-        console.log("userEnter")
         this.setData({
             justEnter: "1",
         })
@@ -429,6 +426,8 @@ Page({
             this.setData({
                 displayMsgs: tempDis,
                 doChoice: '0',
+            }, () => {
+                this.scrollToBottomTemp();
             })
         }
         else {
@@ -436,12 +435,11 @@ Page({
             let tempDis = [
                 { type: "1", msg: tempMsg },
             ];
-            
+
             swan.request({
                 url: getApp().getUrl('/message/talk_finished/'),
                 method: 'GET',
                 success: res => {
-                    console.log('tempTaskFinish', res);
                     if (res.statusCode != 200) {
                         swan.showModal({
                             title: "请求错误",
@@ -462,6 +460,8 @@ Page({
                             uChoices: tempCh,
                             uChRely: tempChRe,
                             taskFinish: res.data.talk_finished,
+                        }, () => {
+                            this.scrollToBottomTemp();
                         })
                     }
                     else {
@@ -478,7 +478,9 @@ Page({
                             uChoices: tempCh,
                             uChRely: tempChRe,
                             taskFinish: res.data.talk_finished,
-                        })
+                        }, () => {
+                            this.scrollToBottomTemp();
+                        });
                     }
                 }
             })
@@ -571,14 +573,15 @@ Page({
                 let tempCh = [];
                 let tempChRe = [];
                 if (res.data.process_type == '2') {    // 心情日记
-                    console.log("LastQuestion心情日记");
                     this.setData({
                         displayMsgs: tempDis,
                         uChoices: tempCh,
                         uChRely: ['smile', 'like', 'happy', 'upset', 'sad', 'angry', 'ok'],
                         doChoice: '2',
                         justEnter: '0',
-                    },() => {this.scrollToBottomTemp()})
+                    },() => {
+                        this.scrollToBottomTemp();
+                    })
                     return;
                 }
                 else if (res.data.reply_type == '1') {
@@ -607,7 +610,6 @@ Page({
         })
     },
     allQuestionUpdate: function(res) {
-        console.log("allQuestionUpdate: ", res);
         if (res.statusCode != 200) {
             swan.showModal({
                 title: '请求失败',
@@ -630,7 +632,9 @@ Page({
                 uChRely: ['smile', 'like', 'happy', 'upset', 'sad', 'angry', 'ok'],
                 doChoice: '2',
                 justEnter: '0',
-            },() => {this.scrollToBottomTemp()})
+            },() => {
+                this.scrollToBottomTemp();
+            })
             return;
         }
 
@@ -647,7 +651,9 @@ Page({
             uChRely: tempChRe,
             doChoice: res.data.question.reply_type,
             justEnter: '0',
-        },() => {this.scrollToBottomTemp()})
+        },() => {
+            this.scrollToBottomTemp();
+        })
     },
 
     scrollToTop(e) {
@@ -655,20 +661,6 @@ Page({
 
     },
 
-    pageScrollToBottom: function() {
-        var that = this;
-        var height = swan.getSystemInfoSync().windowHeight;
-        console.log('pageScrollToBottom', height);
-        swan.createSelectorQuery().select('#page').boundingClientRect(function(rect) {
-          if (rect){
-            that.setData({
-              windowHeight: height,
-              scrollTop: rect.height
-            })
-          };
-          console.log('pageScrollToBottom', that.data.scrollTop);
-        }).exec()
-    },
     bye: function() {
         swan.request({
             url: getApp().getUrl('/message/bye/'),
