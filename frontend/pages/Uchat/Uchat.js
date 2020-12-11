@@ -90,7 +90,7 @@ Page({
                 const prevHeight = this.data.scrollTop;
                 if (res[0][res[0].length-1].bottom < prevHeight) {
                     // 若高度检测未生效
-                    this.setData({ scrollTop: prevHeight + 1000 });
+                    this.setData({ scrollTop: prevHeight + 2000 });
                 } else {
                     // 若高度检测生效，则使用系统高度
                     this.setData({ scrollTop: res[0][res[0].length-1].bottom });
@@ -225,9 +225,6 @@ Page({
             type:'0',
             msg: this.data.uChRely[choiceIndex],
         });
-        this.setData({
-            displayMsgs: tempMsgs,
-        })
         if (this.data.justEnter == "0" &&  this.data.taskFinish == false) {
             console.log('POST SC:', choiceIndex);
             swan.request({
@@ -245,15 +242,14 @@ Page({
                         return
                     }
                     this.bye();
-                    let tempDis = this.data.displayMsgs;
-                    tempDis.push({
+                    tempMsgs.push({
                         type: '1',
                         msg: '有想和我聊聊的话题吗？'
                     });
                     let tempCh = ["有", "没有"];
                     let tempChRe = ["有", "没有"];
                     this.setData({
-                        displayMsgs: tempDis,
+                        displayMsgs: tempMsgs,
                         doChoice: '1',
                         uChoices: tempCh,
                         uChRely: tempChRe,
@@ -275,13 +271,12 @@ Page({
             console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
 
             if (choiceIndex == '0') {
-                let tempDis = this.data.displayMsgs;
-                tempDis.push({
+                tempMsgs.push({
                     type: '1',
                     msg: '告诉我一个关键词...'
                 });
                 this.setData({
-                    displayMsgs: tempDis,
+                    displayMsgs: tempMsgs,
                     doChoice: '0',
                     uChRely: [],
                     uChoices: [],
