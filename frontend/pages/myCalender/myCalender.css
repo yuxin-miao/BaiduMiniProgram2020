@@ -193,7 +193,7 @@
     
 .poste_box{
     position: fixed;
-    top: 170rpx;
+    top: 240rpx;
     left: 50rpx;
     z-index: 1002;
     width: 85%;
@@ -227,4 +227,18 @@
     width: 100%;
     height: 100%;
     background: transparent;
-  }
+}
+.saveButton {
+    z-index: 999;
+    position: fixed;
+    align-self: center;
+    text-align: center;
+    margin-left: 225rpx;
+    padding: 18rpx 0;
+    background-color: rgba(207 244 209);
+    width: 300rpx;
+    height: 90rpx;
+    font-size: 35rpx;
+    color: rgba(128 186 161);
+    border-radius: 20px;
+}

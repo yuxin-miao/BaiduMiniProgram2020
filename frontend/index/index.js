@@ -8,7 +8,7 @@ Page({
     },
     onShow() {
         swan.downloadFile({
-            url: 'http://cdn.xiaou.tech/1.json',
+            url: 'https://cdn.xiaou.tech/3.json',
             // header: {
             //     'content-type': 'application/json'
             // },

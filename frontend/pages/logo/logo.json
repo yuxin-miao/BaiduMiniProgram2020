@@ -1,6 +1,3 @@
 {
-    "navigationStyle": "custom",
-    "usingComponents": {
-        "poster": "wxa-plugin-canvas/poster"
-    }
+    "navigationStyle": "custom"
 }

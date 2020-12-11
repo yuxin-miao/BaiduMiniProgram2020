@@ -29,14 +29,15 @@ Page({
 
         // used for poster share
         whetherShare: 0,
+        generateFinish: 0,
         totHeight: 0,
         topHeight: 0,
         bottomHeight: 0,
         // safeArea: 0,
         cardInfo: {
-            avater: "http://cdn.xiaou.tech/sad_bottom.png",
+            avater: "https://cdn.xiaou.tech/sad_bottom.png",
             //需要https图片路径
-            qrCode: "http://cdn.xiaou.tech/logo16_9.png",
+            qrCode: "https://cdn.xiaou.tech/logo16_9.png",
             //需要https图片路径
             TagText: "Ucho",
             //标签
@@ -104,35 +105,25 @@ Page({
     onShow: function () {
         swan.setPageInfo({
 
-            title: '晒元宵节活动红包，爱奇艺60张年卡、600张季卡等你拿！-百度贴吧',
-            keywords: '百度,百度贴吧,好运中国年,60,晒元,宵节',
-            description: '晒元宵节活动红包，爱..昨天的百度APP元宵节活动中，共发出2亿现金红包、含151万个手气现金大奖和240辆红旗轿车，谁是好运锦鲤，快来分享！马上惊喜升级~摇中红包的锦鲤们即刻晒出红包金额截图，我们将会抽取660位好运锦鲤',
-            articleTitle: '晒元宵节活动红包，爱奇艺60张年卡、600张季卡等你拿！',
-            releaseDate: '2019-01-02 12:01:30',
+            title: '我的心情日历',
+            keywords: '心情，日历，心情记录，表情，分享，分享心情',
+            description: '我的心情日历',
+            articleTitle: '我的心情日历',
+            releaseDate: '2020',
             image: [
-                'https://c.hiphotos.baidu.com/forum/w%3D480/sign=73c62dda83b1cb133e693d1bed5456da/f33725109313b07e8dee163d02d7912396dd8cfe.jpg',
-                'https://hiphotos.baidu.com/fex/%70%69%63/item/43a7d933c895d143e7b745607ef082025baf07ab.jpg'
             ],
             video: [{
-                url: 'https://www.baidu.com/mx/v12.mp4',
-                duration: '100',
-                image: 'https://ms-static.cdn.bcebos.com/miniappdocs/img/image-scaleToFill.png'
             }],
             visit: {
                 pv: '1000',
                 uv: '100',
                 sessionDuration: '130'
             },
-            likes: '75',
-            comments: '13',
-            collects: '23',
-            shares: '8',
-            followers: '35',
             success: res => {
-                console.log('setPageInfo success', res);
+                // console.log('setPageInfo success', res);
             },
             fail: err => {
-                console.log('setPageInfo fail', err);
+                // console.log('setPageInfo fail', err);
             }
         })
 
@@ -386,6 +377,12 @@ Page({
         }, () => this.getAvaterInfo())
 
     },
+    hidePoster(e) {
+        this.setData({
+            whetherShare: 0,
+            generateFinish: 0,
+        })
+    },
 
     /**
      * 先下载图片
@@ -550,6 +547,9 @@ Page({
         setTimeout(function () {
             ctx.draw();
             swan.hideLoading();
+            that.setData({
+                generateFinish: 1,
+            })
         }, 1000);
     },  
 
@@ -591,7 +591,7 @@ Page({
     },
 
     //点击保存到相册
-    saveShareImg: function () {
+    saveImg(e) {
         var that = this;
         swan.showLoading({
         title: '正在保存',
@@ -607,9 +607,9 @@ Page({
                 filePath: tempFilePath,
 
                 success(res) {
-                utils.aiCardActionRecord(19);
+                // utils.aiCardActionRecord(19);
                 swan.showModal({
-                    content: '图片已保存到相册，赶紧晒一下吧~',
+                    content: '图片已保存到相册',
                     showCancel: false,
                     confirmText: '好的',
                     confirmColor: '#333',
