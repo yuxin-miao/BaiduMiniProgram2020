@@ -47,7 +47,6 @@ export const login = ({ commit }, payload) => {
       })
     })
     .catch(() => {
-      console.log('Request failed...');
       Message.error('用户名或密码错误');
     });
 };
@@ -63,7 +62,6 @@ export const info = ({ commit }) => {
       });
     })
     .catch(() => {
-      console.log('Request failed...');
       Message.error('无法获取用户信息');
     });
 };
@@ -78,7 +76,6 @@ export const logout = ({ commit }) => {
       });
     })
     .catch(() => {
-      console.log('Request failed...');
       Message.error('无法注销');
     });
 

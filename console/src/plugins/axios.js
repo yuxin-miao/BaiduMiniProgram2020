@@ -14,8 +14,8 @@ import Axios from 'axios';
 import store from '@/store';
 import Cookies from 'js-cookie';
 
-// Axios.defaults.baseURL = 'https://xiaou.tech/api/';
-Axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
+Axios.defaults.baseURL = 'https://xiaou.tech/api/';
+// Axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
 Axios.defaults.headers.common.Accept = 'application/json';
 Axios.defaults.withCredentials = true;
 Axios.interceptors.response.use(
