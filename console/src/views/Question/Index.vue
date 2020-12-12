@@ -92,7 +92,7 @@
     <el-dialog title="新建问题" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="问题标题">
-          <el-input v-model="form.title"></el-input>
+          <el-input v-model="form.title" :rows="3" type="textarea"></el-input>
         </el-form-item>
         <el-form-item label="关键词">
           <el-input v-model="form.keyword" placeholder="以逗号分隔"></el-input>
