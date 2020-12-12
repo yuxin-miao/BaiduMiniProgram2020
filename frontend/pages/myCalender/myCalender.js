@@ -594,42 +594,86 @@ Page({
     saveImg(e) {
         var that = this;
         swan.showLoading({
-        title: '正在保存',
-        mask: true
+            title: '正在保存',
+            mask: true
         });
         setTimeout(function () {
-        swan.canvasToTempFilePath({
-            canvasId: 'myCanvas',
-            success: function (res) {
-            swan.hideLoading();
-            var tempFilePath = res.tempFilePath;
-            swan.saveImageToPhotosAlbum({
-                filePath: tempFilePath,
-
-                success(res) {
-                // utils.aiCardActionRecord(19);
-                swan.showModal({
-                    content: '图片已保存到相册',
-                    showCancel: false,
-                    confirmText: '好的',
-                    confirmColor: '#333',
+            swan.canvasToTempFilePath({
+                canvasId: 'myCanvas',
                     success: function (res) {
-                    if (res.confirm) {}
-                    },
-                    fail: function (res) {}
-                });
-                },
+                    swan.hideLoading();
+                    var tempFilePath = res.tempFilePath;
+                    swan.saveImageToPhotosAlbum({
 
-                fail: function (res) {
-                swan.showToast({
-                    title: res.errMsg,
-                    icon: 'none',
-                    duration: 2000
-                });
+                        filePath: tempFilePath,
+
+                        success(res) {
+                        // utils.aiCardActionRecord(19);
+                            swan.showModal({
+                                title: '图片已保存到相册',
+                                content: '快去分享给朋友吧～',
+                                showCancel: true,
+                                confirmText: '马上分享',
+                                confirmColor: '#55C595',
+                                cancelText: '下次再说',
+                                cancelColor: '#c2c2c2',
+                                success: function (res) {
+                                    if (res.confirm) {
+                                        swan.shareFile({
+                                            filePath: tempFilePath,
+                                            success: res => {
+                                                swan.showToast({
+                                                    title: '分享成功',
+                                                    icon: 'none',
+                                                    
+                                                }, () => {
+                                                    that.setData({
+                                                        whetherShare: 0,
+                                                        generateFinish: 0,
+                                                    })
+                                                })
+                                            },
+                                            fail: err => {
+                                                swan.showToast({
+                                                    title: '分享失败',
+                                                    icon: 'none',
+                                                    
+                                                }, () => {
+
+                                                    console.log("share fail");
+                                                    that.setData({
+                                                        whetherShare: 0,
+                                                        generateFinish: 0,
+                                                    })
+                                                })
+                                                that.setData({
+                                                    whetherShare: 0,
+                                                    generateFinish: 0,
+                                                })
+                                            }
+                                        })
+                                    }
+                                    else if (res.cancel) {
+                                        that.setData({
+                                            whetherShare: 0,
+                                            generateFinish: 0
+                                        })
+                                    }
+                                },
+                                fail: function (res) {}
+                            });
+                        },
+
+                        fail: function (res) {
+                            swan.showToast({
+                                title: res.errMsg,
+                                icon: 'none',
+                                duration: 2000
+                            });
+                        }
+                    });
                 }
             });
-            }
-        });
         }, 1000);
     },
     getSystemInfo() {
@@ -649,8 +693,8 @@ Page({
                 bottomHeight: tempBottom,
                 // safeArea: temp3,
             });
-            console.log(temp1);
-            console.log(tempTop)
+            // console.log(temp1);
+            // console.log(tempTop)
 
                 
             },
@@ -662,13 +706,13 @@ Page({
             }
         })
     },
-    drawCanvas: function () {
-        console.log("drawCanvas");
-        const wrapperId = '#wrapper';
-        const drawClassName = '.draw';
-        const canvasId = 'canvas-map';
-        wxml2canvas(wrapperId, drawClassName, canvasId).then(() => {// canvas has been drawn
-        // can save the image with wx.canvasToTempFilePath and wx.saveImageToPhotosAlbum 
-    });
-  }
+//     drawCanvas: function () {
+//         console.log("drawCanvas");
+//         const wrapperId = '#wrapper';
+//         const drawClassName = '.draw';
+//         const canvasId = 'canvas-map';
+//         wxml2canvas(wrapperId, drawClassName, canvasId).then(() => {// canvas has been drawn
+//         // can save the image with wx.canvasToTempFilePath and wx.saveImageToPhotosAlbum 
+//     });
+//   }
 });
