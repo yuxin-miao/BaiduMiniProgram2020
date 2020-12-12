@@ -47,6 +47,7 @@
     display: inline-block;
     width: 100%;
     padding: 10rpx 0;
+    white-space: pre-wrap;
 }
 
 .m-right {
