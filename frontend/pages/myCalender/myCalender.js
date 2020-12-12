@@ -681,14 +681,21 @@ Page({
             success: res => {
             let posterProp = 0.75;
             let topProp = 0.5;
+            let testHeight = res.windowWidth * 896 / 414 * (750 / res.windowWidth);
+            testHeight = testHeight + 'rpx';
+            let posHeight = 750 * 0.85 * 896 / 414;
+            posHeight = posHeight + 'rpx';
             let windowRpx = res.windowHeight * (750 / res.windowWidth); // convert px to rpx 
             let temp1 = windowRpx * posterProp + 'rpx';
             let tempTop = windowRpx * posterProp * topProp;
             let tempBottom = windowRpx * posterProp * (1-topProp);
-
+            console.log("posHriggt", posHeight);
+            console.log(res.windowHeight);
+            console.log(res.windowWidth);
+            console.log("test", testHeight);
             // let temp3 = res.safeArea + 'px';
             this.setData({
-                totHeight: temp1,
+                totHeight: testHeight,
                 topHeight: tempTop,
                 bottomHeight: tempBottom,
                 // safeArea: temp3,
