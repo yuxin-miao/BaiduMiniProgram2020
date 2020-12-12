@@ -202,14 +202,16 @@
     filter: alpha(opacity=50);
 }
     
-.poste_box{
+.poste-box{
     position: fixed;
-    top: 240rpx;
-    left: 50rpx;
+    /* top: 240rpx; */
+    /* height: {{totHeight}}; */
+    /* height: calc(100vh - 240rpx); */
+    /* left: 50rpx; */
     z-index: 1002;
-    width: 85%;
+    /* width: 85%; */
     /* margin: auto; */
-    margin-top: 0;
+    /* margin-top: 0; */
     background-color: rgba(255, 255, 255, 0);
     /* opacity: 1; */
     /* border: 1rpx solid #ddd; */
@@ -239,7 +241,7 @@
     height: 100%;
     background: transparent;
 }
-.saveButton {
+.save-button {
     z-index: 999;
     position: fixed;
     align-self: center;

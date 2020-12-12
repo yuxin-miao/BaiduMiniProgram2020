@@ -1,6 +1,6 @@
 var moods = require('../../utils/constants.js');
 const wxml2canvas = require('../../utils/wxml2canvas.js');
-import {MoodName, MoodType} from '../../utils/constants.js';
+import {MoodName, MoodType, MoodNumber} from '../../utils/constants.js';
 
 import 'weapp-cookie';
 import cookies from 'weapp-cookie';
@@ -31,11 +31,14 @@ Page({
         whetherShare: 0,
         generateFinish: 0,
         totHeight: 0,
+        totWidth: 0,
+        totLeft: 0,
         topHeight: 0,
+        totTop: 0,
         bottomHeight: 0,
         // safeArea: 0,
         cardInfo: {
-            avater: "https://cdn.xiaou.tech/share1.svg",
+            avater: 'https://cdn.xiaou.tech/share',
             //需要https图片路径
             qrCode: "https://cdn.xiaou.tech/logo16_9.png",
             //需要https图片路径
@@ -157,13 +160,15 @@ Page({
             this.moodTypeGratitude({
                 year: Y,
                 month: M
-            });
+            },
+            );
             this.dayMoodDescrip({
                 year: Y,
                 month: M,
                 day: D,
             });
         });
+
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
@@ -320,6 +325,14 @@ Page({
                     thisMonthDays: tempMonthList,
                     gratitudeRecord: tempGradList,
                 });
+                let num = MoodNumber[tempMonthList[this.data.thisDay - 1].mood];
+    
+                let tempUrl = this.data.cardInfo.avater + num + '.png';
+                // console.log(tempUrl);
+                this.setData({
+                    'cardInfo.avater': tempUrl 
+                })
+                    
 
             },
             fail: err => {
@@ -395,7 +408,6 @@ Page({
         var that = this;
         swan.downloadFile({
         url: that.data.cardInfo.avater,
-        //头像图片路径
         success: function (res) {
             swan.hideLoading();
 
@@ -468,6 +480,8 @@ Page({
 
         var width = "";
         swan.createSelectorQuery().select('#canvas-container').boundingClientRect(function (rect) {
+
+    
             console.log("height:", rect.height);
             var height = rect.height;
             var right = rect.right;
@@ -484,18 +498,8 @@ Page({
                 ctx.setFontSize(14);
                 ctx.setFillStyle('#fff');
                 ctx.setTextAlign('left');
-        } //标签
+        } 
 
-
-        // if (cardInfo.TagText) {
-        //   ctx.fillText(cardInfo.TagText, left + 20, width - 4);
-        //   const metrics = ctx.measureText(cardInfo.TagText); //测量文本信息
-
-        //   ctx.stroke();
-        //   ctx.rect(left + 10, width - 20, metrics.width + 20, 25);
-        //   ctx.setFillStyle('rgba(255,255,255,0.4)');
-        //   ctx.fill();
-        // } //姓名
 
 
         // if (cardInfo.Name) {
@@ -512,14 +516,27 @@ Page({
         //   ctx.setTextAlign('left');
         //   ctx.fillText(cardInfo.Position, left, width + 85);
         // } //电话
+        let desX = rect.width * 0.18;
+        let desY = rect.height * 0.2;
+        if (that.data.thisDescription) {
+            console.log(that.data.thisDescription);
+            ctx.font = 'normal 11px sans-serif';
+            ctx.setFontSize(16);
+            ctx.setFillStyle('#55C595');
+            ctx.fillText(that.data.thisDescription, 0, 0);
+            // const metrics = ctx.measureText(that.data.thisDescription); //测量文本信息
 
+            // ctx.stroke();
+            // ctx.rect(left + 10, width - 20, metrics.width + 20, 25);
+            // ctx.setFillStyle('rgba(255,255,255,0.4)');
+            // ctx.fill();
+        }
 
-        // if (cardInfo.Mobile) {
-        //   ctx.setFontSize(12);
-        //   ctx.setFillStyle('#666');
-        //   ctx.setTextAlign('left');
-        //   ctx.fillText(cardInfo.Mobile, left, width + 105);
-        // } // 公司名称
+        ctx.setFontSize(32);
+        ctx.setFillStyle('#666');
+        ctx.setTextAlign('left');
+        ctx.fillText(that.data.thisDescription, desX, desY);
+
 
 
         // if (cardInfo.Company) {
@@ -591,6 +608,31 @@ Page({
     },
 
     //点击保存到相册
+    showSave(e) {
+        var that = this;
+        swan.showModal({
+            title: '确认保存至本地相册',
+            content: '',
+            showCancel: true,
+            confirmText: '是',
+            confirmColor: '#55C595',
+            cancelText: '否',
+            cancelColor: '#c2c2c2',
+
+            success: function (res) {
+                if (res.confirm) {
+                    that.saveImg();
+                }
+                else if (res.cancel) {
+                    that.setData({
+                        whetherShare: 0,
+                        generateFinish: 0
+                    })
+                }
+            },
+            fail: function (res) {}
+        })
+    },
     saveImg(e) {
         var that = this;
         swan.showLoading({
@@ -610,7 +652,7 @@ Page({
                         success(res) {
                         // utils.aiCardActionRecord(19);
                             swan.showModal({
-                                title: '图片已保存到相册',
+                                title: '图片已保存',
                                 content: '快去分享给朋友吧～',
                                 showCancel: true,
                                 confirmText: '马上分享',
@@ -681,23 +723,26 @@ Page({
             success: res => {
             let posterProp = 0.75;
             let topProp = 0.5;
-            let testHeight = res.windowWidth * 896 / 414 * (750 / res.windowWidth);
-            testHeight = testHeight + 'rpx';
-            let posHeight = 750 * 0.85 * 896 / 414;
-            posHeight = posHeight + 'rpx';
-            let windowRpx = res.windowHeight * (750 / res.windowWidth); // convert px to rpx 
-            let temp1 = windowRpx * posterProp + 'rpx';
-            let tempTop = windowRpx * posterProp * topProp;
-            let tempBottom = windowRpx * posterProp * (1-topProp);
-            console.log("posHriggt", posHeight);
-            console.log(res.windowHeight);
-            console.log(res.windowWidth);
-            console.log("test", testHeight);
-            // let temp3 = res.safeArea + 'px';
+
+            let windowRpx = res.screenHeight * (750 / res.windowWidth); // convert px to rpx 
+            // console.log(windowRpx);
+            let tempH = windowRpx * 0.87;
+            let tempW = tempH * 360 / 760;
+            let tempL = (750 - tempW) / 2;
+            let tempT = windowRpx - tempH;
+            tempH = tempH + 'rpx';
+            tempW = tempW + 'rpx';
+            tempL = tempL + 'rpx';
+            tempT = tempT + 'rpx';
+            console.log(tempH , tempW, tempL);
+
             this.setData({
-                totHeight: testHeight,
-                topHeight: tempTop,
-                bottomHeight: tempBottom,
+                totHeight: tempH,
+                totWidth: tempW,
+                totLeft: tempL,
+                totTop: tempT,
+                // topHeight: tempTop,
+                // bottomHeight: tempBottom,
                 // safeArea: temp3,
             });
             // console.log(temp1);
