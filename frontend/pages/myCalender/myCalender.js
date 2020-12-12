@@ -35,7 +35,7 @@ Page({
         bottomHeight: 0,
         // safeArea: 0,
         cardInfo: {
-            avater: "https://cdn.xiaou.tech/sad_bottom.png",
+            avater: "https://cdn.xiaou.tech/share1.svg",
             //需要https图片路径
             qrCode: "https://cdn.xiaou.tech/logo16_9.png",
             //需要https图片路径
@@ -480,7 +480,7 @@ Page({
             ctx.fillRect(0, 0, rect.width, height); 
 
             if (avaterSrc) {
-                ctx.drawImage(avaterSrc, 0, topPart, rect.width, bottomPart);
+                ctx.drawImage(avaterSrc, 0, 0, rect.width, rect.height);
                 ctx.setFontSize(14);
                 ctx.setFillStyle('#fff');
                 ctx.setTextAlign('left');
