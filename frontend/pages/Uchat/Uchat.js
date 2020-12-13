@@ -303,14 +303,14 @@ Page({
                 }
             })
         }
-        else if (this.data.toolChoice == 1) {
-            console.log("tool");
-            this.scrollToBottomTemp(this.notMatchingQuestion());
-            // this.notMatchingQuestion();
-            this.setData({
-                toolChoice: 0
-            })
-        }
+        // else if (this.data.toolChoice == 1) {
+        //     console.log("tool");
+        //     this.scrollToBottomTemp(this.notMatchingQuestion());
+        //     // this.notMatchingQuestion();
+        //     this.setData({
+        //         toolChoice: 0
+        //     })
+        // }
         else if (this.data.taskFinish == true) {
 
             console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
@@ -333,7 +333,7 @@ Page({
             }
             else {
                 this.setData({
-                    toolChoice: 1,
+                    toolChoice: 0,
                 })
                 this.scrollToBottomTemp(this.notMatchingQuestion());
                 // this.notMatchingQuestion();
@@ -445,9 +445,9 @@ Page({
                 doChoice: '1',
                 whetherDetermineMatch: '1',
                 taskFinish: true,
-                toolChoice: 1,
+                toolChoice: 0,
             },() => {
-                this.scrollToBottomTemp();
+                this.scrollToBottomTemp(this.notMatchingQuestion());
             });
             return;
         }
