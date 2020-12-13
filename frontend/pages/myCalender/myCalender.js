@@ -450,8 +450,8 @@ Page({
      */
     getAvaterInfo: function () {
         swan.showLoading({
-        title: '生成中...',
-        mask: true
+            title: '生成中...',
+            mask: true
         });
         var that = this;
         swan.downloadFile({
