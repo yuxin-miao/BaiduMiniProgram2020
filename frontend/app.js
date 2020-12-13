@@ -190,6 +190,7 @@ App({
         });
         swan.hideLoading();
     },
+    
     firstOrNot: function() {
         // swan.navigateTo({
         //     url: '/pages/record/record'

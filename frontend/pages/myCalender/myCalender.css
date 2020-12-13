@@ -113,6 +113,10 @@
 .mood-image {
     border-radius: 10%;
 }
+.mood-image-first {
+    border-radius: 10%;
+    margin-top: 10rpx;
+}
 .select {
     border-radius: 50%;
     box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.05);/*for Android*/
@@ -182,11 +186,17 @@
     align-self: flex-start;
     text-align: top;
 }
+.row-mood-text {    
+    padding: 10rpx 0rpx 0 20rpx;
+
+    text-align: center;
+    width: 640rpx;
+}
 .day-text {
     font-family: TrebuchetMS,Rotobo,"Microsoft YaHei",sans-serif;
     width: 110rpx;
     color: rgba(181 181 181);
-    margin: 0 20rpx 0 20rpx;
+    margin: 10rpx 20rpx 0 20rpx;
 }
 
 .mask {

@@ -46,22 +46,39 @@
             </view>
         </view>
 
-        <view class="today" bind:tap="shareThis">
+        <view class="today">
             <scroll-view class="journal" scroll-y>
                 <view class="record-row">
                     <image
-                        class="mood-image"
+                        class="mood-image-first"
                         mode="widthFix"
                         style="width: 50rpx"
                         src="../../images/icon-point.svg"/>
 
                     <view class="day-text"> {{thisMonth}}.{{selectDay}} </view>
                     <image
-                        class="mood-image"
+                        class="mood-image-first"
                         mode="widthFix"
                         style="width: 50rpx"
-                        src="../../images/mood_{{thisMonthDays[selectDay-1].mood}}.svg"/>
-                    <view class="row-text"> {{thisDescription}}</view>
+                        src="../../images/mood_{{thisMonthDays[selectDay-1].mood}}.svg"
+                        bind:tap="modifyMood"/>
+                    <view class="row-mood-text" bind:tap="modifyMood"> {{thisDescription}}</view>
+                    <view class="share"  bind:tap="shareThis">
+                        <!-- <animation-view 
+                            class="controls" 
+                            path="/anims/share.json" 
+                            loop="false"
+                            autoplay="false" 
+                            action="play"
+                            hidden="false" 
+                            bindended="openToShare">
+                        </animation-view> -->
+                        <image
+                        class="mood-image-first"
+                        mode="widthFix"
+                        style="width: 40rpx"
+                        src="../../images/share-end.svg"/>
+                    </view>
                 </view>
                 <view class="oval"> </view>
                  <view class="record-row" s-for="gratitudeRecord">

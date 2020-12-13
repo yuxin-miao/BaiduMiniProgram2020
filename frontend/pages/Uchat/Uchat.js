@@ -346,7 +346,7 @@ Page({
         else {
             swan.showModal({
                 title: '请求失败',
-                content: 'selectChoice Wrong'
+                content: '请稍后重试'
             })
         }
     },
@@ -359,7 +359,7 @@ Page({
                 if (res.statusCode != 200) {
                     swan.showModal({
                         title: '请求失败',
-                        content: 'initial record Fail'
+                        content: '请清理缓存后进入'
                     });
                     return;
                 }
@@ -473,9 +473,15 @@ Page({
             method: 'GET',
             success: res => {
                 if (res.statusCode != 200) {
+                    // getApp().clearAndReenter(this);
+
+                    // swan.showModal({
+                    //     title: '加载中...',
+                    //     content: ''
+                    // })
                     swan.showModal({
                         title: '请求失败',
-                        content: 'getNickName Fail'
+                        content: '请清理缓存后重新进入'
                     });
                     return;
                 }
@@ -571,7 +577,7 @@ Page({
                 if (res.statusCode != 200 ) {
                     swan.showModal({
                         title: "请求失败",
-                        content: "talkFinish fail"
+                        content: "请清理缓存后重新进入"
                     })
                     return;
                 }
@@ -637,9 +643,10 @@ Page({
             method: 'GET',
             success: res => {
                 if (res.statusCode != 200) {
+                    
                     swan.showModal({
                         title: '请求失败',
-                        content: 'getLastQuestion fail'
+                        content: '请重新进入'
                     })
                 }
                 let tempDis = this.data.displayMsgs;
@@ -688,9 +695,10 @@ Page({
     },
     allQuestionUpdate: function(res) {
         if (res.statusCode != 200) {
+            // this.clearAndReenter(this.allQuestionUpdate(res));
             swan.showModal({
                 title: '请求失败',
-                content: 'allQuestionUpdate Fail'
+                content: '问题更新失败，请稍后再试'
             });
             return;
         }
@@ -747,10 +755,11 @@ Page({
             },
             success: res => {
                 if (res.statusCode != 200) {
-                    swan.showModal({
-                        title: '请求失败',
-                        content: 'bye fail'
-                    })
+                    // this.clearAndReenter(this.bye());
+                    // swan.showModal({
+                    //     title: '请求失败',
+                    //     content: 'bye fail'
+                    // })
                 }
                 // console.log("bye", res);
             },
@@ -761,6 +770,67 @@ Page({
                 });
             }
         })
+    },
+
+    clearAndReenter(toSuc) {
+
+        cookies.clearCookies();
+        swan.clearStorageSync('username');
+        swan.clearStorageSync('avatar');
+        swan.clearStorageSync('gender');
+        swan.login({
+            success: res => {
+                swan.showLoading({
+                    title: '加载中'
+                });
+
+                let code = res.code || '';
+
+                swan.request({
+                    url: this.getUrl('/account/login/'),
+                    method: 'POST',
+                    data: {
+                        code
+                    },
+                    success: res => {
+                        let openID = res.data && res.data.openid;
+                        this.setLocalStorage('username', res.data.username);
+                        this.setLocalStorage('avatar', res.data.avatar);
+                        this.setLocalStorage('gender', res.data.gender);
+
+                        if (!openID) {
+                            swan.showModal({
+                                title: '请求失败',
+                                content: '请退出账号后重试',
+                            });
+                            swan.hideLoading();
+                            return;
+                        }
+                        this.setLocalStorage('openID', openID);
+                        swan.hideLoading();
+                        // swan.showToast({
+                        //     title: '登录成功'
+                        // });
+                        toSuc();
+                    },
+                    fail: err => {
+                        swan.showModal({
+                            title: '网络异常',
+                            content: '请检查网络连接'
+                        });
+                        swan.hideLoading();
+                        toFail();
+                    }
+                });
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '请求失败',
+                    content: '百度授权失败'
+                });
+                swan.hideLoading();
+            }
+        });
     },
 
 });

@@ -82,9 +82,11 @@ Page({
             success: res => {
                 // console.log(res);
                 if (res.statusCode != 200) {
+                    getApp().clearAndReenter();
+
                     swan.showModal({
-                        title: '请求失败',
-                        content: 'getNickName Fail'
+                        title: '加载中...',
+                        content: ''
                     })
                 };
                 let tempNick = ' ' + res.data.nickname;

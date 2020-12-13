@@ -199,7 +199,29 @@ Page({
     returnNav(e) {
         swan.navigateBack();
     },
+    modifyMood(e) {
+        swan.showModal({
+            title:'是否修改心情',
+            content: '',
+            showCancel: true,
+            confirmText: '是',
+            confirmColor: '#55C595',
+            cancelText: '否',
+            cancelColor: '#c2c2c2',
+            success: function (res) {
+                if (res.confirm) {
+                    swan.navigateTo({
+                        url: '/pages/record/record'
+                    })
+                }
+                else if (res.cancel) {
 
+                }
+            },
+            fail: function (res) {}
+        })
+
+    },
 
     toSelectDay(e) {
         // used when select a new day in this month
@@ -305,10 +327,16 @@ Page({
             success: res => {
                 let returnMood = []; //used to return
                 if (res.statusCode != 200) {
-                    swan.showModal({
-                        title: '请求失败',
-                        content: 'moodTypeGratitude Fail 1'
-                    });
+                    this.clearAndReenter(this.moodTypeGratitude(selectMonth));
+
+                    // swan.showModal({
+                    //     title: '加载中...',
+                    //     content: ''
+                    // })
+                    // swan.showModal({
+                    //     title: '请求失败',
+                    //     content: 'moodTypeGratitude Fail 1'
+                    // });
                     return;
                 }
                 let tempMonthList = this.data.thisMonthDays;
@@ -356,11 +384,17 @@ Page({
             success: res => {
 
                 if (res.statusCode != 200) {
-                    swan.showModal({
-                        title: '请求失败',
-                        content: 'dayMoodDescrip Fail'
-                    });
-                    return;
+                    this.clearAndReenter(this.dayMoodDescrip(selectDay));
+
+                    // swan.showModal({
+                    //     title: '加载中...',
+                    //     content: ''
+                    // })
+                    // swan.showModal({
+                    //     title: '请求失败',
+                    //     content: 'dayMoodDescrip Fail'
+                    // });
+                    // return;
                 }
                 if(res.data.description == '') res.data.description = "快来点击相应日期添加心情吧";
                 this.setData({
@@ -802,7 +836,68 @@ Page({
             })
         }
 
-    }
+    },
+
+    clearAndReenter(toSuc) {
+
+        cookies.clearCookies();
+        swan.clearStorageSync('username');
+        swan.clearStorageSync('avatar');
+        swan.clearStorageSync('gender');
+        swan.login({
+            success: res => {
+                swan.showLoading({
+                    title: '加载中'
+                });
+
+                let code = res.code || '';
+
+                swan.request({
+                    url: this.getUrl('/account/login/'),
+                    method: 'POST',
+                    data: {
+                        code
+                    },
+                    success: res => {
+                        let openID = res.data && res.data.openid;
+                        this.setLocalStorage('username', res.data.username);
+                        this.setLocalStorage('avatar', res.data.avatar);
+                        this.setLocalStorage('gender', res.data.gender);
+
+                        if (!openID) {
+                            swan.showModal({
+                                title: '请求失败',
+                                content: '请退出账号后重试',
+                            });
+                            swan.hideLoading();
+                            return;
+                        }
+                        this.setLocalStorage('openID', openID);
+                        swan.hideLoading();
+                        // swan.showToast({
+                        //     title: '登录成功'
+                        // });
+                        toSuc();
+                    },
+                    fail: err => {
+                        swan.showModal({
+                            title: '网络异常',
+                            content: '请检查网络连接'
+                        });
+                        swan.hideLoading();
+                        toFail();
+                    }
+                });
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '请求失败',
+                    content: '百度授权失败'
+                });
+                swan.hideLoading();
+            }
+        });
+    },
 //     drawCanvas: function () {
 //         console.log("drawCanvas");
 //         const wrapperId = '#wrapper';
