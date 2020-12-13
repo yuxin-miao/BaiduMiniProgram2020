@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@smt-ui/component": "^1.1.72",
-    "weapp-cookie": "^1.4.6"
+    "weapp-cookie": "^1.4.6",
+    "wxa-plugin-canvas": "^1.1.12"
   }
 }

@@ -60,6 +60,8 @@
     border-bottom-right-radius: 0;
     background-color: rgba(207 244 209);
     text-align: left;
+    transform-origin: 100% 0% !important;
+    -webkit-transform-origin: 100% 0% !important;
 }
 
 .u-left {
@@ -72,6 +74,8 @@
     border-bottom-left-radius: 0;
     background-color: #ffffff;
     text-align: left;
+    transform-origin: 0% 100% !important;
+    -webkit-transform-origin: 0% 100% !important;
 }
 
 .shadow-left {
@@ -191,4 +195,20 @@
     z-index: 999;
     padding-right: 30rpx;
 
+}
+
+
+@keyframes popContentOut {
+    from {
+        transform: scale(0.1);
+    }
+    to {
+        transform: scale(1);
+    }
+  }
+
+.open {
+    
+    animation: popContentOut 0.3s  ease-in both;
+    /* animation-fill-mode: both 动画将会执行 forwards 和 backwards 执行的动作。 */
 }

@@ -78,13 +78,24 @@
 
 .grid {
     position: relative;
-    z-index: 1;
+    /* z-index: 1; */
     text-align: center;
     font-family: "Microsoft YaHei",sans-serif;
     width: calc(100% / 7);
     line-height: 100rpx;
     height: 100rpx;
 }
+
+.grid-week {
+    position: relative;
+    /* z-index: 1; */
+    text-align: center;
+    font-family: "Microsoft YaHei",sans-serif;
+    width: calc(100% / 7);
+    line-height: 60rpx;
+    height: 100rpx;
+}
+
 
 .lighter {
     opacity: 0.5;
@@ -101,6 +112,10 @@
 
 .mood-image {
     border-radius: 10%;
+}
+.mood-image-first {
+    border-radius: 10%;
+    margin-top: 10rpx;
 }
 .select {
     border-radius: 50%;
@@ -139,7 +154,7 @@
 
 .oval {
     margin-left: 65rpx;
-    z-index: 999;
+    z-index: 599;
     width: 570rpx;
     height: 1.3rpx;
     background: rgba(207 244 209);
@@ -171,9 +186,82 @@
     align-self: flex-start;
     text-align: top;
 }
+.row-mood-text {    
+    padding: 10rpx 0rpx 0 20rpx;
+
+    text-align: center;
+    width: 640rpx;
+}
 .day-text {
     font-family: TrebuchetMS,Rotobo,"Microsoft YaHei",sans-serif;
     width: 110rpx;
     color: rgba(181 181 181);
-    margin: 0 20rpx 0 20rpx;
+    margin: 10rpx 20rpx 0 20rpx;
+}
+
+.mask {
+    width:100%;
+    height:100%;
+    position:fixed;
+    background-color:#000;
+    z-index: 100;
+    top:0;
+    left:0;
+    -moz-opacity: 0.5;
+    opacity: 0.50;
+    filter: alpha(opacity=50);
+}
+    
+.poste-box{
+    position: fixed;
+    /* top: 240rpx; */
+    /* height: {{totHeight}}; */
+    /* height: calc(100vh - 240rpx); */
+    /* left: 50rpx; */
+    z-index: 1002;
+    /* width: 85%; */
+    /* margin: auto; */
+    /* margin-top: 0; */
+    background-color: rgba(255, 255, 255, 0);
+    /* opacity: 1; */
+    /* border: 1rpx solid #ddd; */
+    /* box-shadow:0px 0px  10px 5px #D8D7DD; */
+}
+.savePoste{
+    z-index: 999;
+    background-color: #FF8427;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:30rpx;
+    color: #fff;
+}
+.saveTitle{
+    font-size: 25rpx;
+    color: #666;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20rpx;
+    text-align: center;
+}
+
+.share-canvas {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+.save-button {
+    z-index: 999;
+    position: fixed;
+    align-self: center;
+    text-align: center;
+    margin-left: 225rpx;
+    padding: 18rpx 0;
+    background-color: rgba(207 244 209);
+    width: 300rpx;
+    height: 90rpx;
+    font-size: 35rpx;
+    color: rgba(128 186 161);
+    border-radius: 20px;
 }

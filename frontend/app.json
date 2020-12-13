@@ -1,13 +1,16 @@
 {
     "debug": false,
     "pages": [
+        "pages/logo/logo",
         "pages/main/main",
         "index/index",
         "pages/Uchat/Uchat",
         "pages/record/record",
         "pages/myCalender/myCalender",
         "pages/mysetting/mysetting",
-        "pages/intro/intro"
+        "pages/intro/intro",
+        "pages/logo/logo",
+        "pages/index/index"
     ],
     "window": {
         "navigationBarBackgroundColor": "#ffffff",

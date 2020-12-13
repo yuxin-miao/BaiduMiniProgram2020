@@ -1,4 +1,9 @@
-<view class="wrap">
-
-
-</view>
+<animation-view 
+    class="controls" 
+    path="/anims/loading.json" 
+    loop="true"
+    autoplay="true" 
+    action="play"
+    hidden="false" 
+    bindended="playArrow">
+</animation-view>

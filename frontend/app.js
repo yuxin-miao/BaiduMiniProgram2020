@@ -190,6 +190,7 @@ App({
         });
         swan.hideLoading();
     },
+    
     firstOrNot: function() {
         // swan.navigateTo({
         //     url: '/pages/record/record'
@@ -205,5 +206,25 @@ App({
                 url: '/index/index'
             });
         }
+    },
+
+    whetherWeb(e) {
+        swan.getSystemInfo({
+            success: res => {
+                if (res.platform == 'web') {
+                    console.log('res', res.platform); // web
+                    swan.showModal({
+                        title: "提示",
+                        content: '请下载百度app体验'
+                    })
+                    swan.redirectTo({
+                        url: '/pages/main/main'
+                    })
+                }
+            },
+            fail: err => {
+    
+            }
+        });
     }
 });

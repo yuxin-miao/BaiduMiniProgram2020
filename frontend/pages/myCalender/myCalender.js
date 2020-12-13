@@ -1,5 +1,6 @@
 var moods = require('../../utils/constants.js');
-import {MoodName, MoodType} from '../../utils/constants.js';
+const wxml2canvas = require('../../utils/wxml2canvas.js');
+import {MoodName, MoodType, MoodNumber} from '../../utils/constants.js';
 
 import 'weapp-cookie';
 import cookies from 'weapp-cookie';
@@ -26,16 +27,39 @@ Page({
 
         returnMoodRecord: [],
 
+        // used for poster share
+        haveRecord: 0,
+        whetherShare: 0,
+        generateFinish: 0,
+        totHeight: 0,
+        totWidth: 0,
+        totLeft: 0,
+        topHeight: 0,
+        totTop: 0,
+        bottomHeight: 0,
+        // safeArea: 0,
+        cardInfo: {
+            avater: 'https://cdn.xiaou.tech/share',
+            //需要https图片路径
+            qrCode: "https://cdn.xiaou.tech/logo16_9.png",
+            // //需要https图片路径
+            // TagText: "Ucho",
+            // //标签
+            // Name: 'Ucho',
+            // //姓名
+            // Position: "程序员鼓励师",
+            // //职位
+            // Mobile: "13888888888",
+            // //手机
+            // Company: "才华无限有限公司" //公司
 
-        // test
-        testMoodRecord: [{
-            type: 3,
-            description: "long test messagethis is a long long long long long test messagethis is a long long long long long test message"
-        }],
-        tesMoodRecord: {},
-        testGratitute: ["这是一段很长的文字这是一段很这是一段很长的文字这是一段很", "这是一段很长的文字这是一段很这是一段很长的文字这是一段很", "这是一段很长的文字这是一段很", "长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字", "long test messagethis is a long long long long long test messagethis is a long long", "rrrrrrr", " 3333333", "f"],
-        test1: ["1", "2"]
+        }
 
+
+    },
+    onLoad: function () {
+        // 监听页面加载的生命周期函数
+        getApp().whetherWeb();
     },
     methods : {
         // number of days in this month
@@ -89,35 +113,25 @@ Page({
     onShow: function () {
         swan.setPageInfo({
 
-            title: '晒元宵节活动红包，爱奇艺60张年卡、600张季卡等你拿！-百度贴吧',
-            keywords: '百度,百度贴吧,好运中国年,60,晒元,宵节',
-            description: '晒元宵节活动红包，爱..昨天的百度APP元宵节活动中，共发出2亿现金红包、含151万个手气现金大奖和240辆红旗轿车，谁是好运锦鲤，快来分享！马上惊喜升级~摇中红包的锦鲤们即刻晒出红包金额截图，我们将会抽取660位好运锦鲤',
-            articleTitle: '晒元宵节活动红包，爱奇艺60张年卡、600张季卡等你拿！',
-            releaseDate: '2019-01-02 12:01:30',
+            title: '我的心情日历',
+            keywords: '心情，日历，心情记录，表情，分享，分享心情',
+            description: '我的心情日历',
+            articleTitle: '我的心情日历',
+            releaseDate: '2020',
             image: [
-                'https://c.hiphotos.baidu.com/forum/w%3D480/sign=73c62dda83b1cb133e693d1bed5456da/f33725109313b07e8dee163d02d7912396dd8cfe.jpg',
-                'https://hiphotos.baidu.com/fex/%70%69%63/item/43a7d933c895d143e7b745607ef082025baf07ab.jpg'
             ],
             video: [{
-                url: 'https://www.baidu.com/mx/v12.mp4',
-                duration: '100',
-                image: 'https://ms-static.cdn.bcebos.com/miniappdocs/img/image-scaleToFill.png'
             }],
             visit: {
                 pv: '1000',
                 uv: '100',
                 sessionDuration: '130'
             },
-            likes: '75',
-            comments: '13',
-            collects: '23',
-            shares: '8',
-            followers: '35',
             success: res => {
-                console.log('setPageInfo success', res);
+                // console.log('setPageInfo success', res);
             },
             fail: err => {
-                console.log('setPageInfo fail', err);
+                // console.log('setPageInfo fail', err);
             }
         })
 
@@ -151,13 +165,15 @@ Page({
             this.moodTypeGratitude({
                 year: Y,
                 month: M
-            });
+            },
+            );
             this.dayMoodDescrip({
                 year: Y,
                 month: M,
                 day: D,
             });
         });
+
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
@@ -165,6 +181,7 @@ Page({
     },
     onLoad: function() {
         // 监听页面显示的生命周期函数
+        this.getSystemInfo()
     },
     onHide: function() {
         // 监听页面隐藏的生命周期函数
@@ -186,7 +203,29 @@ Page({
     returnNav(e) {
         swan.navigateBack();
     },
+    modifyMood(e) {
+        swan.showModal({
+            title:'是否修改心情',
+            content: '',
+            showCancel: true,
+            confirmText: '是',
+            confirmColor: '#55C595',
+            cancelText: '否',
+            cancelColor: '#c2c2c2',
+            success: function (res) {
+                if (res.confirm) {
+                    swan.navigateTo({
+                        url: '/pages/record/record'
+                    })
+                }
+                else if (res.cancel) {
 
+                }
+            },
+            fail: function (res) {}
+        })
+
+    },
 
     toSelectDay(e) {
         // used when select a new day in this month
@@ -212,13 +251,13 @@ Page({
             })
             return;
         }
-
+        // console.log("ff");
+        this.setUrl(e.currentTarget.dataset.day);
         this.dayMoodDescrip({
             year: this.data.thisYear,
             month: this.data.thisMonth,
             day: e.currentTarget.dataset.day
         });
-
 
     },
     // when change month
@@ -240,6 +279,8 @@ Page({
             this.moodTypeGratitude({
                 year: this.data.thisYear,
                 month: this.data.thisMonth
+            }, ()=> {
+                this.setUrl(this.data.thisDay);
             });
             this.dayMoodDescrip({
                 year: this.data.thisYear,
@@ -267,12 +308,15 @@ Page({
         this.moodTypeGratitude({
             year: this.data.thisYear,
             month: this.data.thisMonth
+        }, () => {
+            this.setUrl(this.data.thisDay);
         });
         this.dayMoodDescrip({
             year: this.data.thisYear,
             month: this.data.thisMonth,
             day: this.data.thisDay,
         });
+        
     },
 
     /* util functions for getting data */
@@ -287,10 +331,16 @@ Page({
             success: res => {
                 let returnMood = []; //used to return
                 if (res.statusCode != 200) {
-                    swan.showModal({
-                        title: '请求失败',
-                        content: 'moodTypeGratitude Fail 1'
-                    });
+                    this.clearAndReenter(this.moodTypeGratitude(selectMonth));
+
+                    // swan.showModal({
+                    //     title: '加载中...',
+                    //     content: ''
+                    // })
+                    // swan.showModal({
+                    //     title: '请求失败',
+                    //     content: 'moodTypeGratitude Fail 1'
+                    // });
                     return;
                 }
                 let tempMonthList = this.data.thisMonthDays;
@@ -312,7 +362,10 @@ Page({
                 this.setData({
                     thisMonthDays: tempMonthList,
                     gratitudeRecord: tempGradList,
+                }, ()=> {
+                    this.setUrl(this.data.thisDay)
                 });
+ 
 
             },
             fail: err => {
@@ -335,11 +388,17 @@ Page({
             success: res => {
 
                 if (res.statusCode != 200) {
-                    swan.showModal({
-                        title: '请求失败',
-                        content: 'dayMoodDescrip Fail'
-                    });
-                    return;
+                    this.clearAndReenter(this.dayMoodDescrip(selectDay));
+
+                    // swan.showModal({
+                    //     title: '加载中...',
+                    //     content: ''
+                    // })
+                    // swan.showModal({
+                    //     title: '请求失败',
+                    //     content: 'dayMoodDescrip Fail'
+                    // });
+                    // return;
                 }
                 if(res.data.description == '') res.data.description = "快来点击相应日期添加心情吧";
                 this.setData({
@@ -363,5 +422,493 @@ Page({
             thisDescription: b
         })
     },
+        // function for poster share
+    shareThis(e) {
+        if (this.data.thisMonthDays[this.data.selectDay - 1].mood == 0) {
+            swan.showToast({
+                title: '未添加心情，无法分享',
+                icon: 'none'
+            })
+            return;
+        }
+        else {
+            this.setData({
+                whetherShare: 1,
+            }, () => this.getAvaterInfo())
+        }
 
+    },
+    hidePoster(e) {
+        this.setData({
+            whetherShare: 0,
+            generateFinish: 0,
+        })
+    },
+
+    /**
+     * 先下载图片
+     */
+    getAvaterInfo: function () {
+        swan.showLoading({
+        title: '生成中...',
+        mask: true
+        });
+        var that = this;
+        swan.downloadFile({
+        url: that.data.cardInfo.avater,
+        success: function (res) {
+            swan.hideLoading();
+
+            if (res.statusCode === 200) {
+            var avaterSrc = res.tempFilePath; //下载成功返回结果
+
+            that.getQrCode(avaterSrc); //继续下载二维码图片
+            } else {
+            swan.showToast({
+                title: '头像下载失败！',
+                icon: 'none',
+                duration: 2000,
+                success: function () {
+                var avaterSrc = "";
+                that.getQrCode(avaterSrc);
+                }
+            });
+            }
+        }
+        });
+    },
+
+    /**
+     * 下载二维码图片
+     */
+    getQrCode: function (avaterSrc) {
+        swan.showLoading({
+        title: '生成中...',
+        mask: true
+        });
+        var that = this;
+        swan.downloadFile({
+        url: that.data.cardInfo.qrCode,
+        //二维码路径
+        success: function (res) {
+            swan.hideLoading();
+
+            if (res.statusCode === 200) {
+            var codeSrc = res.tempFilePath;
+            that.sharePosteCanvas(avaterSrc, codeSrc);
+            } else {
+            swan.showToast({
+                title: '二维码下载失败！',
+                icon: 'none',
+                duration: 2000,
+                success: function () {
+                var codeSrc = "";
+                that.sharePosteCanvas(avaterSrc, codeSrc);
+                }
+            });
+            }
+        }
+        });
+    },
+
+    /**
+     * 开始用canvas绘制分享海报
+     * @param avaterSrc 下载的头像图片路径
+     * @param codeSrc   下载的二维码图片路径
+     */
+    sharePosteCanvas: function (avaterSrc, codeSrc) {
+        swan.showLoading({
+        title: '生成中...',
+        mask: true
+        });
+        var that = this;
+        var cardInfo = that.data.cardInfo; //需要绘制的数据集合
+
+        const ctx = swan.createCanvasContext('myCanvas'); //创建画布
+
+        var width = "";
+        swan.createSelectorQuery().select('#canvas-container').boundingClientRect(function (rect) {
+
+        //     window.onload = function(){
+        //         var canvas = document.getElementById("myCanvas");
+        //         var context = canvas.getContext("2d");
+        //         var imageObj = new Image();
+        //         imageObj.onload = function(){
+        //             context.drawImage(imageObj, 0, 0, rect.width, rect.height);
+        //             context.font = "40pt Calibri";
+        //             context.fillText("My TEXT!", 50, 50);
+        //         };
+        //         imageObj.src = "avaterSrc"; 
+        //    };
+            console.log("height:", rect.height);
+            var height = rect.height;
+            var right = rect.right;
+            let topProp = 0.5;
+            console.log(textWidth);
+            ctx.setFillStyle('#fff');
+            ctx.fillRect(0, 0, rect.width, height); 
+
+            if (avaterSrc) {
+                ctx.drawImage(avaterSrc, 0, 0, rect.width, rect.height);
+                ctx.setFontSize(14);
+                ctx.setFillStyle('#fff');
+                ctx.setTextAlign('left');
+            } 
+            let desX = rect.width * 0.18;
+            let desY = rect.height * 0.19;
+            let textWidth = rect.width * 0.4;
+
+            var text = that.data.thisDescription;//这是要绘制的文本
+            var chr =text.split("");//这个方法是将一个字符串分割成字符串数组
+            var temp = "";
+            var row = [];
+            let fontSize = 15;
+            let rowNum = Math.floor(rect.height* 0.24 / (fontSize + 10));
+
+            // calculate fonsize and how many rows 
+            // if (chr.length / textWidth * (fontSize + 10) -rect.height* 0.24  > rect.height* 0.05) {
+
+            // // }
+            // console.log("all text", chr.length)
+            for (var a = 0; a < chr.length; a++) {
+                if (ctx.measureText(temp).width < textWidth) {
+                    temp += chr[a];
+                }
+                else {
+                    a--; //这里添加了a-- 是为了防止字符丢失，效果图中有对比
+                    row.push(temp);
+                    temp = "";
+                }
+            }
+            row.push(temp);  
+            // // console.log("row",row)
+            // // if (row.length == 1) {
+            // //     fontSize = rect.height* 0.24 / row.length /5 ;
+            // //     console.log("size", fontSize);
+            // // }
+            if (row.length > rowNum) {    //截取前n行
+                var rowCut = row.slice(0, rowNum);
+                var rowPart = rowCut[1];
+                var test = "";
+                var empty = [];
+                for (var a = 0; a < rowPart.length; a++) {
+                    if (ctx.measureText(test).width < textWidth) {
+                        test += rowPart[a];
+                    }
+                    else {
+                        break;
+                    }
+                }
+                empty.push(test);
+                var group = empty[0] + "..."//这里只显示放得开的行数，超出的用...表示
+                rowCut.splice(rowNum - 1, 1, group);
+                row = rowCut;
+                console.log(row)
+            }
+            // let diffRow = rowNum - row.length;
+            // if (diffRow != 0) {
+            //     desY = diffRow / 2 * 25 + desY + 10;
+            // }
+            // if (row.length == 1) {
+            //     console.log(row[0].length)
+            //     desX = (rect.width - row[0].length * fontSize) / 2;
+            // }
+            ctx.setFontSize(fontSize);
+            // ctx.font = 'PingFangSC-Medium sans-serif';
+            ctx.setFillStyle("#55c595");
+
+            for (var b = 0; b < row.length; b++) {
+                ctx.fillText(row[b], desX, desY + b*25);
+            }
+            // ctx.draw()    
+
+        }).exec();
+        setTimeout(function () {
+            ctx.draw();
+            swan.hideLoading();
+            that.setData({
+                generateFinish: 1,
+            })
+        }, 1000);
+    },  
+
+    /**
+     * 多行文字处理，每行显示数量
+     * @param text 为传入的文本
+     * @param num  为单行显示的字节长度
+     */
+    textByteLength(text, num) {
+        let strLength = 0; // text byte length
+
+        let rows = 1;
+        let str = 0;
+        let arr = [];
+
+        for (let j = 0; j < text.length; j++) {
+        if (text.charCodeAt(j) > 255) {
+            strLength += 2;
+
+            if (strLength > rows * num) {
+            strLength++;
+            arr.push(text.slice(str, j));
+            str = j;
+            rows++;
+            }
+        } else {
+            strLength++;
+
+            if (strLength > rows * num) {
+            arr.push(text.slice(str, j));
+            str = j;
+            rows++;
+            }
+        }
+        }
+
+        arr.push(text.slice(str, text.length));
+        return [strLength, arr, rows]; //  [处理文字的总字节长度，每行显示内容的数组，行数]
+    },
+
+    //点击保存到相册
+    showSave(e) {
+        var that = this;
+        swan.showModal({
+            title: '确认保存至本地相册',
+            content: '',
+            showCancel: true,
+            confirmText: '是',
+            confirmColor: '#55C595',
+            cancelText: '否',
+            cancelColor: '#c2c2c2',
+
+            success: function (res) {
+                if (res.confirm) {
+                    that.saveImg();
+                }
+                else if (res.cancel) {
+                    that.setData({
+                        whetherShare: 0,
+                        generateFinish: 0
+                    })
+                }
+            },
+            fail: function (res) {}
+        })
+    },
+    saveImg(e) {
+        var that = this;
+        swan.showLoading({
+            title: '正在保存',
+            mask: true
+        });
+        setTimeout(function () {
+            swan.canvasToTempFilePath({
+                canvasId: 'myCanvas',
+                    success: function (res) {
+                    swan.hideLoading();
+                    var tempFilePath = res.tempFilePath;
+                    swan.saveImageToPhotosAlbum({
+
+                        filePath: tempFilePath,
+
+                        success(res) {
+                        // utils.aiCardActionRecord(19);
+                            swan.showModal({
+                                title: '图片已保存',
+                                content: '快去分享给朋友吧～',
+                                showCancel: true,
+                                confirmText: '马上分享',
+                                confirmColor: '#55C595',
+                                cancelText: '下次再说',
+                                cancelColor: '#c2c2c2',
+                                success: function (res) {
+                                    if (res.confirm) {
+                                        swan.shareFile({
+                                            filePath: tempFilePath,
+                                            success: res => {
+                                                swan.showToast({
+                                                    title: '分享成功',
+                                                    icon: 'none',
+                                                    
+                                                }, () => {
+                                                    that.setData({
+                                                        whetherShare: 0,
+                                                        generateFinish: 0,
+                                                    })
+                                                })
+                                            },
+                                            fail: err => {
+                                                swan.showToast({
+                                                    title: '分享失败',
+                                                    icon: 'none',
+                                                    
+                                                }, () => {
+
+                                                    console.log("share fail");
+                                                    that.setData({
+                                                        whetherShare: 0,
+                                                        generateFinish: 0,
+                                                    })
+                                                })
+                                                that.setData({
+                                                    whetherShare: 0,
+                                                    generateFinish: 0,
+                                                })
+                                            }
+                                        })
+                                    }
+                                    else if (res.cancel) {
+                                        that.setData({
+                                            whetherShare: 0,
+                                            generateFinish: 0
+                                        })
+                                    }
+                                },
+                                fail: function (res) {}
+                            });
+                        },
+
+                        fail: function (res) {
+                            swan.showToast({
+                                title: res.errMsg,
+                                icon: 'none',
+                                duration: 2000
+                            });
+                        }
+                    });
+                }
+            });
+        }, 1000);
+    },
+    getSystemInfo() {
+        swan.getSystemInfo({
+            success: res => {
+            let posterProp = 0.75;
+            let topProp = 0.5;
+
+            let windowRpx = res.screenHeight * (750 / res.windowWidth); // convert px to rpx 
+            // console.log(windowRpx);
+            let tempH = windowRpx * 0.87;
+            let tempW = tempH * 360 / 760;
+            let tempL = (750 - tempW) / 2;
+            let tempT = windowRpx - tempH;
+            tempH = tempH + 'rpx';
+            tempW = tempW + 'rpx';
+            tempL = tempL + 'rpx';
+            tempT = tempT + 'rpx';
+            console.log(tempH , tempW, tempL);
+
+            this.setData({
+                totHeight: tempH,
+                totWidth: tempW,
+                totLeft: tempL,
+                totTop: tempT,
+                // topHeight: tempTop,
+                // bottomHeight: tempBottom,
+                // safeArea: temp3,
+            });
+            // console.log(temp1);
+            // console.log(tempTop)
+
+                
+            },
+            fail: err => {
+                swan.showToast({
+                    title: '获取失败',
+                    icon: 'none'
+                });
+            }
+        })
+    },
+    setUrl: function(day) {
+        if (this.data.thisMonthDays[day - 1].mood == 0) {
+            this.setData({
+                haveRecord: 0,
+            })
+            console.log("no moode day");
+            return
+        }
+        else {
+            let num = MoodNumber[this.data.thisMonthDays[day - 1].mood];
+            let tempUrl = 'https://cdn.xiaou.tech/share' + num + '.png';
+            // console.log(tempUrl);
+            this.setData({
+                'cardInfo.avater': tempUrl,
+                haveRecord: 1,
+            }, ()=> {
+                console.log(this.data.cardInfo.avater)
+            })
+        }
+
+    },
+
+    clearAndReenter(toSuc) {
+
+        cookies.clearCookies();
+        swan.clearStorageSync('username');
+        swan.clearStorageSync('avatar');
+        swan.clearStorageSync('gender');
+        swan.login({
+            success: res => {
+                swan.showLoading({
+                    title: '加载中'
+                });
+
+                let code = res.code || '';
+
+                swan.request({
+                    url: this.getUrl('/account/login/'),
+                    method: 'POST',
+                    data: {
+                        code
+                    },
+                    success: res => {
+                        let openID = res.data && res.data.openid;
+                        this.setLocalStorage('username', res.data.username);
+                        this.setLocalStorage('avatar', res.data.avatar);
+                        this.setLocalStorage('gender', res.data.gender);
+
+                        if (!openID) {
+                            swan.showModal({
+                                title: '请求失败',
+                                content: '请退出账号后重试',
+                            });
+                            swan.hideLoading();
+                            return;
+                        }
+                        this.setLocalStorage('openID', openID);
+                        swan.hideLoading();
+                        // swan.showToast({
+                        //     title: '登录成功'
+                        // });
+                        toSuc();
+                    },
+                    fail: err => {
+                        swan.showModal({
+                            title: '网络异常',
+                            content: '请检查网络连接'
+                        });
+                        swan.hideLoading();
+                        toFail();
+                    }
+                });
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '请求失败',
+                    content: '百度授权失败'
+                });
+                swan.hideLoading();
+            }
+        });
+    },
+//     drawCanvas: function () {
+//         console.log("drawCanvas");
+//         const wrapperId = '#wrapper';
+//         const drawClassName = '.draw';
+//         const canvasId = 'canvas-map';
+//         wxml2canvas(wrapperId, drawClassName, canvasId).then(() => {// canvas has been drawn
+//         // can save the image with wx.canvasToTempFilePath and wx.saveImageToPhotosAlbum 
+//     });
+//   }
 });

@@ -1,3 +1,6 @@
+// import Poster from '../../miniprogram_dist/poster/poster';
+
+
 Page({
     data: {
 
@@ -7,7 +10,7 @@ Page({
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
-        // this.firstOrNot();
+        this.firstOrNot();
 
     },
     onShow: function() {
