@@ -89,7 +89,7 @@
 <view class='mask'/>
     <!-- <view class="poster-father"> -->
         <view class='poste-box' id='canvas-container' bind:tap="hidePoster" bind:longpress="showSave" style="width:{{totWidth}};height:{{totHeight}};left:{{totLeft}};top:{{totTop}}">
-            <canvas canvas-id="myCanvas" style="width:100%;height:{{totHeight}}" />
+            <canvas canvas-id="myCanvas" style="width:100%;height:100%" />
         </view>
         <!-- <block s-if="{{generateFinish == 1}}">
             <view class="save-button" bind:tap="saveImg"> 保存至本地相册 </view>

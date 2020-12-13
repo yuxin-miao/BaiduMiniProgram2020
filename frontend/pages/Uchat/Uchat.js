@@ -96,16 +96,16 @@ Page({
                 const prevHeight = this.data.scrollTop;
                 if (res[0][res[0].length-1].bottom < prevHeight) {
                     // 若高度检测未生效
-                    console.log("invalid", prevHeight);
+                    // console.log("invalid", prevHeight);
                     this.setData({ scrollTop: prevHeight + 5000 }, ()=> {
-                        console.log("1 I will call!")
+                        // console.log("1 I will call!")
                         callback();
                     });
                 } else {
                     // 若高度检测生效，则使用系统高度
-                    console.log("valid", res[0][res[0].length-1].bottom)
+                    // console.log("valid", res[0][res[0].length-1].bottom)
                     this.setData({ scrollTop: res[0][res[0].length-1].bottom }, ()=>{
-                        console.log("2 I will call!")
+                        // console.log("2 I will call!")
 
                         callback();
                     });
@@ -262,7 +262,7 @@ Page({
         let tempMsgs = this.data.displayMsgs;
 
         if (this.data.justEnter == "0" &&  this.data.taskFinish == false) {
-            // console.log('POST SC:', choiceIndex);
+            console.log('POST SC:', choiceIndex);
             swan.request({
                 url: getApp().getUrl('/message/reply/'),
                 method: 'POST',
@@ -303,6 +303,7 @@ Page({
             })
         }
         else if (this.data.toolChoice == 1) {
+            console.log("tool");
             this.scrollToBottomTemp(this.notMatchingQuestion());
             // this.notMatchingQuestion();
             this.setData({
@@ -311,7 +312,7 @@ Page({
         }
         else if (this.data.taskFinish == true) {
 
-            // console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
+            console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
 
             if (choiceIndex == '0') {
                 tempMsgs.push({
@@ -338,6 +339,7 @@ Page({
             }
         }
         else if (this.data.whetherDetermineMatch === '0') {
+            console.log("1whether");
                 this.getInitialUpdateData(choiceIndex);
                 return
         }
@@ -413,7 +415,7 @@ Page({
             else {
                 // not matching
                 this.setData({
-                    toolChoice: 1,
+                    toolChoice: 0,
                 })
                 this.scrollToBottomTemp(this.notMatchingQuestion());
                 // this.notMatchingQuestion();

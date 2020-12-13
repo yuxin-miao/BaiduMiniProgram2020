@@ -491,7 +491,17 @@ Page({
         var width = "";
         swan.createSelectorQuery().select('#canvas-container').boundingClientRect(function (rect) {
 
-    
+        //     window.onload = function(){
+        //         var canvas = document.getElementById("myCanvas");
+        //         var context = canvas.getContext("2d");
+        //         var imageObj = new Image();
+        //         imageObj.onload = function(){
+        //             context.drawImage(imageObj, 0, 0, rect.width, rect.height);
+        //             context.font = "40pt Calibri";
+        //             context.fillText("My TEXT!", 50, 50);
+        //         };
+        //         imageObj.src = "avaterSrc"; 
+        //    };
             console.log("height:", rect.height);
             var height = rect.height;
             var right = rect.right;
@@ -565,12 +575,12 @@ Page({
             //     console.log(row[0].length)
             //     desX = (rect.width - row[0].length * fontSize) / 2;
             // }
-            ctx.setFontSize(fontSize)
-            ctx.font = 'PingFangSC-Medium sans-serif';
-            ctx.setFillStyle("#55c595")
+            ctx.setFontSize(fontSize);
+            // ctx.font = 'PingFangSC-Medium sans-serif';
+            ctx.setFillStyle("#55c595");
 
             for (var b = 0; b < row.length; b++) {
-                ctx.fillText(row[b], desX, desY + b*25, 300);
+                ctx.fillText(row[b], desX, desY + b*25);
             }
             // ctx.draw()    
 
