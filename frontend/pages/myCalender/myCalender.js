@@ -28,6 +28,7 @@ Page({
         returnMoodRecord: [],
 
         // used for poster share
+        haveRecord: 0,
         whetherShare: 0,
         generateFinish: 0,
         totHeight: 0,
@@ -224,13 +225,13 @@ Page({
             })
             return;
         }
-
+        // console.log("ff");
+        this.setUrl(e.currentTarget.dataset.day);
         this.dayMoodDescrip({
             year: this.data.thisYear,
             month: this.data.thisMonth,
             day: e.currentTarget.dataset.day
         });
-
 
     },
     // when change month
@@ -252,6 +253,8 @@ Page({
             this.moodTypeGratitude({
                 year: this.data.thisYear,
                 month: this.data.thisMonth
+            }, ()=> {
+                this.setUrl(this.data.thisDay);
             });
             this.dayMoodDescrip({
                 year: this.data.thisYear,
@@ -279,12 +282,15 @@ Page({
         this.moodTypeGratitude({
             year: this.data.thisYear,
             month: this.data.thisMonth
+        }, () => {
+            this.setUrl(this.data.thisDay);
         });
         this.dayMoodDescrip({
             year: this.data.thisYear,
             month: this.data.thisMonth,
             day: this.data.thisDay,
         });
+        
     },
 
     /* util functions for getting data */
@@ -324,15 +330,10 @@ Page({
                 this.setData({
                     thisMonthDays: tempMonthList,
                     gratitudeRecord: tempGradList,
+                }, ()=> {
+                    this.setUrl(this.data.thisDay)
                 });
-                let num = MoodNumber[tempMonthList[this.data.thisDay - 1].mood];
-    
-                let tempUrl = this.data.cardInfo.avater + num + '.png';
-                // console.log(tempUrl);
-                this.setData({
-                    'cardInfo.avater': tempUrl 
-                })
-                    
+ 
 
             },
             fail: err => {
@@ -385,9 +386,18 @@ Page({
     },
         // function for poster share
     shareThis(e) {
-        this.setData({
-            whetherShare: 1,
-        }, () => this.getAvaterInfo())
+        if (this.data.thisMonthDays[this.data.selectDay - 1].mood == 0) {
+            swan.showToast({
+                title: '未添加心情，无法分享',
+                icon: 'none'
+            })
+            return;
+        }
+        else {
+            this.setData({
+                whetherShare: 1,
+            }, () => this.getAvaterInfo())
+        }
 
     },
     hidePoster(e) {
@@ -486,10 +496,7 @@ Page({
             var height = rect.height;
             var right = rect.right;
             let topProp = 0.5;
-            width = rect.width * 0.8;
-            var left = rect.left + 5;
-            let topPart = rect.height * topProp;
-            let bottomPart = rect.height * (1 - topProp);
+            console.log(textWidth);
             ctx.setFillStyle('#fff');
             ctx.fillRect(0, 0, rect.width, height); 
 
@@ -498,68 +505,75 @@ Page({
                 ctx.setFontSize(14);
                 ctx.setFillStyle('#fff');
                 ctx.setTextAlign('left');
-        } 
+            } 
+            let desX = rect.width * 0.18;
+            let desY = rect.height * 0.19;
+            let textWidth = rect.width * 0.4;
 
+            var text = that.data.thisDescription;//这是要绘制的文本
+            var chr =text.split("");//这个方法是将一个字符串分割成字符串数组
+            var temp = "";
+            var row = [];
+            let fontSize = 15;
+            let rowNum = Math.floor(rect.height* 0.24 / (fontSize + 10));
 
+            // calculate fonsize and how many rows 
+            // if (chr.length / textWidth * (fontSize + 10) -rect.height* 0.24  > rect.height* 0.05) {
 
-        // if (cardInfo.Name) {
-        //   ctx.setFontSize(14);
-        //   ctx.setFillStyle('#000');
-        //   ctx.setTextAlign('left');
-        //   ctx.fillText(cardInfo.Name, left, width + 60);
-        // } //职位
+            // // }
+            // console.log("all text", chr.length)
+            for (var a = 0; a < chr.length; a++) {
+                if (ctx.measureText(temp).width < textWidth) {
+                    temp += chr[a];
+                }
+                else {
+                    a--; //这里添加了a-- 是为了防止字符丢失，效果图中有对比
+                    row.push(temp);
+                    temp = "";
+                }
+            }
+            row.push(temp);  
+            // // console.log("row",row)
+            // // if (row.length == 1) {
+            // //     fontSize = rect.height* 0.24 / row.length /5 ;
+            // //     console.log("size", fontSize);
+            // // }
+            if (row.length > rowNum) {    //截取前n行
+                var rowCut = row.slice(0, rowNum);
+                var rowPart = rowCut[1];
+                var test = "";
+                var empty = [];
+                for (var a = 0; a < rowPart.length; a++) {
+                    if (ctx.measureText(test).width < textWidth) {
+                        test += rowPart[a];
+                    }
+                    else {
+                        break;
+                    }
+                }
+                empty.push(test);
+                var group = empty[0] + "..."//这里只显示放得开的行数，超出的用...表示
+                rowCut.splice(rowNum - 1, 1, group);
+                row = rowCut;
+                console.log(row)
+            }
+            // let diffRow = rowNum - row.length;
+            // if (diffRow != 0) {
+            //     desY = diffRow / 2 * 25 + desY + 10;
+            // }
+            // if (row.length == 1) {
+            //     console.log(row[0].length)
+            //     desX = (rect.width - row[0].length * fontSize) / 2;
+            // }
+            ctx.setFontSize(fontSize)
+            ctx.font = 'PingFangSC-Medium sans-serif';
+            ctx.setFillStyle("#55c595")
 
+            for (var b = 0; b < row.length; b++) {
+                ctx.fillText(row[b], desX, desY + b*25, 300);
+            }
+            // ctx.draw()    
 
-        // if (cardInfo.Position) {
-        //   ctx.setFontSize(12);
-        //   ctx.setFillStyle('#666');
-        //   ctx.setTextAlign('left');
-        //   ctx.fillText(cardInfo.Position, left, width + 85);
-        // } //电话
-        let desX = rect.width * 0.18;
-        let desY = rect.height * 0.2;
-        if (that.data.thisDescription) {
-            console.log(that.data.thisDescription);
-            ctx.font = 'normal 11px sans-serif';
-            ctx.setFontSize(16);
-            ctx.setFillStyle('#55C595');
-            ctx.fillText(that.data.thisDescription, 0, 0);
-            // const metrics = ctx.measureText(that.data.thisDescription); //测量文本信息
-
-            // ctx.stroke();
-            // ctx.rect(left + 10, width - 20, metrics.width + 20, 25);
-            // ctx.setFillStyle('rgba(255,255,255,0.4)');
-            // ctx.fill();
-        }
-
-        ctx.setFontSize(32);
-        ctx.setFillStyle('#666');
-        ctx.setTextAlign('left');
-        ctx.fillText(that.data.thisDescription, desX, desY);
-
-
-
-        // if (cardInfo.Company) {
-        //   const CONTENT_ROW_LENGTH = 24; // 正文 单行显示字符长度
-
-        //   let [contentLeng, contentArray, contentRows] = that.textByteLength(cardInfo.Company, CONTENT_ROW_LENGTH);
-        //   ctx.setTextAlign('left');
-        //   ctx.setFillStyle('#000');
-        //   ctx.setFontSize(10);
-        //   let contentHh = 22 * 1;
-
-        //   for (let m = 0; m < contentArray.length; m++) {
-        //     ctx.fillText(contentArray[m], left, width + 150 + contentHh * m);
-        //   }
-        // } //  绘制二维码
-
-
-        // if (codeSrc) {
-        //   ctx.drawImage(codeSrc, left + 160, width + 40, width / 3, width / 3);
-        //   ctx.setFontSize(10);
-        //   ctx.setFillStyle('#000');
-        //   ctx.fillText("微信扫码或长按识别", left + 160, width + 150);
-        // }
         }).exec();
         setTimeout(function () {
             ctx.draw();
@@ -758,6 +772,27 @@ Page({
             }
         })
     },
+    setUrl: function(day) {
+        if (this.data.thisMonthDays[day - 1].mood == 0) {
+            this.setData({
+                haveRecord: 0,
+            })
+            console.log("no moode day");
+            return
+        }
+        else {
+            let num = MoodNumber[this.data.thisMonthDays[day - 1].mood];
+            let tempUrl = 'https://cdn.xiaou.tech/share' + num + '.png';
+            // console.log(tempUrl);
+            this.setData({
+                'cardInfo.avater': tempUrl,
+                haveRecord: 1,
+            }, ()=> {
+                console.log(this.data.cardInfo.avater)
+            })
+        }
+
+    }
 //     drawCanvas: function () {
 //         console.log("drawCanvas");
 //         const wrapperId = '#wrapper';
