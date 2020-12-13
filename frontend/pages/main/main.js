@@ -1,9 +1,43 @@
 Page({
     data: {
-
+        isWeb: 0,
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
+
+        swan.getSystemInfo({
+            success: res => {
+                if (res.platform == 'web') {
+                    this.setData({
+                        isWeb: 1
+                    })
+
+                    swan.showModal({
+                        title:'Web功能受限',
+                        content: '请至百度app体验完整功能，是否查看产品简介',
+                        showCancel: true,
+                        confirmText: '是',
+                        confirmColor: '#55C595',
+                        cancelText: '否',
+                        cancelColor: '#c2c2c2',
+                        success: function (res) {
+                            if (res.confirm) {
+                                swan.navigateTo({
+                                    url: '/pages/intro/intro'
+                                })
+                            }
+                            else if (res.cancel) {
+                            }
+                        },
+                        fail: function (res) {}
+                    })
+            
+                }
+            },
+            fail: err => {
+    
+            }
+        });
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
@@ -17,25 +51,6 @@ Page({
             description: 'Ucho',
             articleTitle: 'Ucho',
             releaseDate: '2020-12-01 12:01:30',
-            // image: [
-            //     // 'https://c.hiphotos.baidu.com/forum/w%3D480/sign=73c62dda83b1cb133e693d1bed5456da/f33725109313b07e8dee163d02d7912396dd8cfe.jpg',
-            //     // 'https://hiphotos.baidu.com/fex/%70%69%63/item/43a7d933c895d143e7b745607ef082025baf07ab.jpg'
-            // ],
-            // video: [{
-            //     url: 'https://www.baidu.com/mx/v12.mp4',
-            //     duration: '100',
-            //     image: 'https://ms-static.cdn.bcebos.com/miniappdocs/img/image-scaleToFill.png'
-            // }],
-            // visit: {
-            //     pv: '1000',
-            //     uv: '100',
-            //     sessionDuration: '130'
-            // },
-            // likes: '75',
-            // comments: '13',
-            // collects: '23',
-            // shares: '8',
-            // followers: '35',
             success: res => {
             },
             fail: err => {
@@ -59,6 +74,13 @@ Page({
         // 用户点击右上角转发
     },
     goMoodRecord(e) {
+        if (this.data.isWeb == 1) {
+            swan.showModal({
+                title: '提示',
+                content: '请至百度app体验该功能'
+            })
+            return
+        }
         if (getApp().isAuthenticated()) {
             // swan.navigateTo ({
             //     url: '/pages/mysetting/mysetting'
@@ -82,6 +104,13 @@ Page({
         }
     },
     startChat(e) {
+        if (this.data.isWeb == 1) {
+            swan.showModal({
+                title: '提示',
+                content: '请至百度app体验该功能'
+            })
+            return
+        }
         if (getApp().isAuthenticated()) {
             swan.navigateTo ({
                 url: '/pages/Uchat/Uchat'
@@ -117,9 +146,18 @@ Page({
         })
     },
     goAni(e) {
-        console.log("ff")
         swan.redirectTo({
             url: '/index/index'
         })
+    },
+    whetherWeb(e) {
+        swan.getSystemInfo({
+            success: res => {
+                console.log('res', res.platform); // web
+            },
+            fail: err => {
+    
+            }
+        });
     }
 });

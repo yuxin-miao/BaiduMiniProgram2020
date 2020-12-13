@@ -42,20 +42,24 @@ Page({
             avater: 'https://cdn.xiaou.tech/share',
             //需要https图片路径
             qrCode: "https://cdn.xiaou.tech/logo16_9.png",
-            //需要https图片路径
-            TagText: "Ucho",
-            //标签
-            Name: 'Ucho',
-            //姓名
-            Position: "程序员鼓励师",
-            //职位
-            Mobile: "13888888888",
-            //手机
-            Company: "才华无限有限公司" //公司
+            // //需要https图片路径
+            // TagText: "Ucho",
+            // //标签
+            // Name: 'Ucho',
+            // //姓名
+            // Position: "程序员鼓励师",
+            // //职位
+            // Mobile: "13888888888",
+            // //手机
+            // Company: "才华无限有限公司" //公司
 
         }
 
 
+    },
+    onLoad: function () {
+        // 监听页面加载的生命周期函数
+        getApp().whetherWeb();
     },
     methods : {
         // number of days in this month

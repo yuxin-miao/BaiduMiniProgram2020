@@ -30,6 +30,7 @@ Page({
         // this.chatAni = swan.createAnimation({
         
         // })
+        getApp().whetherWeb();
         swan.showLoading({
             title: '努力加载中',
             mask: true
