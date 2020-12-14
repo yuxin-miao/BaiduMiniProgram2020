@@ -173,16 +173,18 @@ Page({
                             content: '聊天机器人未上线',
                             duration: 1400
                         })
+                        // return;
                     }
                     if (res.data.message.content.length != 0) {
                         this.allQuestionUpdate(res);
-                        return;
+                        // return;
                     }
                 }
             })
             this.setData({
                 robot: 0
             })
+            return;
         }
         if (this.data.justEnter == "1") { // set nickname for first time enter user 
             if(this.data.thisSenderMsg.length > 5){
