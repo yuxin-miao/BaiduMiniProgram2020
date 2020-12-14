@@ -33,6 +33,7 @@
 
 
 .intro-arrow {
+    position: fixed;
     margin: 100rpx 0 0 44rpx;
     align-self: start;
 }

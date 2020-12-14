@@ -37,7 +37,7 @@ Page({
             }
         });
         swan.downloadFile({
-            url: 'https://cdn.xiaou.tech/intropage-top.svg',
+            url: 'https://cdn.xiaou.tech/intropage-top.png',
             success: res => {
                 swan.hideLoading();
                 if (res.statusCode === 200) {
