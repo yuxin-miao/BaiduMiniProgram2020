@@ -76,8 +76,8 @@
                         <image
                         class="mood-image-first"
                         mode="widthFix"
-                        style="width: 40rpx"
-                        src="../../images/share-end.svg"/>
+                        style="width: 37rpx"
+                        src="../../images/share-begin.svg"/>
                     </view>
                 </view>
                 <view class="oval"> </view>

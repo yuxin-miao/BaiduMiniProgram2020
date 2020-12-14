@@ -236,15 +236,15 @@ Page({
                     }
                 })
             }
-            else if (this.data.taskFinish == true) {
-                // console.log("sendMsg taskFinish", this.data.thisSenderMsg);
-                this.scrollToBottomTemp();
-                this.matchingQuestion(this.data.thisSenderMsg);
-                this.setData({
-                    taskFinish: false
-                })
-            }
         }
+        else if (this.data.taskFinish == true) {
+            console.log("sendMsg taskFinish", this.data.thisSenderMsg);
+            this.scrollToBottomTemp(this.matchingQuestion(this.data.thisSenderMsg));
+            this.setData({
+                taskFinish: false
+            })
+        }
+        
     },
     // CHOICE: send choice
     selectChoice(e) {

@@ -13,6 +13,32 @@ Page({
         // 监听页面加载的生命周期函数
         var that = this;
         swan.showLoading();
+
+        swan.downloadFile({
+            url: 'https://cdn.xiaou.tech/introtop.svg',
+            success: res => {
+                swan.hideLoading();
+                if (res.statusCode === 200) {
+                    this.setData({
+                        backTopUrl: res.tempFilePath,
+                    })
+                    console.log("finish", res.tempFilePath)
+                } 
+                else {
+                    swan.showToast({
+                        title: '页面加载失败',
+                        icon: 'none',
+                        duration: 2000,
+                    });
+                }
+            },
+            fail: err => {
+                swan.showModal ({
+                    title: '页面加载失败',
+                    content: '请检查网络连接'
+                });
+            }
+        });
         swan.downloadFile({
             url: 'https://cdn.xiaou.tech/intropage-bottom.svg',
             success: res => {
@@ -36,31 +62,6 @@ Page({
                 });
             }
         });
-        swan.downloadFile({
-            url: 'https://cdn.xiaou.tech/intropage-top.png',
-            success: res => {
-                swan.hideLoading();
-                if (res.statusCode === 200) {
-                    this.setData({
-                        backTopUrl: res.tempFilePath,
-                    })
-                } 
-                else {
-                    swan.showToast({
-                        title: '页面加载失败',
-                        icon: 'none',
-                        duration: 2000,
-                    });
-                }
-            },
-            fail: err => {
-                swan.showModal ({
-                    title: '页面加载失败',
-                    content: '请检查网络连接'
-                });
-            }
-        });
-
         
     },
     onReady: function() {
@@ -77,7 +78,6 @@ Page({
                     this.setData({
                         cardUrl: res.tempFilePath,
                     })
-                    console.log("finish", res.tempFilePath)
                 } 
                 else {
                     swan.showToast({

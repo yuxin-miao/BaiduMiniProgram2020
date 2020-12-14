@@ -32,6 +32,7 @@
     bind:tap="returnNav"
 
 />
+<view class='images-intro'>
 <image
     mode="widthFix"
     style="width: 750rpx"
@@ -43,7 +44,7 @@
     src="{{backBottomUrl}}"
     bind:tap="openCard"
 />
-
+</view>
 <block s-if="{{whetherShare == 1}}">
 <view class='mask' bind:tap="hidePoster"/>
         <view class='poste-box' id='canvas-container' bind:tap="hidePoster" bind:longpress="showSave" style="width:{{totWidth}};height:{{totHeight}};left:{{totLeft}};top:{{totTop}}">
