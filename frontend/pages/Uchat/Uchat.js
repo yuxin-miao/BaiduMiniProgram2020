@@ -25,6 +25,7 @@ Page({
         chatPaddingBottom: "10vh",
         chatHeight: 0,
         toolChoice: 0, // used for toolbox select 
+        robot: 0,
     },
     onLoad: function () {
         //     // chat Animation
@@ -154,6 +155,35 @@ Page({
 
     },
     updateSendMsg:function() {
+        if (this.data.robot == 1) {
+            console.log("4 robot");
+            swan.request({
+                url: getApp().getUrl('/message/robot/'),
+                method: 'POST',
+                header: {
+                    // POST 携带
+                    'X-CSRFToken': cookies.get('csrftoken')
+                },
+                data: {query: this.data.thisSenderMsg},
+                success: res => {
+                    // console.log("set nickname", this.data.thisSenderMsg);
+                    if (res.statusCode != 200) {
+                        swan.showModal({
+                            title: '请求失败',
+                            content: '聊天机器人未上线',
+                            duration: 1400
+                        })
+                    }
+                    if (res.data.message.content.length != 0) {
+                        this.allQuestionUpdate(res);
+                        return;
+                    }
+                }
+            })
+            this.setData({
+                robot: 0
+            })
+        }
         if (this.data.justEnter == "1") { // set nickname for first time enter user 
             if(this.data.thisSenderMsg.length > 5){
                 swan.showToast({
@@ -282,8 +312,9 @@ Page({
                 },
                 data: {content: choiceIndex},
                 success: res => {
-                    // console.log('selectChoice: ', res);
+                    console.log('selectChoice: ', res);
                     if (res.data.message.content.length != "") {
+                        console.log("update")
                         this.allQuestionUpdate(res);
                         return
                     }
@@ -728,6 +759,11 @@ Page({
                 content: '问题更新失败，请稍后再试'
             });
             return;
+        }
+        if (res.data.question.process_type == '4') {
+            this.setData({
+                robot: 1
+            })
         }
         let tempDis = this.data.displayMsgs;
         tempDis.push({
