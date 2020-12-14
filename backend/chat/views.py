@@ -259,7 +259,15 @@ class MessageViewSet(
     @action(detail=False, methods=['POST'])
     def robot(self, request):
         try:
-            reply = request.POST.get('query', None)
+            serializer = self.get_serializer(data=request.data)
+            if not serializer.is_valid():
+                return Response({'detail': '用户回复内容错误'}, status=status.HTTP_400_BAD_REQUEST)
+
+            reply = serializer.validated_data.get('query', None)
+
+            if reply is None:
+                print(request.data)
+                return Response({'detail': '用户回复内容不可为空'}, status=status.HTTP_400_BAD_REQUEST)
 
             Message.objects.create(sender=request.user, content=reply)
 
@@ -301,8 +309,6 @@ class MessageViewSet(
                 return Response({'detail': '百度聊天机器人处理失败'}, status=status.HTTP_400_BAD_REQUEST)
 
             res_data = res.get('result', None)
-
-            pprint(res_data)
 
             if res_data.get('session_id', None) is not None:
                 request.user.chat_session_id = res_data.get('session_id', None)
