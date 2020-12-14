@@ -3,4 +3,10 @@ from django.contrib.auth.admin import UserAdmin
 
 from account.models import User
 
-admin.site.register(User, UserAdmin)
+
+class MyUserAdmin(UserAdmin):
+    list_display = ('username', 'nickname',)
+    search_fields = ('username', 'nickname')
+
+
+admin.site.register(User, MyUserAdmin)

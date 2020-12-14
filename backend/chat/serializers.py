@@ -16,6 +16,10 @@ class MessageMatchingSerializer(serializers.Serializer):
     matching = serializers.CharField(max_length=128, required=False)
 
 
+class RobotQuerySerializer(serializers.Serializer):
+    query = serializers.CharField(max_length=1024, required=False)
+
+
 class QuestionTemplateSerializer(serializers.ModelSerializer):
     choices = serializers.SerializerMethodField()
 

@@ -13,6 +13,7 @@ export const PROC_TYPE = {
   GRATITUDE_JOURNAL: 1,
   MOOD_RECORD: 2,
   NICKNAME: 3,
+  ROBOT: 4
 };
 
 export const PROC_TYPE_STR = {
@@ -20,4 +21,5 @@ export const PROC_TYPE_STR = {
   [PROC_TYPE.GRATITUDE_JOURNAL]: '感恩日志',
   [PROC_TYPE.MOOD_RECORD]: '心情记录',
   [PROC_TYPE.NICKNAME]: '输入昵称',
+  [PROC_TYPE.ROBOT]: '机器人',
 };
