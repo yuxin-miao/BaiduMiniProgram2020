@@ -16,6 +16,7 @@ Page({
         taskFinish: false,
         talkMatching: '0',
         whetherDetermineMatch: '0',
+        endAll: '0',
         nickname: "", // 通过是否有名字判断是否初次进入
         doChoice: '0', // 选择选项：1 / 纯输入：0 / 心情记录: 2 process_type
         uChoices: [], // choices given, array of strings
@@ -37,7 +38,8 @@ Page({
         });
         var time = util.chatTime(new Date());
         this.setData({
-            time: time
+            time: time,
+            endAll: 0,
         }, () => {
             this.initial();
         });
@@ -124,6 +126,7 @@ Page({
 
      // SENDER input
     SenderMsg:function(e){
+        // console.log('sned', e.detail.value);
         this.setData({
             thisSenderMsg:e.detail.value
         });
@@ -212,8 +215,8 @@ Page({
                                 type: '1',
                                 msg: '有想和我聊聊的话题吗？'
                             });
-                            let tempCh = ["有", "没有"];
-                            let tempChRe = ["有", "没有"];
+                            let tempCh = ["有", "使用工具", "不想聊了"];
+                            let tempChRe = ["有","使用工具", "不想聊了"];
                             this.setData({
                                 displayMsgs: tempDis,
                                 doChoice: '1',
@@ -236,7 +239,7 @@ Page({
             else if (this.data.taskFinish == true) {
                 // console.log("sendMsg taskFinish", this.data.thisSenderMsg);
                 this.scrollToBottomTemp();
-                // this.matchingQuestion(this.data.thisSenderMsg);
+                this.matchingQuestion(this.data.thisSenderMsg);
                 this.setData({
                     taskFinish: false
                 })
@@ -246,7 +249,7 @@ Page({
     // CHOICE: send choice
     selectChoice(e) {
         // update user's reply and u's reply
-        // console.log('select choice: ', this.data.toolChoice, this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
+        console.log('select choice: ',this.data.endAll, this.data.toolChoice, this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
         let choiceIndex = e.currentTarget.dataset.choiceIndex;
         let tempMsgs = this.data.displayMsgs;
         tempMsgs.push ({
@@ -261,6 +264,12 @@ Page({
     },
     updateChoice: function(choiceIndex) {
         let tempMsgs = this.data.displayMsgs;
+        if (this.data.endAll == 1) {
+            console.log("navi")
+            swan.navigateBack();
+            return;
+            
+        }
 
         if (this.data.justEnter == "0" &&  this.data.taskFinish == false) {
             console.log('POST SC:', choiceIndex);
@@ -283,8 +292,8 @@ Page({
                         type: '1',
                         msg: '有想和我聊聊的话题吗？'
                     });
-                    let tempCh = ["有", "没有"];
-                    let tempChRe = ["有", "没有"];
+                    let tempCh = ["有", "使用工具", "不想聊了"];
+                    let tempChRe = ["有", "使用工具", "不想聊了"];
                     this.setData({
                         displayMsgs: tempMsgs,
                         doChoice: '1',
@@ -313,7 +322,7 @@ Page({
         // }
         else if (this.data.taskFinish == true) {
 
-            console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
+            console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch);
 
             if (choiceIndex == '0') {
                 tempMsgs.push({
@@ -331,12 +340,29 @@ Page({
                     this.scrollToBottomTemp();
                 })
             }
-            else {
+            else if(choiceIndex == '1') {
                 this.setData({
                     toolChoice: 0,
                 })
                 this.scrollToBottomTemp(this.notMatchingQuestion());
                 // this.notMatchingQuestion();
+            }
+            else if(choiceIndex == '2') {
+                tempMsgs.push({
+                    type: '1',
+                    msg: '那我们下次再见～'
+                });
+                this.setData({
+                    displayMsgs: tempMsgs,
+                    doChoice: '1',
+                    uChRely: ['再见'],
+                    uChoices: ['再见'],
+                    justEnter: '0',
+                    taskFinish: true,
+                    endAll: 1,
+                }, () => {
+                    this.scrollToBottomTemp();
+                })
             }
         }
         else if (this.data.whetherDetermineMatch === '0') {
