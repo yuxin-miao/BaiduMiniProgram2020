@@ -302,6 +302,8 @@ class MessageViewSet(
 
             res_data = res.get('result', None)
 
+            pprint(res_data)
+
             if res_data.get('session_id', None) is not None:
                 request.user.chat_session_id = res_data.get('session_id', None)
                 request.user.save()
