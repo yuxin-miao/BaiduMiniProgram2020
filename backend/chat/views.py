@@ -27,7 +27,7 @@ from chat.serializers import (
 from chat.constants import ReplyType, ProcessType
 from mood.constants import MoodType
 
-from backend.permissions import IsAuthenticated
+from backend.permissions import IsAuthenticated, IsStaff
 from backend.filters import TitleFilterBackend
 
 
@@ -337,7 +337,7 @@ class MessageViewSet(
 
 class QuestionViewSet(ModelViewSet):
     queryset = QuestionTemplate.objects.all().order_by('-id')
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsStaff]
     filter_backends = (TitleFilterBackend,)
 
     def get_serializer_class(self):
@@ -348,7 +348,7 @@ class QuestionViewSet(ModelViewSet):
 
 class ChoiceViewSet(ModelViewSet):
     queryset = Choice.objects.all().order_by('id')
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsStaff]
 
     def get_serializer_class(self):
         return ChoiceSerializer
