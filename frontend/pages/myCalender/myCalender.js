@@ -527,6 +527,20 @@ Page({
         const ctx = swan.createCanvasContext('myCanvas'); //创建画布
 
         var width = "";
+        // var  devicePixelRatio = window.devicePixelRatio || 1,   
+        // backingStoreRatio = ctx.webkitBackingStorePixelRatio || ctx.mozBackingStorePixelRatio || ctx.msBackingStorePixelRatio || ctx.oBackingStorePixelRatio || ctx.backingStorePixelRatio || 1, 
+        // ratio = devicePixelRatio / backingStoreRatio;
+
+        // var oldWidth = canvas.width; 
+        // var oldHeight = canvas.height; 
+        // canvas.width = oldWidth * ratio; 
+        // canvas.height = oldHeight * ratio; 
+        // canvas.style.width = oldWidth + 'px'; 
+        // canvas.style.height = oldHeight + 'px'; 
+        // context.scale(ratio, ratio);
+
+//进行正常的操作
+
         swan.createSelectorQuery().select('#canvas-container').boundingClientRect(function (rect) {
 
         //     window.onload = function(){

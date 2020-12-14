@@ -7,10 +7,11 @@ Page({
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
+        this.firstOrNot();
+
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
-        this.firstOrNot();
 
     },
     onShow: function() {
@@ -36,9 +37,9 @@ Page({
         //     url: '/pages/record/record'
         // })
         // let data = this.getLocalStorage('username');
-        if (getApp().isAuthenticated()) {
+        if (swan.getStorageSync('first_enter') === 'no') {
             swan.redirectTo({
-                url: '/pages/main/main'
+                url: '/pages/main/main',
             });
         }
         else {
@@ -46,5 +47,6 @@ Page({
                 url: '/index/index'
             });
         }
+        getApp().setLocalStorage('first_enter', 'no');
     }
 });
