@@ -19,7 +19,7 @@
         <view class="calender" id="wrapper" bind:tap="drawCanvas">
           <!-- <text class="title draw" data-text="Hello there">Hello there</text> -->
             <view class="calender-week">
-                <view class="grid" s-for="item, index in weekText">{{item}}</view>
+                <view class="grid-week" s-for="item, index in weekText">{{item}}</view>
             </view>
             <view class="calender-day">
 
