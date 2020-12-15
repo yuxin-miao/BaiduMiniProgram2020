@@ -25,6 +25,8 @@ Page({
         chatPaddingBottom: "10vh",
         chatHeight: 0,
         toolChoice: 0, // used for toolbox select 
+        showTool: 0, // 
+        tools: [1, 2, 3, 4, 5],
         robot: 0,
         moodChIdx: -1,
     },
@@ -898,6 +900,12 @@ Page({
             }
         });
     },
+    clickTool(e) { // show/hide toolbox 
+        let temp = this.data.showTool == 1 ? 0 : 1;
+        this.setData({
+            showTool: temp
+        })
+    },
      // record mood in chat 
     moodChoice(e) {
         this.setData({
@@ -906,7 +914,7 @@ Page({
     },
      // update 心情日志
     moodRecord(e) {
-        
+
     }
 
 });

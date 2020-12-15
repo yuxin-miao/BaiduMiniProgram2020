@@ -216,14 +216,6 @@
 
 }
 
-.suspend-button {
-    position: fixed;
-    right: 0;
-    bottom: 170rpx;
-    z-index: 999;
-    padding-right: 30rpx;
-
-}
 
 
 @keyframes popContentOut {
@@ -236,7 +228,33 @@
   }
 
 .open {
-    
     animation: popContentOut 0.3s  ease-in both;
     /* animation-fill-mode: both 动画将会执行 forwards 和 backwards 执行的动作。 */
 }
+
+.tool-box {
+    position: fixed;
+    z-index: 998;
+    top: 12vh;
+    height: 110rpx;
+    width: 750rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background: linear-gradient(rgb(255, 255, 255), rgba(242, 255, 242, 0.82));
+    padding: 10rpx 20rpx 20rpx 20rpx;
+    max-height: 150rpx;
+    animation: 2s ease-out 0 dropDown;
+    /* transition: max-height 0.25s ease-out; */
+}
+
+@keyframes dropDown {
+    from {
+        height: 0;
+        top: 10vh;
+    }
+    to {
+        height: 110rpx;
+        top: 12vh;
+    }
+  }
