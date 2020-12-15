@@ -1,5 +1,9 @@
+from pprint import pprint
+
 from django.utils import timezone
 from django.db.models import Q
+import requests
+import json
 from datetime import datetime
 
 from rest_framework import viewsets, response, status
@@ -17,12 +21,13 @@ from chat.serializers import (
     QuestionTemplateMiniSerializer,
     QuestionTemplateEditSerializer,
     MessageMatchingSerializer,
-    ChoiceSerializer
+    ChoiceSerializer,
+    RobotQuerySerializer
 )
 from chat.constants import ReplyType, ProcessType
 from mood.constants import MoodType
 
-from backend.permissions import IsAuthenticated
+from backend.permissions import IsAuthenticated, IsStaff
 from backend.filters import TitleFilterBackend
 
 
@@ -51,6 +56,8 @@ class MessageViewSet(
             return MessageReplySerializer
         if self.action == 'get_question':
             return MessageMatchingSerializer
+        if self.action == 'robot':
+            return RobotQuerySerializer
         return MessageSerializer
 
     def list(self, request, *args, **kwargs):
@@ -230,6 +237,8 @@ class MessageViewSet(
     def bye(self, request):
         try:
             QuestionRecord.objects.filter(user=request.user).update(answered=True)
+            request.user.chat_session_id = None
+            request.user.save()
             return Response(status=status.HTTP_200_OK)
         except Exception as e:
             print(str(e))
@@ -247,10 +256,88 @@ class MessageViewSet(
             print(str(e))
             return Response({'detail': '处理失败'}, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=False, methods=['POST'])
+    def robot(self, request):
+        try:
+            serializer = self.get_serializer(data=request.data)
+            if not serializer.is_valid():
+                return Response({'detail': '用户回复内容错误'}, status=status.HTTP_400_BAD_REQUEST)
+
+            reply = serializer.validated_data.get('query', None)
+
+            if reply is None:
+                print(request.data)
+                return Response({'detail': '用户回复内容不可为空'}, status=status.HTTP_400_BAD_REQUEST)
+
+            Message.objects.create(sender=request.user, content=reply)
+
+            oauth_url = 'https://aip.baidubce.com/oauth/2.0/token'
+            r = requests.post(oauth_url, data={
+                'grant_type': 'client_credentials',
+                'client_id': 'VbP6roV1inSg7ozAz3tVpIhC',
+                'client_secret': '94Zp5y4RnGT6afu8zmdLirYUcW2CwjG2'
+            })
+            res = r.json()
+            access_token = res.get('access_token', None)
+
+            url = 'https://aip.baidubce.com/rpc/2.0/unit/service/chat?access_token=' + access_token
+            headers = {
+                'Content-Type': 'application/json; charset=UTF-8',
+            }
+
+            post_data = {
+                "log_id": str(
+                    timezone.now()) + " " + request.user.username if request.user.nickname is None else request.user.nickname,
+                "version": "2.0",
+                "service_id": "S41976",
+                "session_id": "" if request.user.chat_session_id is None else request.user.chat_session_id,
+                "request": {
+                    "query": reply,
+                    "user_id": request.user.username
+                },
+                "dialog_state": {
+                    "contexts": {
+                        "SYS_REMEMBERED_SKILLS": ["1066347"]
+                    }
+                }
+            }
+            r = requests.post(url, data=json.dumps(post_data), headers=headers)
+            res = r.json()
+
+            if res.get('error_code', None) is None or res.get('error_code', None) != 0:
+                print(res)
+                return Response({'detail': '百度聊天机器人处理失败'}, status=status.HTTP_400_BAD_REQUEST)
+
+            res_data = res.get('result', None)
+
+            if res_data.get('session_id', None) is not None:
+                request.user.chat_session_id = res_data.get('session_id', None)
+                request.user.save()
+
+            reply = res_data.get('response_list', None)[0]
+            action = reply.get('action_list', None)[0]
+            reply_content = action.get('say', "")
+
+            msg = Message.objects.create(receiver=request.user, content=reply_content)
+
+            return Response(data={
+                'message': MessageSerializer(msg).data,
+                'question': {
+                    'title': reply_content,
+                    'reply_type': ReplyType.RAW,
+                    'process_type': ProcessType.ROBOT,
+                    'choices': []
+                }
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(str(e))
+            return Response({'detail': '处理失败'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class QuestionViewSet(ModelViewSet):
     queryset = QuestionTemplate.objects.all().order_by('-id')
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsStaff]
     filter_backends = (TitleFilterBackend,)
 
     def get_serializer_class(self):
@@ -261,7 +348,7 @@ class QuestionViewSet(ModelViewSet):
 
 class ChoiceViewSet(ModelViewSet):
     queryset = Choice.objects.all().order_by('id')
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsStaff]
 
     def get_serializer_class(self):
         return ChoiceSerializer

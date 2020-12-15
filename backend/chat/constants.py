@@ -13,10 +13,12 @@ class ProcessType:
     GRATITUDE_JOURNAL = 1
     MOOD_RECORD = 2
     NICKNAME = 3
+    ROBOT = 4
 
     choices = (
         (ORDINARY, '普通匹配'),
         (GRATITUDE_JOURNAL, '感恩日志'),
         (MOOD_RECORD, '心情记录'),
-        (NICKNAME, '输入昵称')
+        (NICKNAME, '输入昵称'),
+        (ROBOT, '机器人问答')
     )

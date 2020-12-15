@@ -314,7 +314,7 @@ Page({
                 },
                 data: {content: choiceIndex},
                 success: res => {
-                    console.log('selectChoice: ', res);
+                    // console.log('selectChoice: ', res);
                     if (res.data.message.content.length != "") {
                         console.log("update")
                         this.allQuestionUpdate(res);

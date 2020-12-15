@@ -11,6 +11,7 @@ class User(AbstractUser):
     avatar = models.URLField(max_length=256, null=True, blank=True, verbose_name="头像")
     openid = models.CharField(max_length=64, db_index=True, verbose_name='openid', unique=True, null=True, blank=True)
     session_key = models.CharField(max_length=64, null=True, blank=True, verbose_name='session_key')
+    chat_session_id = models.CharField(max_length=128, null=True, blank=True, verbose_name='chat_session_id')
 
     class Meta:
         db_table = 'baidu_users'
