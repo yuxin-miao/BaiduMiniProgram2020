@@ -68,6 +68,15 @@
 
 }
 
+.grid-week {
+    position: relative;
+    /* z-index: 1; */
+    text-align: center;
+    font-family: "Microsoft YaHei",sans-serif;
+    width: calc(100% / 7);
+    line-height: 70rpx;
+}
+
 .calender-day {
     display: flex;
     flex-wrap: wrap;
@@ -83,16 +92,6 @@
     font-family: "Microsoft YaHei",sans-serif;
     width: calc(100% / 7);
     line-height: 100rpx;
-    height: 100rpx;
-}
-
-.grid-week {
-    position: relative;
-    /* z-index: 1; */
-    text-align: center;
-    font-family: "Microsoft YaHei",sans-serif;
-    width: calc(100% / 7);
-    line-height: 60rpx;
     height: 100rpx;
 }
 

@@ -5,6 +5,7 @@ Page({
         loginChat: 0,
         loginRecord: 0,
         showIntro: 0,
+        transBubble: '',
         // privacyContent: 
     },
     onLoad: function () {
@@ -78,7 +79,8 @@ Page({
 
         }
     },
-    startChat(e) {
+    startChat() {
+        console.log("transition finish")
         if (this.data.isWeb == 1) {
             var that = this;
             this.imageIntro(that);
@@ -94,6 +96,7 @@ Page({
                 loginChat: 1,
             })
         }
+
     },
     goIntro(e) {
         swan.navigateTo ({
@@ -222,4 +225,31 @@ Page({
             showIntro: 0,
         })
     }
+
+    /* From Modernizr */
+    whichTransitionEvent(){
+        var t;
+        var el = document.createElement('fakeelement');
+        var transitions = {
+        'transition':'transitionend',
+        'OTransition':'oTransitionEnd',
+        'MozTransition':'transitionend',
+        'WebkitTransition':'webkitTransitionEnd'
+        }
+    
+        for(t in transitions){
+            if( el.style[t] !== undefined ){
+                return transitions[t];
+            }
+        }
+    },
+    transitionEnd: function () {
+    console.log('渐变已结束')
+  },
+  triggerTransition(e) {
+    this.setData({
+        transBubble: 'bubble'
+    })
+  }
+    
 });

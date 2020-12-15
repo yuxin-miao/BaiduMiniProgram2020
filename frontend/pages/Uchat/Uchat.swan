@@ -13,10 +13,19 @@
             mode="widthFix"
             style="width: 100rpx"
             src="../../images/portrait-chat.svg"
-            bindtap="scrollToTop"/>
+            bind:tap="clickTool"/>
         </view>
     </view>
-
+    <view class="tool-box-{{showWhether}}">
+            <view s-for="item, index in tools">
+            <image
+                mode="widthFix"
+                style="width: 80rpx"
+                class="each-tool-{{showWhether}}"
+                src="../../images/{{item}}.svg"
+                bind:tap="toolChoice" data-choice-index="{{index}}"/>
+            </view>
+    </view>
     <scroll-view
         scroll-y
         scroll-top="{= scrollTop =}"
@@ -24,8 +33,7 @@
         enable-back-to-top="true"
         class="chat-body"
         id="uchat-body"
-        style="height: {{chatHeight}}px"
-    >
+        style="height: {{chatHeight}}px">
         <view s-for="item, index in prevMsgs">
             <block s-if="{{item.type == 1}}">
                 <view class="chat-row">
@@ -88,21 +96,31 @@
             </view>
         </block>
         <block s-if="{{doChoice == '2'}}">
-            <view class="choice-buttom" bind:tap="scrollToBottomTemp">
+        <view class="record-buttom">
+            <!-- <view class="choice-buttom" bind:tap="scrollToBottomTemp"> -->
 
                 <view class="all-choices-image">
                     <view s-for="moodname, chIndex in MoodName">
                     <image
                         mode="widthFix"
                         style="width: 90rpx"
-                        class="each-choice-image"
+                        class="each-choice-image  {{chIndex == moodChIdx ? 'selectMood' : ''}}"
                         src="../../images/mood_{{moodname}}.svg"
-                        bind:tap="selectChoice" data-choice-index="{{chIndex}}"/>
+                        bind:tap="moodChoice" data-choice-index="{{chIndex}}"/>
                     </view>
                 </view>
-            </view>
+                <view class="record-input">
+                    <input class="normalInput" bindinput="SenderMsg"/>
+                    <button class="image-button" formType="reset" bind:tap="moodRecord"  style="height:80rpx">
+                    <image
+                        mode="widthFix"
+                        class="msg-send"
+                        src="../../images/chat-send.svg"/>
+                    </button>
+                </view>
+            <!-- </view> -->
+        </view>
         </block>
     </view>
-    <!-- <view><smt-icon name="arrow-down" size="40rpx" class="suspend-button" bindtap="scrollToBottomTemp"/></view> -->
 
 </view>
