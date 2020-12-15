@@ -16,6 +16,7 @@ Page({
         taskFinish: false,
         talkMatching: '0',
         whetherDetermineMatch: '0',
+        endAll: '0',
         nickname: "", // 通过是否有名字判断是否初次进入
         doChoice: '0', // 选择选项：1 / 纯输入：0 / 心情记录: 2 process_type
         uChoices: [], // choices given, array of strings
@@ -24,6 +25,7 @@ Page({
         chatPaddingBottom: "10vh",
         chatHeight: 0,
         toolChoice: 0, // used for toolbox select 
+        robot: 0,
     },
     onLoad: function () {
         //     // chat Animation
@@ -37,7 +39,8 @@ Page({
         });
         var time = util.chatTime(new Date());
         this.setData({
-            time: time
+            time: time,
+            endAll: 0,
         }, () => {
             this.initial();
         });
@@ -124,6 +127,7 @@ Page({
 
      // SENDER input
     SenderMsg:function(e){
+        // console.log('sned', e.detail.value);
         this.setData({
             thisSenderMsg:e.detail.value
         });
@@ -151,6 +155,37 @@ Page({
 
     },
     updateSendMsg:function() {
+        if (this.data.robot == 1) {
+            console.log("4 robot");
+            swan.request({
+                url: getApp().getUrl('/message/robot/'),
+                method: 'POST',
+                header: {
+                    // POST 携带
+                    'X-CSRFToken': cookies.get('csrftoken')
+                },
+                data: {query: this.data.thisSenderMsg},
+                success: res => {
+                    // console.log("set nickname", this.data.thisSenderMsg);
+                    if (res.statusCode != 200) {
+                        swan.showModal({
+                            title: '请求失败',
+                            content: '聊天机器人未上线',
+                            duration: 1400
+                        })
+                        // return;
+                    }
+                    if (res.data.message.content.length != 0) {
+                        this.allQuestionUpdate(res);
+                        // return;
+                    }
+                }
+            })
+            this.setData({
+                robot: 0
+            })
+            return;
+        }
         if (this.data.justEnter == "1") { // set nickname for first time enter user 
             if(this.data.thisSenderMsg.length > 5){
                 swan.showToast({
@@ -212,8 +247,8 @@ Page({
                                 type: '1',
                                 msg: '有想和我聊聊的话题吗？'
                             });
-                            let tempCh = ["有", "没有"];
-                            let tempChRe = ["有", "没有"];
+                            let tempCh = ["有", "使用工具", "不想聊了"];
+                            let tempChRe = ["有","使用工具", "不想聊了"];
                             this.setData({
                                 displayMsgs: tempDis,
                                 doChoice: '1',
@@ -233,20 +268,20 @@ Page({
                     }
                 })
             }
-            else if (this.data.taskFinish == true) {
-                // console.log("sendMsg taskFinish", this.data.thisSenderMsg);
-                this.scrollToBottomTemp();
-                // this.matchingQuestion(this.data.thisSenderMsg);
-                this.setData({
-                    taskFinish: false
-                })
-            }
         }
+        else if (this.data.taskFinish == true) {
+            console.log("sendMsg taskFinish", this.data.thisSenderMsg);
+            this.scrollToBottomTemp(this.matchingQuestion(this.data.thisSenderMsg));
+            this.setData({
+                taskFinish: false
+            })
+        }
+        
     },
     // CHOICE: send choice
     selectChoice(e) {
         // update user's reply and u's reply
-        // console.log('select choice: ', this.data.toolChoice, this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
+        console.log('select choice: ',this.data.endAll, this.data.toolChoice, this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
         let choiceIndex = e.currentTarget.dataset.choiceIndex;
         let tempMsgs = this.data.displayMsgs;
         tempMsgs.push ({
@@ -261,6 +296,12 @@ Page({
     },
     updateChoice: function(choiceIndex) {
         let tempMsgs = this.data.displayMsgs;
+        if (this.data.endAll == 1) {
+            console.log("navi")
+            swan.navigateBack();
+            return;
+            
+        }
 
         if (this.data.justEnter == "0" &&  this.data.taskFinish == false) {
             console.log('POST SC:', choiceIndex);
@@ -273,8 +314,9 @@ Page({
                 },
                 data: {content: choiceIndex},
                 success: res => {
-                    // console.log('selectChoice: ', res);
+                    console.log('selectChoice: ', res);
                     if (res.data.message.content.length != "") {
+                        console.log("update")
                         this.allQuestionUpdate(res);
                         return
                     }
@@ -283,8 +325,8 @@ Page({
                         type: '1',
                         msg: '有想和我聊聊的话题吗？'
                     });
-                    let tempCh = ["有", "没有"];
-                    let tempChRe = ["有", "没有"];
+                    let tempCh = ["有", "使用工具", "不想聊了"];
+                    let tempChRe = ["有", "使用工具", "不想聊了"];
                     this.setData({
                         displayMsgs: tempMsgs,
                         doChoice: '1',
@@ -303,17 +345,17 @@ Page({
                 }
             })
         }
-        else if (this.data.toolChoice == 1) {
-            console.log("tool");
-            this.scrollToBottomTemp(this.notMatchingQuestion());
-            // this.notMatchingQuestion();
-            this.setData({
-                toolChoice: 0
-            })
-        }
+        // else if (this.data.toolChoice == 1) {
+        //     console.log("tool");
+        //     this.scrollToBottomTemp(this.notMatchingQuestion());
+        //     // this.notMatchingQuestion();
+        //     this.setData({
+        //         toolChoice: 0
+        //     })
+        // }
         else if (this.data.taskFinish == true) {
 
-            console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
+            console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch);
 
             if (choiceIndex == '0') {
                 tempMsgs.push({
@@ -331,12 +373,29 @@ Page({
                     this.scrollToBottomTemp();
                 })
             }
-            else {
+            else if(choiceIndex == '1') {
                 this.setData({
-                    toolChoice: 1,
+                    toolChoice: 0,
                 })
                 this.scrollToBottomTemp(this.notMatchingQuestion());
                 // this.notMatchingQuestion();
+            }
+            else if(choiceIndex == '2') {
+                tempMsgs.push({
+                    type: '1',
+                    msg: '那我们下次再见～'
+                });
+                this.setData({
+                    displayMsgs: tempMsgs,
+                    doChoice: '1',
+                    uChRely: ['再见'],
+                    uChoices: ['再见'],
+                    justEnter: '0',
+                    taskFinish: true,
+                    endAll: 1,
+                }, () => {
+                    this.scrollToBottomTemp();
+                })
             }
         }
         else if (this.data.whetherDetermineMatch === '0') {
@@ -445,9 +504,9 @@ Page({
                 doChoice: '1',
                 whetherDetermineMatch: '1',
                 taskFinish: true,
-                toolChoice: 1,
+                toolChoice: 0,
             },() => {
-                this.scrollToBottomTemp();
+                this.scrollToBottomTemp(this.notMatchingQuestion());
             });
             return;
         }
@@ -702,6 +761,11 @@ Page({
                 content: '问题更新失败，请稍后再试'
             });
             return;
+        }
+        if (res.data.question.process_type == '4') {
+            this.setData({
+                robot: 1
+            })
         }
         let tempDis = this.data.displayMsgs;
         tempDis.push({
