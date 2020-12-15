@@ -1,42 +1,22 @@
 Page({
     data: {
-        isWeb: 0,
+        isWeb: 1,
         showPrivacy: 0,
         loginChat: 0,
         loginRecord: 0,
+        showIntro: 0,
         transBubble: '',
         // privacyContent: 
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
-
         swan.getSystemInfo({
+            
             success: res => {
                 if (res.platform == 'web') {
                     this.setData({
                         isWeb: 1
                     })
-
-                    swan.showModal({
-                        title:'Web功能受限',
-                        content: '请至百度app体验完整功能，是否查看产品简介',
-                        showCancel: true,
-                        confirmText: '是',
-                        confirmColor: '#55C595',
-                        cancelText: '否',
-                        cancelColor: '#c2c2c2',
-                        success: function (res) {
-                            if (res.confirm) {
-                                swan.navigateTo({
-                                    url: '/pages/intro/intro'
-                                })
-                            }
-                            else if (res.cancel) {
-                            }
-                        },
-                        fail: function (res) {}
-                    })
-            
                 }
             },
             fail: err => {
@@ -80,11 +60,9 @@ Page({
     },
     goMoodRecord(e) {
         if (this.data.isWeb == 1) {
-            swan.showModal({
-                title: '提示',
-                content: '请至百度app体验该功能'
-            })
-            return
+            var that = this;
+            this.imageIntro(that);
+            return;
         }
         if (getApp().isAuthenticated()) {
             // swan.navigateTo ({
@@ -104,10 +82,8 @@ Page({
     startChat() {
         console.log("transition finish")
         if (this.data.isWeb == 1) {
-            swan.showModal({
-                title: '提示',
-                content: '请至百度app体验该功能'
-            })
+            var that = this;
+            this.imageIntro(that);
             return
         }
         if (getApp().isAuthenticated()) {
@@ -190,6 +166,65 @@ Page({
             })
         }
     },
+    imageIntro(that) {
+
+        swan.showModal({
+            title:'Web功能受限',
+            content: '请至百度app体验完整功能，是否查看产品简介',
+            showCancel: true,
+            confirmText: '是',
+            confirmColor: '#55C595',
+            cancelText: '否',
+            cancelColor: '#c2c2c2',
+            success: function (res) {
+                if (res.confirm) {
+
+                    swan.showLoading();
+
+                    swan.downloadFile({
+                        url: 'https://cdn.xiaou.tech/introtop.svg',
+                        success: res => {
+                            if (res.statusCode === 200) {
+                                that.setData({
+                                    backTopUrl: res.tempFilePath,
+                                })
+                                console.log("finish", res.tempFilePath)
+
+                            }    
+                            else {
+                                swan.showToast({
+                                    title: '页面加载失败',
+                                    icon: 'none',
+                                    duration: 2000,
+                                });
+                            }
+                        },
+                        fail: err => {
+                            swan.showModal ({
+                                title: '页面加载失败',
+                                content: '请检查网络连接'
+                            });
+                        },
+                        complete: cmp => {
+                            swan.hideLoading();
+                            that.setData({
+                                showIntro: 1,
+                            }) 
+                        }
+                    });
+                }
+                else if (res.cancel) {
+                }
+            },
+            fail: function (res) {}
+        })
+        return;
+    },
+    hideIntro(e) {
+        this.setData({
+            showIntro: 0,
+        })
+    }
 
     /* From Modernizr */
     whichTransitionEvent(){

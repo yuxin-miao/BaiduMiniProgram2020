@@ -120,7 +120,18 @@
     background-position: center center;
     background-attachment:fixed;
 }
-
+.images-intro {
+    position: fixed;
+    z-index: 998;
+    bottom: 0;
+    height: 80vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20rpx;
+    background-color: #ffffff;
+    animation: 0.2s ease slidein;
+}
 .bottom-text {
     position: fixed;
     margin-left: 340rpx;
@@ -182,6 +193,7 @@
     from { transform: scaleY(0); }
     to   { transform: scaleY(1); }
   }
+
 
   .bubble{  
     position: relative;

@@ -56,6 +56,18 @@
     </view>
 <!-- </view> -->
 </view>
+<block s-if="{{showIntro == 1}}">
+
+<view class='mask'/>
+<scroll-view scroll-y class='images-intro'>
+    <image
+        mode="widthFix"
+        style="width: 750rpx"
+        src="{{backTopUrl}}"
+        bind:tap="hideIntro"
+    />
+</scroll-view>
+</block>
 
 <block s-if="{{showPrivacy == 1}}">
 <view class='mask'/>
