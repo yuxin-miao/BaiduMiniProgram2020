@@ -26,6 +26,7 @@ Page({
         chatHeight: 0,
         toolChoice: 0, // used for toolbox select 
         robot: 0,
+        moodChIdx: -1,
     },
     onLoad: function () {
         //     // chat Animation
@@ -281,7 +282,7 @@ Page({
     // CHOICE: send choice
     selectChoice(e) {
         // update user's reply and u's reply
-        console.log('select choice: ',this.data.endAll, this.data.toolChoice, this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
+        // console.log('select choice: ',this.data.endAll, this.data.toolChoice, this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
         let choiceIndex = e.currentTarget.dataset.choiceIndex;
         let tempMsgs = this.data.displayMsgs;
         tempMsgs.push ({
@@ -897,5 +898,15 @@ Page({
             }
         });
     },
+     // record mood in chat 
+    moodChoice(e) {
+        this.setData({
+            moodChIdx: e.currentTarget.dataset.choiceIndex
+        })
+    },
+     // update 心情日志
+    moodRecord(e) {
+        
+    }
 
 });

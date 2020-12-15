@@ -88,19 +88,30 @@
             </view>
         </block>
         <block s-if="{{doChoice == '2'}}">
-            <view class="choice-buttom" bind:tap="scrollToBottomTemp">
+        <view class="record-buttom">
+            <!-- <view class="choice-buttom" bind:tap="scrollToBottomTemp"> -->
 
                 <view class="all-choices-image">
                     <view s-for="moodname, chIndex in MoodName">
                     <image
                         mode="widthFix"
                         style="width: 90rpx"
-                        class="each-choice-image"
+                        class="each-choice-image  {{chIndex == moodChIdx ? 'selectMood' : ''}}"
                         src="../../images/mood_{{moodname}}.svg"
-                        bind:tap="selectChoice" data-choice-index="{{chIndex}}"/>
+                        bind:tap="moodChoice" data-choice-index="{{chIndex}}"/>
                     </view>
                 </view>
-            </view>
+                <view class="record-input">
+                    <input class="normalInput" bindinput="SenderMsg"/>
+                    <button class="image-button" formType="reset" bind:tap="moodRecord"  style="height:80rpx">
+                    <image
+                        mode="widthFix"
+                        class="msg-send"
+                        src="../../images/chat-send.svg"/>
+                    </button>
+                </view>
+            <!-- </view> -->
+        </view>
         </block>
     </view>
     <!-- <view><smt-icon name="arrow-down" size="40rpx" class="suspend-button" bindtap="scrollToBottomTemp"/></view> -->

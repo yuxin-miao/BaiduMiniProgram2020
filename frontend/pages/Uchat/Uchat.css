@@ -170,11 +170,28 @@
     font-family: PingFangSC-Medium, sans-serif;
     color: rgba(128 186 161);
 }
+.record-buttom {
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(245 251 245);
+}
+.record-input {
+    width: 90%;
+    display:flex;
+    align-items: center;
+    height: 80rpx;
+    margin: 10rpx 32.5rpx 45rpx 32.5rpx;
 
+    border: 1px solid rgba(207 244 209);
+    border-radius: 3px;
+    background-color: #ffffff;
+}
 .all-choices-image {
     width: 750rpx;
-    margin: 0 40rpx 50rpx 40rpx;
-
+    /* margin: 0 40rpx 50rpx 40rpx; */
+    margin-top: 10rpx;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -182,9 +199,20 @@
     align-content: flex-start;
 }
 
+.selectMood {
+
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);/*for IOS*/
+    /* width: 50rpx; */
+    /* border-radius: 50%;
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.05); */
+}
+
+
 .each-choice-image {
     display: flex;
-    padding: 0 10rpx 10rpx 0;
+    padding: 0 5rpx 10rpx 5rpx;
 
 }
 
