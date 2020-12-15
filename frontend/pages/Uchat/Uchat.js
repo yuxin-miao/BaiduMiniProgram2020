@@ -74,7 +74,7 @@ Page({
         });
     },
 
-    scrollToBottomTemp(arg, callback){
+    scrollToBottomTemp(callback){
         if(typeof callback != 'function') callback = function(){};
         let bottomHeight = 0;
         swan.createSelectorQuery().select('#uchat-bottom').boundingClientRect(rect => {
@@ -90,7 +90,7 @@ Page({
             });
             return;
         }
-        var that = this;
+
         this.setData({ chatHeight: info.windowHeight - bottomHeight }, () => {
             // console.log("chatHeight", this.data.chatHeight);
 
@@ -102,16 +102,16 @@ Page({
                     // 若高度检测未生效
                     // console.log("invalid", prevHeight);
                     this.setData({ scrollTop: prevHeight + 5000 }, ()=> {
-                        console.log("1:", arg, callback);
-                        callback(arg);
+                        // console.log("1 I will call!")
+                        callback();
                     });
                 } else {
                     // 若高度检测生效，则使用系统高度
                     // console.log("valid", res[0][res[0].length-1].bottom)
                     this.setData({ scrollTop: res[0][res[0].length-1].bottom }, ()=>{
-                        console.log("2:", arg, callback);
+                        // console.log("2 I will call!")
 
-                        callback(arg);
+                        callback();
                     });
                 }
             });
@@ -150,7 +150,7 @@ Page({
         this.setData({
             displayMsgs: tempMsgs,
         }, ()=> {
-            this.scrollToBottomTemp(0, this.updateSendMsg);
+            this.scrollToBottomTemp(this.updateSendMsg());
         });
 
     },
@@ -256,7 +256,7 @@ Page({
                                 uChRely: tempChRe,
                                 taskFinish: true,
                             }, () => {
-                                this.scrollToBottomTemp(0);
+                                this.scrollToBottomTemp();
                             })
                         }
                     },
@@ -271,7 +271,6 @@ Page({
         }
         else if (this.data.taskFinish == true) {
             console.log("sendMsg taskFinish", this.data.thisSenderMsg);
-
             this.scrollToBottomTemp(this.matchingQuestion(this.data.thisSenderMsg));
             this.setData({
                 taskFinish: false
@@ -292,10 +291,9 @@ Page({
         this.setData({
             displayMsgs: tempMsgs
         }, ()=> {
-            this.scrollToBottomTemp(choiceIndex, this.updateChoice);
+            this.scrollToBottomTemp(this.updateChoice(choiceIndex));
         })
     },
-
     updateChoice: function(choiceIndex) {
         let tempMsgs = this.data.displayMsgs;
         if (this.data.endAll == 1) {
@@ -305,7 +303,7 @@ Page({
             
         }
 
-        if (that.data.justEnter == "0" &&  that.data.taskFinish == false) {
+        if (this.data.justEnter == "0" &&  this.data.taskFinish == false) {
             console.log('POST SC:', choiceIndex);
             swan.request({
                 url: getApp().getUrl('/message/reply/'),
@@ -319,18 +317,16 @@ Page({
                     console.log('selectChoice: ', res);
                     if (res.data.message.content.length != "") {
                         console.log("update")
-
                         this.allQuestionUpdate(res);
                         return
                     }
-                    that.bye();
+                    this.bye();
                     tempMsgs.push({
                         type: '1',
                         msg: '有想和我聊聊的话题吗？'
                     });
                     let tempCh = ["有", "使用工具", "不想聊了"];
                     let tempChRe = ["有", "使用工具", "不想聊了"];
-
                     this.setData({
                         displayMsgs: tempMsgs,
                         doChoice: '1',
@@ -338,7 +334,7 @@ Page({
                         uChRely: tempChRe,
                         taskFinish: true,
                     }, () => {
-                        that.scrollToBottomTemp(0);
+                        this.scrollToBottomTemp();
                     })
                 },
                 fail: err => {
@@ -357,7 +353,6 @@ Page({
         //         toolChoice: 0
         //     })
         // }
-
         else if (this.data.taskFinish == true) {
 
             console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch);
@@ -367,7 +362,7 @@ Page({
                     type: '1',
                     msg: '告诉我一个关键词...'
                 });
-                that.setData({
+                this.setData({
                     displayMsgs: tempMsgs,
                     doChoice: '0',
                     uChRely: [],
@@ -375,14 +370,14 @@ Page({
                     justEnter: '0',
                     taskFinish: true,
                 }, () => {
-                    this.scrollToBottomTemp(0);
+                    this.scrollToBottomTemp();
                 })
             }
             else if(choiceIndex == '1') {
                 this.setData({
                     toolChoice: 0,
                 })
-                this.scrollToBottomTemp(0, this.notMatchingQuestion);
+                this.scrollToBottomTemp(this.notMatchingQuestion());
                 // this.notMatchingQuestion();
             }
             else if(choiceIndex == '2') {
@@ -399,7 +394,6 @@ Page({
                     taskFinish: true,
                     endAll: 1,
                 }, () => {
-
                     this.scrollToBottomTemp();
                 })
             }
@@ -475,7 +469,7 @@ Page({
             });
             if (chIndex == '0') {
                 //matching
-                this.scrollToBottomTemp(this.data.thisSenderMsg, this.matchingQuestion);
+                this.scrollToBottomTemp(this.matchingQuestion(this.data.thisSenderMsg ));
                 // this.matchingQuestion(this.data.thisSenderMsg );
             }
             else {
@@ -483,7 +477,7 @@ Page({
                 this.setData({
                     toolChoice: 0,
                 })
-                this.scrollToBottomTemp(0, this.notMatchingQuestion);
+                this.scrollToBottomTemp(this.notMatchingQuestion());
                 // this.notMatchingQuestion();
             }
             return;
@@ -512,7 +506,6 @@ Page({
                 taskFinish: true,
                 toolChoice: 0,
             },() => {
-
                 this.scrollToBottomTemp(this.notMatchingQuestion());
             });
             return;
@@ -529,7 +522,7 @@ Page({
             taskFinish: true,
             toolChoice: 1,
         },() => {
-            this.scrollToBottomTemp(0, this.notMatchingQuestion);
+            this.scrollToBottomTemp(this.notMatchingQuestion());
         })
 
 
@@ -581,7 +574,7 @@ Page({
                 displayMsgs: tempDis,
                 doChoice: '0',
             }, () => {
-                this.scrollToBottomTemp(0);
+                this.scrollToBottomTemp();
             })
         }
         else {
@@ -614,7 +607,7 @@ Page({
                             uChRely: tempChRe,
                             taskFinish: res.data.talk_finished,
                         }, () => {
-                            this.scrollToBottomTemp(0);
+                            this.scrollToBottomTemp();
                         })
                         // this.appendMsg(tempDis);
                     }
@@ -628,7 +621,7 @@ Page({
                             taskFinish: res.data.talk_finished,
                         }, () => {
                             // let match = false;
-                            this.scrollToBottomTemp(0, this.notMatchingQuestion);
+                            this.scrollToBottomTemp(this.notMatchingQuestion());
                             // this.notMatchingQuestion();
                         });
                     }
@@ -731,7 +724,7 @@ Page({
                         doChoice: '2',
                         justEnter: '0',
                     },() => {
-                        this.scrollToBottomTemp(0);
+                        this.scrollToBottomTemp();
                     })
                     return;
                 }
@@ -748,7 +741,7 @@ Page({
                     taskFinish: false,
                     doChoice: res.data.reply_type,
                 }, () => {
-                    this.scrollToBottomTemp(0);
+                    this.scrollToBottomTemp();
                 })
 
             },
@@ -790,7 +783,7 @@ Page({
                 doChoice: '2',
                 justEnter: '0',
             },() => {
-                this.scrollToBottomTemp(0);
+                this.scrollToBottomTemp();
             })
             return;
         }
@@ -809,7 +802,7 @@ Page({
             doChoice: res.data.question.reply_type,
             justEnter: '0',
         },() => {
-            this.scrollToBottomTemp(0);
+            this.scrollToBottomTemp();
         })
     },
 
