@@ -709,6 +709,7 @@ Page({
                         content: '请重新进入'
                     })
                 }
+                
                 let tempDis = this.data.displayMsgs;
                 tempDis.push({
                     type: '1',
@@ -716,7 +717,12 @@ Page({
                 })
                 let tempCh = [];
                 let tempChRe = [];
-                if (res.data.process_type == '2') {    // 心情日记
+                if (res.data.process_type == '4') { // robot 
+                    this.setData({
+                        robot: 1,
+                    })
+                }
+                else if (res.data.process_type == '2') {    // 心情日记
                     this.setData({
                         displayMsgs: tempDis,
                         uChoices: tempCh,
