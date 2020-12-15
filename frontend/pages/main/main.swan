@@ -1,5 +1,11 @@
 <view class="wrap">
 <!-- <view class="background-image"> -->
+    <view class="top-navigation">
+
+    <view class='main-text'> Ucho
+    </view>
+
+    </view>
     <view class="top">
         <image
         mode="widthFix"

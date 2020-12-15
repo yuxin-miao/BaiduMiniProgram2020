@@ -31,6 +31,8 @@ Page({
         haveRecord: 0,
         whetherShare: 0,
         generateFinish: 0,
+        ctxWidth: 0,
+        ctxHeight: 0,
         totHeight: 0,
         totWidth: 0,
         totLeft: 0,
@@ -38,6 +40,7 @@ Page({
         totTop: 0,
         bottomHeight: 0,
         // safeArea: 0,
+        pixelRatio: 0,
         cardInfo: {
             avater: 'https://cdn.xiaou.tech/share',
             //需要https图片路径
@@ -450,8 +453,8 @@ Page({
      */
     getAvaterInfo: function () {
         swan.showLoading({
-        title: '生成中...',
-        mask: true
+            title: '生成中...',
+            mask: true
         });
         var that = this;
         swan.downloadFile({
@@ -527,6 +530,37 @@ Page({
         const ctx = swan.createCanvasContext('myCanvas'); //创建画布
 
         var width = "";
+            // var getPixelRatio = function (context) {
+            //     var backingStore = context.backingStorePixelRatio ||
+            //         context.webkitBackingStorePixelRatio ||
+            //         context.mozBackingStorePixelRatio ||
+            //         context.msBackingStorePixelRatio ||
+            //         context.oBackingStorePixelRatio ||
+            //         context.backingStorePixelRatio || 1;
+            //     return (window.devicePixelRatio || 1) / backingStore;
+            // };
+
+            // var ratio = getPixelRatio(ctx);
+        
+            // ctx.font = "30px serif";
+            // ctx.fillText("Hello world", 10 * ratio, 50 * ratio);
+        
+        
+        
+        // var  devicePixelRatio = window.devicePixelRatio || 1,   
+        // backingStoreRatio = ctx.webkitBackingStorePixelRatio || ctx.mozBackingStorePixelRatio || ctx.msBackingStorePixelRatio || ctx.oBackingStorePixelRatio || ctx.backingStorePixelRatio || 1, 
+        // ratio = devicePixelRatio / backingStoreRatio;
+
+        // var oldWidth = canvas.width; 
+        // var oldHeight = canvas.height; 
+        // canvas.width = oldWidth * ratio; 
+        // canvas.height = oldHeight * ratio; 
+        // canvas.style.width = oldWidth + 'px'; 
+        // canvas.style.height = oldHeight + 'px'; 
+        // context.scale(ratio, ratio);
+
+//进行正常的操作
+
         swan.createSelectorQuery().select('#canvas-container').boundingClientRect(function (rect) {
 
         //     window.onload = function(){
@@ -544,7 +578,7 @@ Page({
             var height = rect.height;
             var right = rect.right;
             let topProp = 0.5;
-            console.log(textWidth);
+            // console.log(textWidth);
             ctx.setFillStyle('#fff');
             ctx.fillRect(0, 0, rect.width, height); 
 
@@ -792,17 +826,22 @@ Page({
             let tempW = tempH * 360 / 760;
             let tempL = (750 - tempW) / 2;
             let tempT = windowRpx - tempH;
+            let tempcH = tempH * res.pixelRatio;
+            let tempcW = tempW * res.pixelRatio;
             tempH = tempH + 'rpx';
             tempW = tempW + 'rpx';
             tempL = tempL + 'rpx';
             tempT = tempT + 'rpx';
-            console.log(tempH , tempW, tempL);
+            console.log(tempH , tempW, tempL, res.pixelRatio);
 
             this.setData({
+                ctxHeight: tempcH,
+                ctxWidth: tempcW,
                 totHeight: tempH,
                 totWidth: tempW,
                 totLeft: tempL,
                 totTop: tempT,
+                pixelRatio: res.pixelRatio,
                 // topHeight: tempTop,
                 // bottomHeight: tempBottom,
                 // safeArea: temp3,
