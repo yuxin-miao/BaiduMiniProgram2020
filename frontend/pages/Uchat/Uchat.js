@@ -294,16 +294,16 @@ Page({
             this.scrollToBottomTemp(choiceIndex, this.updateChoice);
         })
     },
-    updateChoice: function(choiceIndex) {
-        let tempMsgs = this.data.displayMsgs;
-        if (this.data.endAll == 1) {
+    updateChoice: function(choiceIndex, that) {
+        let tempMsgs = that.data.displayMsgs;
+        if (that.data.endAll == 1) {
             console.log("navi")
             swan.navigateBack();
             return;
             
         }
 
-        if (this.data.justEnter == "0" &&  this.data.taskFinish == false) {
+        if (that.data.justEnter == "0" &&  that.data.taskFinish == false) {
             console.log('POST SC:', choiceIndex);
             swan.request({
                 url: getApp().getUrl('/message/reply/'),
@@ -317,24 +317,24 @@ Page({
                     // console.log('selectChoice: ', res);
                     if (res.data.message.content.length != "") {
                         console.log("update")
-                        this.allQuestionUpdate(res);
+                        that.allQuestionUpdate(res);
                         return
                     }
-                    this.bye();
+                    that.bye();
                     tempMsgs.push({
                         type: '1',
                         msg: '有想和我聊聊的话题吗？'
                     });
                     let tempCh = ["有", "使用工具", "不想聊了"];
                     let tempChRe = ["有", "使用工具", "不想聊了"];
-                    this.setData({
+                    that.setData({
                         displayMsgs: tempMsgs,
                         doChoice: '1',
                         uChoices: tempCh,
                         uChRely: tempChRe,
                         taskFinish: true,
                     }, () => {
-                        this.scrollToBottomTemp(0);
+                        that.scrollToBottomTemp(0);
                     })
                 },
                 fail: err => {
@@ -353,16 +353,16 @@ Page({
         //         toolChoice: 0
         //     })
         // }
-        else if (this.data.taskFinish == true) {
+        else if (that.data.taskFinish == true) {
 
-            console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch);
+            // console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch);
 
             if (choiceIndex == '0') {
                 tempMsgs.push({
                     type: '1',
                     msg: '告诉我一个关键词...'
                 });
-                this.setData({
+                that.setData({
                     displayMsgs: tempMsgs,
                     doChoice: '0',
                     uChRely: [],
