@@ -7,3 +7,6 @@
     hidden="false" 
     bindended="playArrow">
 </animation-view>
+
+<!-- <view class='a.circle'>
+</view> -->

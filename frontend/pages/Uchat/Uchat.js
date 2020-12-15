@@ -25,7 +25,7 @@ Page({
         chatPaddingBottom: "10vh",
         chatHeight: 0,
         toolChoice: 0, // used for toolbox select 
-        showTool: 0, // 
+        showWhether: false,
         tools: [1, 2, 3, 4, 5],
         robot: 0,
         moodChIdx: -1,
@@ -901,9 +901,9 @@ Page({
         });
     },
     clickTool(e) { // show/hide toolbox 
-        let temp = this.data.showTool == 1 ? 0 : 1;
+        let tempShow = this.data.showWhether == true ? false : true;
         this.setData({
-            showTool: temp
+            showWhether: tempShow,
         })
     },
      // record mood in chat 

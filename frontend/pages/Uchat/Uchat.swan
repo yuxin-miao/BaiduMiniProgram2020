@@ -16,18 +16,16 @@
             bind:tap="clickTool"/>
         </view>
     </view>
-    <block s-if="{{showTool == 1}}">
-        <view class="tool-box">
-                    <view s-for="item, index in tools">
-                    <image
-                        mode="widthFix"
-                        style="width: 80rpx"
-                        class="each-tool"
-                        src="../../images/{{item}}.svg"
-                        bind:tap="toolChoice" data-choice-index="{{index}}"/>
-                    </view>
-        </view>
-    </block>
+    <view class="tool-box-{{showWhether}}">
+            <view s-for="item, index in tools">
+            <image
+                mode="widthFix"
+                style="width: 80rpx"
+                class="each-tool-{{showWhether}}"
+                src="../../images/{{item}}.svg"
+                bind:tap="toolChoice" data-choice-index="{{index}}"/>
+            </view>
+    </view>
     <scroll-view
         scroll-y
         scroll-top="{= scrollTop =}"
