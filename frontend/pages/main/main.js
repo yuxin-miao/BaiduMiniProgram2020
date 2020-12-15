@@ -1,6 +1,6 @@
 Page({
     data: {
-        isWeb: 1,
+        isWeb: 0,
         showPrivacy: 0,
         loginChat: 0,
         loginRecord: 0,
@@ -224,7 +224,7 @@ Page({
         this.setData({
             showIntro: 0,
         })
-    }
+    },
 
     /* From Modernizr */
     whichTransitionEvent(){
