@@ -74,7 +74,7 @@ Page({
         });
     },
 
-    scrollToBottomTemp(callback){
+    scrollToBottomTemp(arg, callback){
         if(typeof callback != 'function') callback = function(){};
         let bottomHeight = 0;
         swan.createSelectorQuery().select('#uchat-bottom').boundingClientRect(rect => {
@@ -90,7 +90,7 @@ Page({
             });
             return;
         }
-
+        var that = this;
         this.setData({ chatHeight: info.windowHeight - bottomHeight }, () => {
             // console.log("chatHeight", this.data.chatHeight);
 
@@ -102,16 +102,16 @@ Page({
                     // 若高度检测未生效
                     // console.log("invalid", prevHeight);
                     this.setData({ scrollTop: prevHeight + 5000 }, ()=> {
-                        // console.log("1 I will call!")
-                        callback();
+                        console.log("1:", arg, callback);
+                        callback(arg);
                     });
                 } else {
                     // 若高度检测生效，则使用系统高度
                     // console.log("valid", res[0][res[0].length-1].bottom)
                     this.setData({ scrollTop: res[0][res[0].length-1].bottom }, ()=>{
-                        // console.log("2 I will call!")
+                        console.log("2:", arg, callback);
 
-                        callback();
+                        callback(arg);
                     });
                 }
             });
@@ -150,7 +150,7 @@ Page({
         this.setData({
             displayMsgs: tempMsgs,
         }, ()=> {
-            this.scrollToBottomTemp(this.updateSendMsg());
+            this.scrollToBottomTemp(0, this.updateSendMsg);
         });
 
     },
@@ -256,7 +256,7 @@ Page({
                                 uChRely: tempChRe,
                                 taskFinish: true,
                             }, () => {
-                                this.scrollToBottomTemp();
+                                this.scrollToBottomTemp(0);
                             })
                         }
                     },
@@ -271,7 +271,7 @@ Page({
         }
         else if (this.data.taskFinish == true) {
             console.log("sendMsg taskFinish", this.data.thisSenderMsg);
-            this.scrollToBottomTemp(this.matchingQuestion(this.data.thisSenderMsg));
+            this.scrollToBottomTemp( this.data.thisSenderMsg, this.matchingQuestion);
             this.setData({
                 taskFinish: false
             })
@@ -291,7 +291,7 @@ Page({
         this.setData({
             displayMsgs: tempMsgs
         }, ()=> {
-            this.scrollToBottomTemp(this.updateChoice(choiceIndex));
+            this.scrollToBottomTemp(choiceIndex, this.updateChoice);
         })
     },
     updateChoice: function(choiceIndex) {
@@ -334,7 +334,7 @@ Page({
                         uChRely: tempChRe,
                         taskFinish: true,
                     }, () => {
-                        this.scrollToBottomTemp();
+                        this.scrollToBottomTemp(0);
                     })
                 },
                 fail: err => {
@@ -370,14 +370,14 @@ Page({
                     justEnter: '0',
                     taskFinish: true,
                 }, () => {
-                    this.scrollToBottomTemp();
+                    this.scrollToBottomTemp(0);
                 })
             }
             else if(choiceIndex == '1') {
                 this.setData({
                     toolChoice: 0,
                 })
-                this.scrollToBottomTemp(this.notMatchingQuestion());
+                this.scrollToBottomTemp(0, this.notMatchingQuestion);
                 // this.notMatchingQuestion();
             }
             else if(choiceIndex == '2') {
@@ -394,7 +394,7 @@ Page({
                     taskFinish: true,
                     endAll: 1,
                 }, () => {
-                    this.scrollToBottomTemp();
+                    this.scrollToBottomTemp(0);
                 })
             }
         }
@@ -469,7 +469,7 @@ Page({
             });
             if (chIndex == '0') {
                 //matching
-                this.scrollToBottomTemp(this.matchingQuestion(this.data.thisSenderMsg ));
+                this.scrollToBottomTemp(this.data.thisSenderMsg, this.matchingQuestion);
                 // this.matchingQuestion(this.data.thisSenderMsg );
             }
             else {
@@ -477,7 +477,7 @@ Page({
                 this.setData({
                     toolChoice: 0,
                 })
-                this.scrollToBottomTemp(this.notMatchingQuestion());
+                this.scrollToBottomTemp(0, this.notMatchingQuestion);
                 // this.notMatchingQuestion();
             }
             return;
@@ -506,7 +506,7 @@ Page({
                 taskFinish: true,
                 toolChoice: 0,
             },() => {
-                this.scrollToBottomTemp(this.notMatchingQuestion());
+                this.scrollToBottomTemp(0, this.notMatchingQuestion);
             });
             return;
         }
@@ -522,7 +522,7 @@ Page({
             taskFinish: true,
             toolChoice: 1,
         },() => {
-            this.scrollToBottomTemp(this.notMatchingQuestion());
+            this.scrollToBottomTemp(0, this.notMatchingQuestion);
         })
 
 
@@ -574,7 +574,7 @@ Page({
                 displayMsgs: tempDis,
                 doChoice: '0',
             }, () => {
-                this.scrollToBottomTemp();
+                this.scrollToBottomTemp(0);
             })
         }
         else {
@@ -607,7 +607,7 @@ Page({
                             uChRely: tempChRe,
                             taskFinish: res.data.talk_finished,
                         }, () => {
-                            this.scrollToBottomTemp();
+                            this.scrollToBottomTemp(0);
                         })
                         // this.appendMsg(tempDis);
                     }
@@ -621,7 +621,7 @@ Page({
                             taskFinish: res.data.talk_finished,
                         }, () => {
                             // let match = false;
-                            this.scrollToBottomTemp(this.notMatchingQuestion());
+                            this.scrollToBottomTemp(0, this.notMatchingQuestion);
                             // this.notMatchingQuestion();
                         });
                     }
@@ -724,7 +724,7 @@ Page({
                         doChoice: '2',
                         justEnter: '0',
                     },() => {
-                        this.scrollToBottomTemp();
+                        this.scrollToBottomTemp(0);
                     })
                     return;
                 }
@@ -741,7 +741,7 @@ Page({
                     taskFinish: false,
                     doChoice: res.data.reply_type,
                 }, () => {
-                    this.scrollToBottomTemp();
+                    this.scrollToBottomTemp(0);
                 })
 
             },
@@ -783,7 +783,7 @@ Page({
                 doChoice: '2',
                 justEnter: '0',
             },() => {
-                this.scrollToBottomTemp();
+                this.scrollToBottomTemp(0);
             })
             return;
         }
@@ -802,7 +802,7 @@ Page({
             doChoice: res.data.question.reply_type,
             justEnter: '0',
         },() => {
-            this.scrollToBottomTemp();
+            this.scrollToBottomTemp(0);
         })
     },
 
