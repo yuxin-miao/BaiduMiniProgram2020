@@ -271,7 +271,8 @@ Page({
         }
         else if (this.data.taskFinish == true) {
             console.log("sendMsg taskFinish", this.data.thisSenderMsg);
-            this.scrollToBottomTemp( this.data.thisSenderMsg, this.matchingQuestion);
+
+            this.scrollToBottomTemp(this.matchingQuestion(this.data.thisSenderMsg));
             this.setData({
                 taskFinish: false
             })
@@ -294,9 +295,10 @@ Page({
             this.scrollToBottomTemp(choiceIndex, this.updateChoice);
         })
     },
-    updateChoice: function(choiceIndex, that) {
-        let tempMsgs = that.data.displayMsgs;
-        if (that.data.endAll == 1) {
+
+    updateChoice: function(choiceIndex) {
+        let tempMsgs = this.data.displayMsgs;
+        if (this.data.endAll == 1) {
             console.log("navi")
             swan.navigateBack();
             return;
@@ -314,10 +316,11 @@ Page({
                 },
                 data: {content: choiceIndex},
                 success: res => {
-                    // console.log('selectChoice: ', res);
+                    console.log('selectChoice: ', res);
                     if (res.data.message.content.length != "") {
                         console.log("update")
-                        that.allQuestionUpdate(res);
+
+                        this.allQuestionUpdate(res);
                         return
                     }
                     that.bye();
@@ -327,7 +330,8 @@ Page({
                     });
                     let tempCh = ["有", "使用工具", "不想聊了"];
                     let tempChRe = ["有", "使用工具", "不想聊了"];
-                    that.setData({
+
+                    this.setData({
                         displayMsgs: tempMsgs,
                         doChoice: '1',
                         uChoices: tempCh,
@@ -353,9 +357,10 @@ Page({
         //         toolChoice: 0
         //     })
         // }
-        else if (that.data.taskFinish == true) {
 
-            // console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch);
+        else if (this.data.taskFinish == true) {
+
+            console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch);
 
             if (choiceIndex == '0') {
                 tempMsgs.push({
@@ -394,7 +399,8 @@ Page({
                     taskFinish: true,
                     endAll: 1,
                 }, () => {
-                    this.scrollToBottomTemp(0);
+
+                    this.scrollToBottomTemp();
                 })
             }
         }
@@ -506,7 +512,8 @@ Page({
                 taskFinish: true,
                 toolChoice: 0,
             },() => {
-                this.scrollToBottomTemp(0, this.notMatchingQuestion);
+
+                this.scrollToBottomTemp(this.notMatchingQuestion());
             });
             return;
         }
