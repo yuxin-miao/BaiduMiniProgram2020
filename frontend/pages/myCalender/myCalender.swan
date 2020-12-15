@@ -48,7 +48,7 @@
 
         <view class="today">
             <scroll-view class="journal" scroll-y>
-                <view class="record-row">
+                <view class="record-row-first">
                     <image
                         class="mood-image-first"
                         mode="widthFix"
@@ -64,20 +64,20 @@
                         bind:tap="modifyMood"/>
                     <view class="row-mood-text" bind:tap="modifyMood"> {{thisDescription}}</view>
                     <view class="share"  bind:tap="shareThis">
-                        <!-- <animation-view 
-                            class="controls" 
+                        <animation-view 
+                            class="share-first" 
                             path="/anims/share.json" 
-                            loop="false"
-                            autoplay="false" 
+                            loop="true"
+                            autoplay="true" 
                             action="play"
                             hidden="false" 
                             bindended="openToShare">
-                        </animation-view> -->
-                        <image
+                        </animation-view>
+                        <!-- <image
                         class="mood-image-first"
                         mode="widthFix"
                         style="width: 37rpx"
-                        src="../../images/share-begin.svg"/>
+                        src="../../images/share-begin.svg"/> -->
                     </view>
                 </view>
                 <view class="oval"> </view>
