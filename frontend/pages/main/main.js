@@ -1,6 +1,10 @@
 Page({
     data: {
         isWeb: 0,
+        showPrivacy: 0,
+        loginChat: 0,
+        loginRecord: 0,
+        // privacyContent: 
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
@@ -89,18 +93,11 @@ Page({
                 url: '/pages/myCalender/myCalender'
             })
         } else {
-            swan.authorize({
-                scope: 'scope.userInfo',
-                success: res => {
-                    getApp().login(this.toMood);
-                },
-                fail: err => {
-                    swan.showToast({
-                        title: '授权失败',
-                        icon: 'none'
-                    })
-                }
+            this.setData({
+                showPrivacy: 1,
+                loginRecord: 1,
             })
+
         }
     },
     startChat(e) {
@@ -116,17 +113,9 @@ Page({
                 url: '/pages/Uchat/Uchat'
             })
         } else {
-            swan.authorize({
-                scope: 'scope.userInfo',
-                success: res => {
-                    getApp().login(this.toChat);
-                },
-                fail: err => {
-                    swan.showToast({
-                        title: '授权失败',
-                        icon: 'none'
-                    })
-                }
+            this.setData({
+                showPrivacy: 1,
+                loginChat: 1,
             })
         }
     },
@@ -159,5 +148,43 @@ Page({
     
             }
         });
+    },
+    showModal(e) {
+        this.setData({
+            showPrivacy: 1,
+        })
+    },
+    hideModal(e) {
+        this.setData({
+            showPrivacy: 0,
+        })
+        if (this.data.loginChat == 1) {
+            swan.authorize({
+                scope: 'scope.userInfo',
+                success: res => {
+                    getApp().login(this.toChat);
+                },
+                fail: err => {
+                    swan.showToast({
+                        title: '授权失败',
+                        icon: 'none'
+                    })
+                }
+            })
+        }
+        else if (this.data.loginRecord == 1) {
+            swan.authorize({
+                scope: 'scope.userInfo',
+                success: res => {
+                    getApp().login(this.toMood);
+                },
+                fail: err => {
+                    swan.showToast({
+                        title: '授权失败',
+                        icon: 'none'
+                    })
+                }
+            })
+        }
     }
 });
