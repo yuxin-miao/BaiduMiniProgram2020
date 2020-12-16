@@ -15,8 +15,8 @@
     justify-content: center;
 }
 .month-display {
-    padding: 0 20rpx 15rpx 20rpx;
-    font-size: .25rem;
+    padding: 4rpx 20rpx 15rpx 20rpx;
+    font-size: .2rem;
     font-weight: 600;
     color: rgba(112 112 112);
     height: 60rpx;
