@@ -4,9 +4,9 @@
         <image
         class="back-arrow"
         mode="widthFix"
-        style="width: 120rpx"
+        style="width: 60rpx;"
         src="../../images/arrow.svg"
-         bindtap="returnNav"
+        bindtap="returnNav"
         />
 
         <view class="month-change">

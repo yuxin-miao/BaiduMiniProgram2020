@@ -8,6 +8,7 @@
 
 
 /* navigation bar */
+
 .month-change{
     align-self: center;
     display: flex;
@@ -24,7 +25,7 @@
     text-align: center;
 }
 .triangle-left {
-    padding-left: 134rpx;
+    padding-left: 204rpx;
     /* padding-top: 20rpx; */
     width: 0;
     height: 0;

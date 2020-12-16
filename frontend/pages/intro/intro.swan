@@ -27,7 +27,7 @@
 <image
     class="intro-arrow"
     mode="widthFix"
-    style="width: 50rpx"
+    style="width: 20rpx"
     src="../../images/arrow.svg"
     bind:tap="returnNav"
 
