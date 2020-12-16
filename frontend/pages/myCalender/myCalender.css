@@ -251,7 +251,7 @@
     height:100%;
     position:fixed;
     background-color:#000;
-    z-index: 100;
+    z-index: 500;
     top:0;
     left:0;
     -moz-opacity: 0.5;
@@ -261,18 +261,8 @@
     
 .poste-box{
     position: fixed;
-    /* top: 240rpx; */
-    /* height: {{totHeight}}; */
-    /* height: calc(100vh - 240rpx); */
-    /* left: 50rpx; */
     z-index: 1002;
-    /* width: 85%; */
-    /* margin: auto; */
-    /* margin-top: 0; */
     background-color: rgba(255, 255, 255, 0);
-    /* opacity: 1; */
-    /* border: 1rpx solid #ddd; */
-    /* box-shadow:0px 0px  10px 5px #D8D7DD; */
 }
 .savePoste{
     z-index: 999;
@@ -313,33 +303,19 @@
     border-radius: 20px;
 }
 
-
-
 .jigsaw{
     width: calc(100% / 7);
     line-height: 100rpx;
     height: 100rpx;
-    /* margin: 50px; */
     position: relative;
-    /* -webkit-border-radius: .5em;
-    -moz-border-radius: .5em;
-    border-radius: .5em; */
     cursor: pointer;
-    /* border: 1px solid black; */
-  }
-/* 
-.jigsaw-text {
-    color: #ffffff;
-} */
-  
-
-  
+}
 
 .jigsaw .bout {
 width: calc(100% / 3);
     height: calc(100% / 3);
     position: absolute;
-    z-index: 500;
+    z-index: 300;
     bottom: -25%;
     left: calc(100% / 3);
     -webkit-border-radius: 67%;
@@ -351,8 +327,8 @@ width: calc(100% / 3);
 
 }
   
-  .jigsaw .tout {
-   width: calc(100% / 3);
+.jigsaw .tout {
+    width: calc(100% / 3);
     height: calc(100% / 3);
     position: absolute;
     top: -25%;
@@ -364,13 +340,13 @@ width: calc(100% / 3);
     /* border-image: linear-gradient(); */
 
 
-  }
+}
   
-  .jigsaw .lout {
+.jigsaw .lout {
     width: calc(100% / 3);
     height: calc(100% / 3);
     position: absolute;
-    z-index: 500;
+    z-index: 300;
     top: calc(100% / 3);
     right: calc(100% * 5.5 / 6);
     -webkit-border-radius: 67%;
@@ -378,22 +354,21 @@ width: calc(100% / 3);
     border-radius: 67%;
     /* border: 1px solid black; */
 
-  }
-  .jigsaw .rout {
+}
+.jigsaw .rout {
     width: calc(100% / 3);
     height: calc(100% / 3);
     position: absolute;
-    z-index: 500;
+    z-index: 300;
     top: calc(100% / 3);
     left: calc(100% * 5.5 / 6);
     -webkit-border-radius: 67%;
     -moz-border-radius: 67%;
     border-radius: 67%;
-    /* border: 1px solid black; */
 
-  }
+}
   
-  .jigsaw .bin { 
+.jigsaw .bin { 
     width: calc(100% / 3);
     height: calc(100% / 3);
     position: absolute;
@@ -403,9 +378,9 @@ width: calc(100% / 3);
     -moz-border-radius: 67%;
     border-radius: 67%;
     background-color: #fff;
-  }
+}
   
-  .jigsaw .lin { 
+.jigsaw .lin { 
     width: calc(100%  / 3);
     height: calc(100% / 3);
     position: absolute;
@@ -415,9 +390,9 @@ width: calc(100% / 3);
     -moz-border-radius: 67%;
     border-radius: 67%;
     background-color: #fff;
-  }
+}
 
-  .shadow {
+.shadow {
     box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
     -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);/*for IOS*/
-  }
+}

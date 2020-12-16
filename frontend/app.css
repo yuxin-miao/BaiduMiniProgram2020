@@ -54,7 +54,7 @@ body {
     height:100%;
     position:fixed;
     background-color:#000;
-    z-index: 100;
+    z-index: 500;
     top:0;
     left:0;
     -moz-opacity: 0.5;
