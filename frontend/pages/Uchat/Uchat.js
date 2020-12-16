@@ -32,6 +32,7 @@ Page({
         showWhether: false,
         tools: [1, 2, 3, 4, 5],
         toolIntro: ["疏解", "感恩", "时间", "心情", "闲聊"],
+        toolKeys: ['relief', 'gratitude', 'time', 'mood', 'robot'],
         robot: 0,
         moodChIdx: -1,
     },
