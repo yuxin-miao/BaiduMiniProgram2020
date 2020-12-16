@@ -30,7 +30,7 @@ Page({
         chatHeight: 0,
         toolChoice: 0, // used for toolbox select 
         showWhether: false,
-        tools: [0, 0, 0, 0, 0],
+        tools: [1, 2, 3, 4, 5],
         toolIntro: ["shujie", "gratitude", "time manage", "mood", "chat"],
         robot: 0,
         moodChIdx: -1,

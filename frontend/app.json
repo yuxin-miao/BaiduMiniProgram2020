@@ -10,7 +10,8 @@
         "pages/mysetting/mysetting",
         "pages/intro/intro",
         "pages/logo/logo",
-        "pages/index/index"
+        "pages/index/index",
+        "pages/myGratitude/myGratitude"
     ],
     "window": {
         "navigationBarBackgroundColor": "#ffffff",

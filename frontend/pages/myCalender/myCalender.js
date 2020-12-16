@@ -283,11 +283,13 @@ Page({
         // call function to create grids
         let mday = this.methods.gridThisMonth(this.data.thisYear, this.data.thisMonth);
         let emptys = this.methods.emptyGrid(this.data.thisYear, this.data.thisMonth);
+        let tempAll = this.methods.getAllGrids(this.data.thisYear, this.data.thisMonth);
         // set the default selectDay as today
         this.setData({
             thisMonthDays: mday,
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
+            allGrids: tempAll,
         }, () => {
             this.moodTypeGratitude({
                 year: this.data.thisYear,
@@ -312,11 +314,13 @@ Page({
         // call function to create grids
         let mday = this.methods.gridThisMonth(this.data.thisYear, this.data.thisMonth);
         let emptys = this.methods.emptyGrid(this.data.thisYear, this.data.thisMonth);
+        let tempAll = this.methods.getAllGrids(this.data.thisYear, this.data.thisMonth);
         // set the default selectDay as today
         this.setData({
             thisMonthDays: mday,
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
+            allGrids: tempAll,
         });
         this.moodTypeGratitude({
             year: this.data.thisYear,
@@ -373,7 +377,6 @@ Page({
                     })
                 });
                 let tempA = this.data.emptyGridsBefore.concat(tempMonthList, this.data.emptyGridsAfter);
-                let tempAll = this.data.allGrids.splice(this.data.firstLength, this.data.secondLength, tempMonthList);
                 this.setData({
                     "allGrids": tempA,
                     thisMonthDays: tempMonthList,

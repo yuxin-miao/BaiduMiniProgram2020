@@ -68,7 +68,7 @@
                         </block>
                         <block s-else>
                         
-                            <view class="jigsaw-text " style="color:rgba(181 181 181)"> 
+                            <view class="jigsaw-text " style="color:rgba(181 181 181)" data-day = "{{item.date}}" bind:tap="toSelectDay"> 
                             <!-- {{index}} -->
                                             {{item.date}}
                             </view>
