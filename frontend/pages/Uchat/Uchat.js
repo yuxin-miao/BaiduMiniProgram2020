@@ -26,7 +26,8 @@ Page({
         chatHeight: 0,
         toolChoice: 0, // used for toolbox select 
         showWhether: false,
-        tools: [1, 2, 3, 4, 5],
+        tools: [0, 0, 0, 0, 0],
+        toolIntro: ["shujie", "gratitude", "time manage", "mood", "chat"],
         robot: 0,
         moodChIdx: -1,
     },
@@ -300,7 +301,6 @@ Page({
     updateChoice: function(choiceIndex) {
         let tempMsgs = this.data.displayMsgs;
         if (this.data.endAll == 1) {
-            console.log("navi")
             swan.navigateBack();
             return;
             
@@ -907,11 +907,37 @@ Page({
         });
     },
     clickTool(e) { // show/hide toolbox 
+        let that = this;
         let tempShow = this.data.showWhether == true ? false : true;
         this.setData({
             showWhether: tempShow,
+        }, ()=> {
+            if (that.data.tools.every(item => {item === 0}) ) {
+                console.log("ak")
+                that.showToast({
+                    title: '尚未解锁任何工具，快去和小U聊天吧！',
+                    icon: 'none',
+                })
+            }
         })
+        this.data.tools.forEach(ele => {
+            if (ele != 0) return;
+        }, ()=> {
+            that.showToast({
+                title: '尚未解锁任何工具，快去和小U聊天吧！',
+                icon: 'none',
+            })
+        })
+        if (that.data.tools.every(item => {item === 0}) ) {
+            console.log("ak")
+            that.showToast({
+                title: '尚未解锁任何工具，快去和小U聊天吧！',
+                icon: 'none',
+            })
+        }
+
     },
+    
      // record mood in chat 
     moodChoice(e) {
         this.setData({
@@ -921,6 +947,75 @@ Page({
      // update 心情日志
     moodRecord(e) {
 
-    }
+    },
+     // toolbox select 
+    toolChoice(e) {
+        let choiceIndex = e.currentTarget.dataset.toolIndex;
+        console.log(choiceIndex)
+        if (this.data.tools[choiceIndex] === 0) {
+            swan.showToast({
+                title: '快去和小U聊天解锁吧！',
+                icon: 'none'
+            })
+            this.setData({
+                showWhether: false,
+            })
+            return;
+        }
+
+        let that = this;
+        swan.request({
+            url: getApp().getUrl('/message/bye/'),
+            method: 'POST',
+            header: {
+                // POST 携带
+                'X-CSRFToken': cookies.get('csrftoken')
+            },
+            success: res => {
+                console.log("bye");
+                if (res.statusCode == 200) {
+                    swan.request({ // not matching question
+                        url: getApp().getUrl('/message/get_question/'),
+                        method: 'POST',
+                        header: {
+                            // POST 携带
+                            'X-CSRFToken': cookies.get('csrftoken')
+                        },
+                        success: res => {
+                            let tempMsgs = that.data.displayMsgs;
+                            tempMsgs.push ({
+                                type:'0',
+                                msg: that.data.toolIntro[choiceIndex],
+                            });
+                            that.setData({
+                                displayMsgs: tempMsgs,
+                                justEnter: '0',
+                                taskFinish: false,
+                            }, ()=> {
+                                that.setData({
+                                    showWhether: false,
+                                })
+                                that.scrollToBottomTemp(that.updateChoice(choiceIndex));
+                            })
+                        },
+                        fail: err => {
+                            swan.showModal({
+                                title: '网络异常',
+                                content: '请检查网络连接'
+                            });
+                        }
+                    })
+                }
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        });        
+    },
+
+    
 
 });
