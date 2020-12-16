@@ -1,0 +1,85 @@
+<view class="wrap" bind:tap="test">
+    <image
+        class="intro-arrow"
+        mode="widthFix"
+        style="width: 20rpx"
+        src="../../images/arrow.svg"
+        bind:tap="returnNav"/>
+    <!-- <scroll-view class="scroll-box" scroll-x="true" scroll-y="false" scroll-with-animation="true">
+    <view class="card-box">
+        <view class="card" s-for="item, index in allMonths"></view>
+    </view>
+    </scroll-view> -->
+    
+
+    <scroll-view class="scroll-box" scroll-x scroll-with-animation
+        scroll-into-view="{{toView}}"
+        bindtouchstart="touchStart"
+        bindtouchend="touchEnd">
+    <view s-for="item, index in allMonths"  class="card-box" id="{{index}}">
+      <view class="card" bind:tap="openThisOne" data-cardIdx="{{index}}">
+            <view class="part">
+                <view class="top-text">
+                    <view class="big-text"> {{item.month}} </view>
+                    <view class="small-text"> <text> {{days[index*2]}} </text> <view class="dots">...</view> <text>{{days[index*2+1] }}</text> </view>
+                </view>
+                <image
+                    class="card-image"
+                    src='https://cdn.xiaou.tech/grati{{index%2}}.png'
+                    lazy-load="true"
+                    binderror="imageError"
+                    bindload="imageLoad" />
+        <!-- 'https://cdn.xiaou.tech/gra{{index%2}}.png' -->
+        <!-- <text>{{item}}</text> -->
+            <!-- </view> -->
+                <view class="bottom-part">
+                    <text class="journal-text" style="white-space:pre-wrap"> {{weekGratitude[index].length != 0 ? weekGratitude[index][0].description : '       这周没有记录哦，记得多和小U聊天～'}} </text>
+                    <image
+                        class="journal-icon"
+                        src="../../images/journal.svg"
+                        lazy-load="true"
+                        binderror="imageError"
+                        bindload="imageLoad" />
+                </view>
+            </view>
+
+      </view>
+
+    </view>
+</scroll-view>
+</view>
+
+<block s-if="{{openCard == 1}}">
+    <view class='mask'/>
+    <view class="con-wave">
+        <view class="wave"> </view>
+    </view>
+    <view class="show-whole" bind:tap="closeThisOne">
+        <view class="show-top">
+            <image
+                class="show-image"
+                src='https://cdn.xiaou.tech/grati{{openIdx%2}}.png'
+                lazy-load="true"
+                binderror="imageError"
+                bindload="imageLoad" />  
+        </view>
+
+        <scroll-view scroll-y class="show-all-days" style="height: 70vh">
+            <view class="show-each-day">
+                <view class="show-date">
+                    <view class="big-text"> 14 </view>
+                    <view class="small-text"> Dec</view>
+                </view>
+                <view class="show-day-texts">
+                    <text class="journal-text" style="white-space:pre-wrap">
+
+                    </text>
+                </view>
+            </view>
+        </scroll-view>
+
+    </view>
+
+</block>
+
+
