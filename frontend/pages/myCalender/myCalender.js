@@ -286,6 +286,9 @@ Page({
         let tempAll = this.methods.getAllGrids(this.data.thisYear, this.data.thisMonth);
         // set the default selectDay as today
         this.setData({
+            firstLength: emptys.before.length,
+            secondLength: mday.length,
+            thirdLength: emptys.after.length,
             thisMonthDays: mday,
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
@@ -317,6 +320,9 @@ Page({
         let tempAll = this.methods.getAllGrids(this.data.thisYear, this.data.thisMonth);
         // set the default selectDay as today
         this.setData({
+            firstLength: emptys.before.length,
+            secondLength: mday.length,
+            thirdLength: emptys.after.length,
             thisMonthDays: mday,
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
