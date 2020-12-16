@@ -71,7 +71,8 @@
                             autoplay="true" 
                             action="play"
                             hidden="false" 
-                            bindended="openToShare">
+                            bind:tap="shareThis"
+                            >
                         </animation-view>
                         <!-- <image
                         class="mood-image-first"

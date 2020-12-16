@@ -426,6 +426,7 @@ Page({
     },
         // function for poster share
     shareThis(e) {
+        console.log("to share")
         if (this.data.thisMonthDays[this.data.selectDay - 1].mood == 0) {
             swan.showToast({
                 title: '未添加心情，无法分享',

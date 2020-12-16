@@ -118,11 +118,14 @@
     width: 37rpx;
     height: 50rpx;
 }
+.share {
+    padding-right: 50rpx;
+}
 .share-first {
     border-radius: 10%;
-    margin-top: 10rpx;
-    width: 50rpx;
-    height: 80rpx;
+    /* margin-top: 10rpx; */
+    width: 60rpx;
+    height: 60rpx;
 }
 .select {
     border-radius: 50%;
@@ -178,8 +181,8 @@
 }
 
 .record-row-first {
-    padding: 20rpx 20rpx 0 20rpx;
-    margin: 0 30rpx 0 30rpx;
+    padding: 20rpx 0rpx 0 20rpx;
+    margin: 0 0rpx 0 30rpx;
     display: flex;
     align-items: flex-start;
 }
