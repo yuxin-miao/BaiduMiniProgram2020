@@ -1,6 +1,6 @@
 Page({
     data: {
-        isWeb: 0,
+        isWeb: 1,
         showPrivacy: 0,
         loginChat: 0,
         loginRecord: 0,
@@ -224,6 +224,7 @@ Page({
         this.setData({
             showIntro: 0,
         })
+
     },
 
     /* From Modernizr */
