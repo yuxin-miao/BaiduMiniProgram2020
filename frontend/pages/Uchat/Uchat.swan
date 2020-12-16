@@ -110,7 +110,7 @@
                     </view>
                 </view>
                 <view class="record-input">
-                    <input class="normalInput" bindinput="SenderMsg"/>
+                    <input class="normalInput" bindinput="SenderMsg" placeholder="说点什么..." />
                     <button class="image-button" formType="reset" bind:tap="moodRecord"  style="height:80rpx">
                     <image
                         mode="widthFix"

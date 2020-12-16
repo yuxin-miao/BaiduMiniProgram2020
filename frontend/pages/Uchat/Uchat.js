@@ -1,12 +1,16 @@
 import 'weapp-cookie';
 import cookies from 'weapp-cookie';
 var util = require('../../utils/util.js');
-import {MoodName} from '../../utils/constants.js';
+import {MoodName, MoodNumber} from '../../utils/constants.js';
+import {createMoodRecord} from  '../../utils/api.js';
 
 
 Page({
     data: {
         time: '',
+        thisY: '',
+        thisM: '',
+        thisD: '',
         scrollTop: 0,
         prevMsgs: [], // previous messages
         thisSenderMsg: '', // 即时输入
@@ -41,10 +45,21 @@ Page({
             title: '努力加载中',
             mask: true
         });
+        let timestamp = Date.parse(new Date());
+        let date = new Date(timestamp);
+        //获取年份  
+        let Y =date.getFullYear();
+        //获取月份  
+        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+        //获取当日日期 
+        let D = date.getDate();
         var time = util.chatTime(new Date());
         this.setData({
             time: time,
             endAll: 0,
+            thisY: Y,
+            thisM: M,
+            thisD: D,
         }, () => {
             this.initial();
         });
@@ -131,7 +146,7 @@ Page({
 
      // SENDER input
     SenderMsg:function(e){
-        // console.log('sned', e.detail.value);
+        console.log('sned', e.detail.value);
         this.setData({
             thisSenderMsg:e.detail.value
         });
@@ -943,9 +958,106 @@ Page({
         this.setData({
             moodChIdx: e.currentTarget.dataset.choiceIndex
         })
+        
     },
      // update 心情日志
     moodRecord(e) {
+        let that = this;
+        let choiceIndex = this.data.moodChIdx;
+        if (choiceIndex === -1) {
+            swan.showToast({
+                title: '请选择心情！',
+                icon: 'none',
+                duration: 1000
+            })
+            return;
+        }
+        if(this.data.thisSenderMsg == ''){
+            swan.showToast({
+                title: '记录不能为空',
+                icon: 'none',
+                duration: 1000
+            })
+            return ;
+        }
+        let thisMoodMsg = this.data.thisSenderMsg == '' ? MoodNumber[choiceIndex] : this.data.thisSenderMsg;
+        let tempMsgs = this.data.displayMsgs;
+        tempMsgs.push ({
+            type:'',
+            msg: thisMoodMsg,
+        }); // for user msg
+        this.setData({
+            displayMsgs: tempMsgs,
+        }, ()=> {
+            this.scrollToBottomTemp();
+        });
+        swan.request({
+            url: getApp().getUrl('/message/reply/'),
+            method: 'POST',
+            header: {
+                // POST 携带
+                'X-CSRFToken': cookies.get('csrftoken')
+            },
+            data: {content: choiceIndex},
+            success: res => {
+                if (res.data.message.content.length != "") {
+                    let tempDis = that.data.displayMsgs;
+                    tempDis.push({
+                        type: "1",
+                        msg: res.data.message.content
+                    });
+                    let tempCh = [];
+                    let tempChRe = []; 
+                    if (res.data.question.reply_type == 1) {
+                        res.data.question.choices.forEach(element => {
+                            tempCh.push(element.title),
+                            tempChRe.push(element.reply_content)
+                        })
+                    }
+                    this.setData({
+                        displayMsgs: tempDis,
+                        uChoices: tempCh,
+                        uChRely: tempChRe,
+                        doChoice: res.data.question.reply_type,
+                        justEnter: '0',
+                        moodChIdx: -1
+                    },() => {
+                        this.scrollToBottomTemp();
+                        let moodData = {year: this.data.thisY,  
+                                        month: this.data.thisM, 
+                                        day: this.data.thisD, 
+                                        type: choiceIndex, 
+                                        description: thisMoodMsg}
+                        swan.request({
+                                url: getApp().getUrl('/mood/'),
+                                method: 'POST',
+                                data: moodData,
+                                
+                                header: {
+                                    // POST 携带
+                                    'X-CSRFToken': cookies.get('csrftoken')
+                                },
+                                success: res =>{
+                                    console.log("suc")
+                                }
+                        })
+                    })
+
+                }
+                else {
+                    swan.showModal({
+                        title: '记录失败',
+                        content: '请检查网络连接'
+                    })
+                }
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        })
 
     },
      // toolbox select 
