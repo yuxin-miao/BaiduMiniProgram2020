@@ -126,7 +126,7 @@ class MoodRecordViewSet(
                 created_at__year=year,
                 created_at__month=month,
                 type=MoodType.GRATITUDE
-            ).order_by('created_at')
+            ).order_by('-created_at')
 
             mood_data = MoodRecordMiniSerializer(mood_records, many=True).data
             gratitude_data = MoodRecordDetailSerializer(gratitude_journals, many=True).data
