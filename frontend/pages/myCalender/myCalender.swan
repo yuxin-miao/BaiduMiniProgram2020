@@ -17,33 +17,106 @@
     </view>
     <view class="no-navigation">
         <view class="calender" id="wrapper" bind:tap="drawCanvas">
-          <!-- <text class="title draw" data-text="Hello there">Hello there</text> -->
             <view class="calender-week">
                 <view class="grid-week" s-for="item, index in weekText">{{item}}</view>
             </view>
-            <view class="calender-day">
 
-                <view class="grid lighter" s-for="item, index in emptyGridsBefore">{{item}}</view>
-                <view class="grid {{item.date==selectDay ? 'select-no-mood' : '' }}" s-for="item, index in thisMonthDays">
-                    <block s-if="{{item.mood != 0}}">
-                        <image
+            <view class="calender-day">
+                <view class="grid jigsaw" s-for="item, index in allGrids" style="background-color: {{ item.col < 7 ? colors[item.col] : backColors[index%2] }}">
+                        <block s-if="{{index > 6 && index%9 != 0 }}">
+                            <view class="tout" style="background-color: {{ item.col < 7 ? colors[item.col] : backColors[index%2] }}"></view>
+                        </block>
+                        <block s-if="{{(index+1) % 7 && (index+1)%5!=0}}">
+                            <view class="rout" style="background-color: {{ item.col < 7 ? colors[item.col] : backColors[index%2] }}"></view>
+                        </block>
+                        <block s-if="{{index%5 == 0}}">
+                             <view class="lout" style="background-color: {{ item.col < 7 ? colors[item.col] : backColors[index%2] }}"></view>
+                        </block>
+                        <block s-if="{{(index + 7) % 9 == 0 && index < allGrids.length - 8}}">
+                             <view class="bout" style="background-color: {{ item.col < 7 ? colors[item.col] : backColors[index%2] }}"></view>
+                        </block>
+
+                <block s-if="{{index < firstLength}}">
+
+                    <view class="jigsaw-text lighter" style="color:rgba(181 181 181 0.5)"> 
+                    {{item.date}}
+                        <!-- {{index}}  -->
+                    
+                    </view>
+                    
+                </block>
+                <block s-elif="{{index >= (firstLength + secondLength)}}">
+                    <view class="jigsaw-text lighter" style="color:rgba(181 181 181)"> 
+                                    {{item.date}}
+
+                    <!-- {{index}}  -->
+                
+                    </view>
+                </block>
+                <block s-else>
+                        <block s-if="{{item.col != 7}}">
+                            <!-- {{index}} -->
+
+                            <image
+                            class="mood-image {{item.date==selectDay ? 'select' : '' }}"
+                            mode="widthFix"
+                            style="width: 45%"
+                            src="../../images/mood{{item.col}}.svg"
+                            data-day = "{{item.date}}"
+                            bind:tap="toSelectDay"
+                            />
+                        </block>
+                        <block s-else>
+                        
+                            <view class="jigsaw-text " style="color:rgba(181 181 181)"> 
+                            <!-- {{index}} -->
+                                            {{item.date}}
+                            </view>
+                        </block>
+                </block>
+                <!-- <view class="lighter" s-for="item, index in emptyGridsBefore"> -->
+                    <!-- <view class="jigsaw1">
+                    	<view class="t"></view>
+                        <view class="r"></view>
+                        <view class="b"></view>
+                        <view class="l"></view> -->
+                        <!-- <view class="text">{{index}} </view> -->
+                    <!-- </view> -->
+                <!-- </view> -->
+                <!-- <view class="{{item.date==selectDay ? 'select-no-mood' : '' }}" s-for="item, index in thisMonthDays"> -->
+                    <!-- <block s-if="{{item.mood != 0}}"> -->
+                        <!-- <image
                         class="mood-image {{item.date==selectDay ? 'select' : '' }}"
                         mode="widthFix"
                         style="width: 55%"
                         src="../../images/mood_{{item.mood}}.svg"
                         data-day = "{{item.date}}"
                         bind:tap="toSelectDay"
-                        />
-                        <view class="mood-date with-image">{{item.date}}</view>
-                    </block>
-                    <block s-else>
+                        /> -->
+                        <!-- <view> {{item.date}} </view> -->
+                        <!-- <view class="mood-date with-image">{{item.date}}</view> -->
+                    <!-- </block> -->
+                    <!-- <block s-else> -->
                         
-                        <view data-day = "{{item.date}}" bind:tap="toSelectDay"> {{item.date}}</view>
-                    </block>
-                </view>
-                <view class="grid lighter" s-for="item, index in emptyGridsAfter">{{item}}</view>
+                        <!-- <view data-day = "{{item.date}}" bind:tap="toSelectDay">  -->
+                        
+                        <!-- {{item.date}} -->
+<!--                         
+                            <view class="jigsaw1">
+                                <view class="t"></view>
+                                <view class="r"></view>
+                                <view class="b"></view>
+                                <view class="l"></view>
+                        <view class="text">{{item}} </view>
+                            </view> -->
+                        <!-- </view> -->
+                    <!-- </block> -->
+                <!-- </view> -->
+                <!-- <view class="lighter" s-for="item, index in emptyGridsAfter">{{item}}</view> -->
 
-            </view>
+            <!-- </view> -->
+                </view>
+        </view>
         </view>
 
         <view class="today">

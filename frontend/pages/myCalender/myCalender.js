@@ -8,15 +8,21 @@ export const API = "https://xiaou.tech/api";
 
 Page({
     data: {
+        colors: ['rgba(255,229,122)', 'rgba(252,217,80)', 'rgba(255,182,95)', 'rgba(174,215,167)', 'rgba(146,189,239)', 'rgba(255,133,132)', 'rgba(213,213,213)', 'rgba(247,247,247)', 'rgba(181 181 181)'],
+        backColors: ['#ffffff', 'rgba(247,247,247)'],
         constMonth: '',
         constDay: '',
         thisYear: '',
         thisMonth: '',
         thisDay: '',
         selectDay: '',
+        firstLength: 0,
+        secondLength: 0,
+        thirdLength: 0,
         thisMonthDays: [], // attention for difference in index and date
         emptyGridsBefore: [],
         emptyGridsAfter: [],
+        allGrids: [],
         weekText: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 
         // GET data
@@ -44,16 +50,6 @@ Page({
             avater: 'https://cdn.xiaou.tech/share',
             //需要https图片路径
             qrCode: "https://cdn.xiaou.tech/logo16_9.png",
-            // //需要https图片路径
-            // TagText: "Ucho",
-            // //标签
-            // Name: 'Ucho',
-            // //姓名
-            // Position: "程序员鼓励师",
-            // //职位
-            // Mobile: "13888888888",
-            // //手机
-            // Company: "才华无限有限公司" //公司
 
         }
 
@@ -76,6 +72,7 @@ Page({
                 thisMonthDays.push({
                     date: i,
                     mood: 0,
+                    col: 7,
                 });
             }
             return thisMonthDays;
@@ -92,24 +89,33 @@ Page({
 
             //空出日期
             for (let i = 1; i <= emptyDays; i++) {
-                emptyGridsBefore.push(preMonthDays - (emptyDays - i));
+                emptyGridsBefore.push( {date: preMonthDays - (emptyDays - i), col:7,  mood: 0});
             }
 
             let after = (42 - thisMonthDays - emptyDays) - 7 >= 0
                         ? (42 - thisMonthDays - emptyDays) - 7
                         : (42 - thisMonthDays - emptyDays);
             for (let i = 1; i <= after; i++) {
-                emptyGridsAfter.push(i);
+                emptyGridsAfter.push({date: i, col:7, mood: 0});
             }
             if (emptyGridsBefore.length == 7) {
                 emptyGridsBefore = [];
             }
+            
             return { before: emptyGridsBefore, after: emptyGridsAfter};
         },
         //补全0
         zero: function (i) {
             return i >= 10 ? i : '0' + i;
-        }
+        },
+        getAllGrids: function(Y, M) {
+            let mday = this.gridThisMonth(Y, M);
+            let emptys = this.emptyGrid(Y, M);
+            let before = emptys.before;
+            let after = emptys.after;
+            let alldays = before.concat(mday, after);
+            return {all: alldays,  beforeM: before, thisM: mday, afterM: after};
+        },
     },
 
     onShow: function () {
@@ -151,9 +157,13 @@ Page({
         // call function to create grids
         let mday = this.methods.gridThisMonth(Y, M);
         let emptys = this.methods.emptyGrid(Y, M);
-
+        let tempAll = this.methods.getAllGrids(Y, M);
         // set the default selectDay as today
         this.setData({
+            firstLength: emptys.before.length,
+            secondLength: mday.length,
+            thirdLength: emptys.after.length,
+            allGrids: tempAll.all,
             thisMonthDays: mday,
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
@@ -164,17 +174,18 @@ Page({
             thisYear: Y,
             selectDay: D,
         }, () => {
+            console.log("allthisgrids", this.data.allGrids);
             this.moodTypeGratitude({
                 year: Y,
                 month: M
-            },
-            );
+            });
             this.dayMoodDescrip({
                 year: Y,
                 month: M,
                 day: D,
             });
         });
+        console.log("allreturn", tempAll);
 
     },
     onReady: function() {
@@ -352,6 +363,7 @@ Page({
                 res.data.moodList.forEach(mood => {
                     let tempDate = (new Date(mood.created_at)).getDate();
                     tempMonthList[tempDate - 1].mood = MoodName[mood.type];
+                    tempMonthList[tempDate - 1].col = mood.type;
                 });
                 res.data.gratitudeList.forEach(graRecord => {
                     let tempDate = (new Date(graRecord.created_at)).getDate();
@@ -360,8 +372,10 @@ Page({
                         description: graRecord.description,
                     })
                 });
-
+                let tempA = this.data.emptyGridsBefore.concat(tempMonthList, this.data.emptyGridsAfter);
+                let tempAll = this.data.allGrids.splice(this.data.firstLength, this.data.secondLength, tempMonthList);
                 this.setData({
+                    "allGrids": tempA,
                     thisMonthDays: tempMonthList,
                     gratitudeRecord: tempGradList,
                 }, ()=> {
@@ -420,6 +434,7 @@ Page({
     },
     updateMood(a, b) {
         this.setData({
+            "thisMonthDays[selectDay-1].col": MoodNumber[a],
             "thisMonthDays[selectDay-1].mood": a,
             thisDescription: b
         })

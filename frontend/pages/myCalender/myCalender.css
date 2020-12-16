@@ -95,12 +95,42 @@
     height: 100rpx;
 }
 
-
+.grid-puzzle {
+    position: relative;
+    /* z-index: 1; */
+    text-align: center;
+    font-family: "Microsoft YaHei",sans-serif;
+    width: calc(100% / 7);
+    line-height: 100rpx;
+    height: 100rpx;
+    border-radius: 6%;
+    background-color: #0284cf;
+}
+.grid-puzzle:before {
+    content: "";
+    width: calc(0.3* 100% / 7);
+    height: 30rpx;
+    position: absolute;
+    top: 36.7rpx;
+    left: -6.67rpx;
+    border-radius: 50%;
+    background-color: #fff;
+}
+.grid-puzzle:after{
+    content: "";
+    width: calc(100% / 7 / 3);
+    height: 33.3rpx;
+    position: absolute;
+    top: 2em;
+    left: 5.5em;
+    border-radius: 50%;
+    background-color: #0284cf;
+}
 .lighter {
     opacity: 0.5;
 }
 
-.grid .select-no-mood {
+.select-no-mood {
     width: 10rpx;
     height: 10rpx;
     background: red;
@@ -282,3 +312,112 @@
     color: rgba(128 186 161);
     border-radius: 20px;
 }
+
+
+
+.jigsaw{
+    width: calc(100% / 7);
+    line-height: 100rpx;
+    height: 100rpx;
+    /* margin: 50px; */
+    position: relative;
+    /* -webkit-border-radius: .5em;
+    -moz-border-radius: .5em;
+    border-radius: .5em; */
+    cursor: pointer;
+    /* border: 1px solid black; */
+  }
+/* 
+.jigsaw-text {
+    color: #ffffff;
+} */
+  
+
+  
+
+.jigsaw .bout {
+width: calc(100% / 3);
+    height: calc(100% / 3);
+    position: absolute;
+    z-index: 500;
+    bottom: -25%;
+    left: calc(100% / 3);
+    -webkit-border-radius: 67%;
+    -moz-border-radius: 67%;
+    border-radius: 67%;
+    border: 1px solid transparent;
+    /* border-image: linear-gradient(); */
+
+
+}
+  
+  .jigsaw .tout {
+   width: calc(100% / 3);
+    height: calc(100% / 3);
+    position: absolute;
+    top: -25%;
+    left: calc(100% / 3);
+    -webkit-border-radius: 67%;
+    -moz-border-radius: 67%;
+    border-radius: 67%;
+    border: 1px solid transparent;
+    /* border-image: linear-gradient(); */
+
+
+  }
+  
+  .jigsaw .lout {
+    width: calc(100% / 3);
+    height: calc(100% / 3);
+    position: absolute;
+    z-index: 500;
+    top: calc(100% / 3);
+    right: calc(100% * 5.5 / 6);
+    -webkit-border-radius: 67%;
+    -moz-border-radius: 67%;
+    border-radius: 67%;
+    /* border: 1px solid black; */
+
+  }
+  .jigsaw .rout {
+    width: calc(100% / 3);
+    height: calc(100% / 3);
+    position: absolute;
+    z-index: 500;
+    top: calc(100% / 3);
+    left: calc(100% * 5.5 / 6);
+    -webkit-border-radius: 67%;
+    -moz-border-radius: 67%;
+    border-radius: 67%;
+    /* border: 1px solid black; */
+
+  }
+  
+  .jigsaw .bin { 
+    width: calc(100% / 3);
+    height: calc(100% / 3);
+    position: absolute;
+    top: calc(100% * 4.5 / 6);
+    left: calc(100% * 2.2 / 6);
+    -webkit-border-radius: 67%;
+    -moz-border-radius: 67%;
+    border-radius: 67%;
+    background-color: #fff;
+  }
+  
+  .jigsaw .lin { 
+    width: calc(100%  / 3);
+    height: calc(100% / 3);
+    position: absolute;
+    top: calc(100% * 2.2 / 6);
+    left: calc(1 - 100% * 0.4 / 6);
+    -webkit-border-radius: 67%;
+    -moz-border-radius: 67%;
+    border-radius: 67%;
+    background-color: #fff;
+  }
+
+  .shadow {
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);/*for IOS*/
+  }
