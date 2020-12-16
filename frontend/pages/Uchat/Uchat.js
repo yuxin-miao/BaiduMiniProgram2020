@@ -31,7 +31,7 @@ Page({
         toolChoice: 0, // used for toolbox select 
         showWhether: false,
         tools: [1, 2, 3, 4, 5],
-        toolIntro: ["shujie", "gratitude", "time manage", "mood", "chat"],
+        toolIntro: ["疏解", "感恩", "时间", "心情", "闲聊"],
         robot: 0,
         moodChIdx: -1,
     },
@@ -471,7 +471,7 @@ Page({
         let tempDis = this.data.displayMsgs;
 
         if (this.data.doChoice === '1' &&  this.data.taskFinish == false && chIndex == 0) {
-            // 非初次进入+上次话题未结束+想继续聊
+            // 非初次进入+上次话题未结束+想接着聊
             // get last question
             this.getLastQuestion();
 
@@ -760,7 +760,7 @@ Page({
                 }
                 this.setData({
                     displayMsgs: tempDis,
-                    uChoices: tempChRe,
+                    uChoices: tempCh,
                     uChRely: tempChRe,
                     taskFinish: false,
                     doChoice: res.data.reply_type,
