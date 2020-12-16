@@ -1,5 +1,4 @@
 var moods = require('../../utils/constants.js');
-const wxml2canvas = require('../../utils/wxml2canvas.js');
 import {MoodName, MoodType, MoodNumber} from '../../utils/constants.js';
 
 import 'weapp-cookie';

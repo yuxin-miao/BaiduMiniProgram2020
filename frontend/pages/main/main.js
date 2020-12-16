@@ -224,7 +224,8 @@ Page({
         this.setData({
             showIntro: 0,
         })
-    }
+
+    },
 
     /* From Modernizr */
     whichTransitionEvent(){
