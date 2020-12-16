@@ -69,7 +69,9 @@ Page({
         }
         else {
             swan.redirectTo({
-                url: '/index/index'
+                // url: '/index/index'
+                url: '/pages/main/main',
+
             });
         }
         getApp().setLocalStorage('first_enter', 'no');
