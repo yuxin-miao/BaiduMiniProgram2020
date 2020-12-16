@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'account',
     'mood',
     'chat',
+    'user_config',
     'rest_framework',
 ]
 

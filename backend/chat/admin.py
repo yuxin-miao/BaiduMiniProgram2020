@@ -18,7 +18,12 @@ class ChoiceAdmin(admin.ModelAdmin):
     list_display = ('title', 'question', 'dest_question', 'created_at')
 
 
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('sender', 'receiver', 'content', 'created_at')
+    search_fields = ('sender__username', 'receiver__username')
+
+
 admin.site.register(QuestionTemplate, QuestionTemplateAdmin)
 admin.site.register(QuestionRecord, QuestionRecordAdmin)
 admin.site.register(Choice, ChoiceAdmin)
-admin.site.register(Message)
+admin.site.register(Message, MessageAdmin)
