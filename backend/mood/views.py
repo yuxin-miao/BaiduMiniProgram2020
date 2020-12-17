@@ -28,7 +28,7 @@ class MoodRecordViewSet(
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return MoodRecord.objects.filter(user=self.request.user).order_by('-created_at')
+        return MoodRecord.objects.filter(user=self.request.user).order_by('-id')
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -90,7 +90,7 @@ class MoodRecordViewSet(
                 created_at__year=year,
                 created_at__month=month,
                 created_at__day=day
-            ).exclude(type=MoodType.GRATITUDE).order_by('-id').first()
+            ).exclude(type=MoodType.GRATITUDE).first()
             mood_data = MoodRecordDetailSerializer(mood_record).data
             return Response(data=mood_data, status=status.HTTP_200_OK)
         return Response(data={'detail': error}, status=status.HTTP_400_BAD_REQUEST)
@@ -108,7 +108,7 @@ class MoodRecordViewSet(
             mood_records = self.get_queryset().filter(user=request.user).filter(
                 created_at__year=year,
                 created_at__month=month,
-            ).exclude(type=MoodType.GRATITUDE).order_by('-id')
+            ).exclude(type=MoodType.GRATITUDE)
 
             # only reserve the latest record of each day
             mood_values = mood_records.values('id', 'created_at')
