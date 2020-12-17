@@ -175,7 +175,6 @@ Page({
             thisYear: Y,
             selectDay: D,
         }, () => {
-            console.log("allthisgrids", this.data.allGrids);
             this.moodTypeGratitude({
                 year: Y,
                 month: M
@@ -186,7 +185,6 @@ Page({
                 day: D,
             });
         });
-        console.log("allreturn", tempAll);
 
     },
     onReady: function() {
