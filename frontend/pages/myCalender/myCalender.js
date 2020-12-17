@@ -24,7 +24,7 @@ Page({
         emptyGridsAfter: [],
         allGrids: [],
         weekText: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-
+        peopleUrl: 'https://cdn.xiaou.tech/peo7.png' ,
         // GET data
         // moodTypeList: {}, // item {day: , type: } in array
         gratitudeRecord: [], // item {day: , description: } in array
@@ -51,7 +51,8 @@ Page({
             //需要https图片路径
             qrCode: "https://cdn.xiaou.tech/logo16_9.png",
 
-        }
+        },
+        monthName: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
 
     },
@@ -256,8 +257,9 @@ Page({
         }
 
         this.setData({selectDay: e.currentTarget.dataset.day});
-
-
+        console.log('toCol',this.data.thisMonthDays[e.currentTarget.dataset.day-1].col);
+        console.log('toDay',e.currentTarget.dataset.day);
+        // console.log()
         if (this.data.thisMonthDays[e.currentTarget.dataset.day - 1].mood == 0) {
             swan.navigateTo({
                 url: '/pages/record/record'
@@ -894,12 +896,14 @@ Page({
         else {
             let num = MoodNumber[this.data.thisMonthDays[day - 1].mood];
             let tempUrl = 'https://cdn.xiaou.tech/share' + num + '.png';
+            let tempPe = 'https://cdn.xiaou.tech/peo' + num + '.png';
             // console.log(tempUrl);
             this.setData({
                 'cardInfo.avater': tempUrl,
                 haveRecord: 1,
+                peopleUrl: tempPe,
             }, ()=> {
-                console.log(this.data.cardInfo.avater)
+                console.log(this.data.peopleUrl)
             })
         }
 
