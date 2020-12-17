@@ -114,14 +114,18 @@ class MoodRecordViewSet(
             mood_values = mood_records.values('id', 'description', 'created_at')
             tz = timezone.get_current_timezone()
 
-            print(mood_values)
 
             for i in range(len(mood_values)):
                 mood_values[i]['created_at'] = tz.normalize(mood_values[i]['created_at'])
 
+            print(mood_values)
+
+
             for i in range(len(mood_values)):
                 if i > 0 and mood_values[i]['created_at'].day == mood_values[i - 1]['created_at'].day:
                     mood_records = mood_records.exclude(id=mood_values[i]['id'])
+
+            print(mood_records.values('id', 'description', 'created_at'))
 
             # get all gratitude journals in a month
             gratitude_journals = MoodRecord.objects.filter(user=request.user).filter(
