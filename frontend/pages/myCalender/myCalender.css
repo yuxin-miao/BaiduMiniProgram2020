@@ -4,8 +4,29 @@
     background-color: rgba(245 251 245);
     color: rgba(181 181 181);
 }
+.top-navigation {
+    background: transparent;
+}
+.back-border {
+    z-index: 1;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+}
+.back-people{
+    z-index: 2;
+    overflow: hidden;
+    position: fixed;
+    /* top: 0vh; */
+    width: 100vw;
+    bottom: 0;
+    left: 4%;
 
-
+    /* height: 97vh; */
+}
 
 /* navigation bar */
 
@@ -51,16 +72,18 @@
 .calender {
     display: flex;
     flex-direction: column;
-    margin-bottom: 30rpx;
+    /* margin-bottom: 30rpx; */
     /* height: 600rpx; */
     background-color: #ffff;
-    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
-    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);/*for IOS*/
+    /* box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1); */
 
     font-size: .18rem;
 }
 
 .calender-week {
+    z-index: 200;
+
     display:flex;
     flex-direction: row;
     align-items: center;
@@ -79,6 +102,7 @@
 }
 
 .calender-day {
+    z-index: 200;
     display: flex;
     flex-wrap: wrap;
     padding: 25rpx 30rpx;
@@ -183,10 +207,13 @@
     /* -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);for IOS  */
 }
 .journal {
+    z-index: 200;
     position: relative;
     top: 0;
     left: 0;
     height: 35vh;
+    display: flex;
+    flex-direction: column;
     /* padding-bottom: 70rpx; */
     /* flex-grow: 2; */
 
@@ -199,8 +226,27 @@
     width: 570rpx;
     height: 1.3rpx;
     background: rgba(207 244 209);
-    opacity: 0.7;
+    opacity: 0.8;
     border-radius: 100px / 50px;
+}
+.day-mon-text {
+    display: flex;
+    flex-direction: column;
+}
+.big-text {
+    margin-bottom: 10rpx;
+    font-size: 70rpx;
+    font-weight: bold;
+    height: 70rpx;
+    color: rgba(85,197,149);
+}
+.small-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: .2rem;
+    width: 145rpx;
+    color: rgba(181,181,181);
 }
 
 .record-row {
@@ -212,10 +258,11 @@
 }
 
 .record-row-first {
-    padding: 20rpx 0rpx 0 20rpx;
+    padding: 20rpx 20rpx 0 50rpx;
     margin: 0 0rpx 0 30rpx;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-between;
 }
 .gratitude {
     height: 60rpx;
@@ -235,7 +282,8 @@
     text-align: top;
 }
 .row-mood-text {    
-    padding: 10rpx 0rpx 0 20rpx;
+    overflow: hidden;
+    padding: 20rpx 50rpx 0 80rpx;
 
     text-align: center;
     width: 640rpx;

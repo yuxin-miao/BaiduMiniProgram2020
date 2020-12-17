@@ -101,7 +101,7 @@
                         <!-- <view data-day = "{{item.date}}" bind:tap="toSelectDay">  -->
                         
                         <!-- {{item.date}} -->
-<!--                         
+            <!--                         
                             <view class="jigsaw1">
                                 <view class="t"></view>
                                 <view class="r"></view>
@@ -118,24 +118,32 @@
                 </view>
         </view>
         </view>
+        <view class="oval"> </view>
 
         <view class="today">
-            <scroll-view class="journal" scroll-y>
+            <view class="journal" >
                 <view class="record-row-first">
-                    <image
+                    <!-- <image
                         class="mood-image-first"
                         mode="widthFix"
                         style="width: 50rpx"
-                        src="../../images/icon-point.svg"/>
-
-                    <view class="day-text"> {{thisMonth}}.{{selectDay}} </view>
-                    <image
+                        src="../../images/icon-point.svg"/> -->
+                    <view class='day-mon-text'>
+                        <view class='big-text'>
+                            {{selectDay}}
+                        </view>
+                        <view class='small-text'>
+                            {{monthName[thisMonth - 1]}}
+                        </view>
+                    </view>
+                    <!-- <view class="day-text"> {{thisMonth}}.{{selectDay}} </view> -->
+                    <!-- <image
                         class="mood-image-first"
                         mode="widthFix"
                         style="width: 50rpx"
                         src="../../images/mood_{{thisMonthDays[selectDay-1].mood}}.svg"
-                        bind:tap="modifyMood"/>
-                    <view class="row-mood-text" bind:tap="modifyMood"> {{thisDescription}}</view>
+                        bind:tap="modifyMood"/> -->
+                    <!-- <view class="row-mood-text" bind:tap="modifyMood"> {{thisDescription}}</view> -->
                     <view class="share"  bind:tap="shareThis">
                         <animation-view 
                             class="share-first" 
@@ -147,45 +155,34 @@
                             bind:tap="shareThis"
                             >
                         </animation-view>
-                        <!-- <image
-                        class="mood-image-first"
-                        mode="widthFix"
-                        style="width: 37rpx"
-                        src="../../images/share-begin.svg"/> -->
                     </view>
+
                 </view>
-                <view class="oval"> </view>
-                 <view class="record-row" s-for="gratitudeRecord">
-                    <image
-                        class="mood-image"
-                        mode="widthFix"
-                        style="width: 50rpx"
-                        src="../../images/icon-point.svg"/>
-                    <view class="day-text"> {{thisMonth}}.{{item.day}} </view>
-                    <image
-                        class="mood-image"
-                        mode="widthFix"
-                        style="width: 50rpx"
-                        src="../../images/gratitude_icon.png"/>
-                    <view class="row-text">{{item.description}} </view>
-                </view> 
-            </scroll-view>
+                <text class="row-mood-text" bind:tap="modifyMood" style="white-space:pre-wrap"> {{'     ' + thisDescription}}</text>
+            </view>
+
 
         </view>
 
     </view>
 </view>
 
+<image
+    class="back-border"
+    src='https://cdn.xiaou.tech/backBorder.png'    />
+
+<image
+    class="back-people"
+    mode="widthFix"
+    style="width: 700rpx"
+    src='{{peopleUrl}}' 
+
+    bind:tap="modifyMood"/>
+
 <block s-if="{{whetherShare == 1}}">
 <view class='mask'/>
-    <!-- <view class="poster-father"> -->
         <view class='poste-box' id='canvas-container' bind:tap="hidePoster" bind:longpress="showSave" style="width:{{totWidth}};height:{{totHeight}};left:{{totLeft}};top:{{totTop}}">
             <canvas canvas-id="myCanvas" width="{{ctxWidth}}" height="{{ctxHeight}}" style="width:{{totWidth}};height:{{totHeight}};" />
         </view>
-        <!-- <block s-if="{{generateFinish == 1}}">
-            <view class="save-button" bind:tap="saveImg"> 保存至本地相册 </view>
-        </block> -->
-    <!-- </view> -->
 </block>
 
-<!-- <canvas canvas-id="canvas-map" class="share-canvas"></canvas> -->
