@@ -130,7 +130,7 @@ Page({
             success: res => {
                 let returnMood = []; //used to return
                 if (res.statusCode != 200) {
-                    this.clearAndReenter(this.moodTypeGratitude(selectMonth));
+                    // this.clearAndReenter(this.moodTypeGratitude(selectMonth));
 
                     swan.showModal({
                         title: '请求失败',

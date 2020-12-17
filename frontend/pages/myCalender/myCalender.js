@@ -175,15 +175,23 @@ Page({
             thisYear: Y,
             selectDay: D,
         }, () => {
-            this.moodTypeGratitude({
-                year: Y,
-                month: M
-            });
-            this.dayMoodDescrip({
-                year: Y,
-                month: M,
-                day: D,
-            });
+            console.log("allthisgrids", this.data.allGrids);
+            if (getApp().isAuthenticated()) {
+                this.moodTypeGratitude({
+                    year: Y,
+                    month: M
+                });
+                this.dayMoodDescrip({
+                    year: Y,
+                    month: M,
+                    day: D,
+                });
+            } else {
+                swan.showToast({
+                    title: '你还没有登录哦',
+                    icon: 'none'
+                });
+            }
         });
 
     },
@@ -354,7 +362,7 @@ Page({
             success: res => {
                 let returnMood = []; //used to return
                 if (res.statusCode != 200) {
-                    this.clearAndReenter(this.moodTypeGratitude(selectMonth));
+                    // this.clearAndReenter(this.moodTypeGratitude(selectMonth));
 
                     // swan.showModal({
                     //     title: '加载中...',
@@ -413,7 +421,7 @@ Page({
             success: res => {
 
                 if (res.statusCode != 200) {
-                    this.clearAndReenter(this.dayMoodDescrip(selectDay));
+                    // this.clearAndReenter(this.dayMoodDescrip(selectDay));
 
                     // swan.showModal({
                     //     title: '加载中...',
