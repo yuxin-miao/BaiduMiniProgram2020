@@ -111,7 +111,7 @@ class MoodRecordViewSet(
             ).exclude(type=MoodType.GRATITUDE)
 
             # only reserve the latest record of each day
-            mood_values = mood_records.values('id', 'description', 'created_at')
+            mood_values = mood_records.values('id', 'description', 'type', 'created_at')
             tz = timezone.get_current_timezone()
 
 
@@ -125,7 +125,7 @@ class MoodRecordViewSet(
                 if i > 0 and mood_values[i]['created_at'].day == mood_values[i - 1]['created_at'].day:
                     mood_records = mood_records.exclude(id=mood_values[i]['id'])
 
-            print(mood_records.values('id', 'description', 'created_at'))
+            print(mood_records.values('id', 'description', 'type', 'created_at'))
 
             # get all gratitude journals in a month
             gratitude_journals = MoodRecord.objects.filter(user=request.user).filter(
