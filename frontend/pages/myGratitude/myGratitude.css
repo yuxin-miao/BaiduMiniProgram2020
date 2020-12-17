@@ -167,7 +167,13 @@
     justify-content: center;
     align-items: center;
 }
-
+.show-date {
+    margin-bottom: 15rpx;
+}
+.show-each-day {
+    width: 90%;
+    margin: 5%;
+}
 .show-all-days {
     flex-grow: 2;
     display: flex;
@@ -207,4 +213,16 @@
     from { transform: rotate(0deg);}
     from { transform: rotate(360deg);}
   }
-  
+
+  .show-day-texts {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+  }
+  .show-text {
+      width: 100%;
+      font-size: .15rem;
+      color: rgba(181,181,181);
+      text-align: left;
+      overflow: hidden;
+  }

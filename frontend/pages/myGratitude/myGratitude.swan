@@ -58,23 +58,26 @@
         <view class="show-top">
             <image
                 class="show-image"
-                src='https://cdn.xiaou.tech/grati{{openIdx%2}}.png'
+                src='https://cdn.xiaou.tech/grati{{openIdx%3}}.png'
                 lazy-load="true"
                 binderror="imageError"
                 bindload="imageLoad" />  
         </view>
 
         <scroll-view scroll-y class="show-all-days" style="height: 70vh">
-            <view class="show-each-day">
-                <view class="show-date">
-                    <view class="big-text"> 14 </view>
-                    <view class="small-text"> Dec</view>
-                </view>
-                <view class="show-day-texts">
-                    <text class="journal-text" style="white-space:pre-wrap">
+            <view class="show-each-day" s-for="item, index in eDays">
+                <block s-if="{{days[openIdx*2] >= item.day && days[openIdx*2 + 1] <= item.day}}">
 
-                    </text>
-                </view>
+                    <view class="show-date">
+                        <view class="big-text"> {{item.day}} </view>
+                        <view class="small-text"> Dec</view>
+                    </view>
+                    <view class="show-day-texts">
+                        <text class="show-text" style="white-space:pre-wrap" s-for="descrip, idx in item.description">
+                            {{'       ' + descrip}}
+                        </text>
+                    </view>
+                </block>
             </view>
         </scroll-view>
 

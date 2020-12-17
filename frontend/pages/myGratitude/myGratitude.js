@@ -8,9 +8,12 @@ Page({
         getSelectMonth: {year: '2020', month: '12'},
         today: 0, 
         days: [],
-        weekGratitude: [], // item [{day: , description: }]  [{day: , description: }] in array for each week 
+        weekGratitude: [], // item [{day: , description: }]  [{day: , description: }] in array for each week
+        eachDayGratiture: [], //[  [ {day: ,description: []}, {day: }, ], []  ]
+        eDays: [{day: 0, description: []}],
         openCard: 1,
         openIdx: 0,
+        
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
@@ -26,12 +29,15 @@ Page({
         let tempD = [21, 15, 14, 8, 7, 1];
         let tempM = [{month: 'DEC'}, {month: 'DEC'}, {month: 'DEC'}];
         let tempDG = [];
+        let tempEachDays =[];
+
         if (D > 21) {
             tempD = [28, 22, 21, 15, 14, 8, 7, 1];
             tempM = [{month: 'DEC'}, {month: 'DEC'}, {month: 'DEC'}, {month: 'DEC'}];
         }
         tempM.forEach(ele => {
             tempDG.push([]);
+            tempEachDays.push([{}]);
         })
         this.setData({
             getSelectMonth: {year: Y, month: M},
@@ -39,7 +45,9 @@ Page({
             days: tempD,
             allMonths: tempM,
             weekGratitude: tempDG,
+            eachDayGratiture: tempEachDays
         }, ()=>{
+            console.log('1!',tempEachDays)
             this.moodTypeGratitude({year: Y, month: M});
         })
         
@@ -131,6 +139,12 @@ Page({
                 }
                 console.log(res)
                 let tempDG = this.data.weekGratitude;
+                let lastDay = this.data.today;
+                let lastIdx = 0;
+                let tempEDays = [[], [], []];
+                let tD = this.data.eDays;
+                // console.log('here', tempEDays);
+
                 res.data.gratitudeList.forEach(graRecord => {
                     let tempDate = (new Date(graRecord.created_at)).getDate();
                     for (let i = 0; i < this.data.days.length - 1; i++) {
@@ -139,17 +153,68 @@ Page({
                                 day: tempDate,
                                 description: '      '+ graRecord.description,
                             })
+
                             break;
                         }
                     }
+                    if (tempDate < this.data.days[lastIdx*2+1]) {
+                        lastIdx = lastIdx + 1;
+                    }
+                    // console.log('start', tempEDays);
+                    let lED = tD.pop();
+                    if (lED != undefined && lED.day !=0 ) {
+                        if (lED.day == tempDate) {
+                            // console.log("1", laDays);
+                            lED.description.push(graRecord.description);
+                            tD.push(lED);
+                        }
+                        else {
+                            // console.log("2", laDays);
+
+                            tD.push(lED);
+                            let newDays = {day: tempDate, description: [graRecord.description]};
+                            tD.push(newDays);
+                        }
+                    }
+                    else {
+                        // console.log("3", laDays);
+
+                        lED = {day: tempDate, description: [graRecord.description]};
+                        tD.push(lED);
+                    }
+                    // let laDays = tempEDays[lastIdx].pop();
+
+                    // if (laDays != undefined && laDays != []) {
+                    //     if (laDays.day == tempDate) {
+                    //         console.log("1", laDays);
+                    //         laDays.description.push(graRecord.description);
+                    //         tempEDays[lastIdx].push(laDays);
+                    //     }
+                    //     else {
+                    //         console.log("2", laDays);
+
+                    //         tempEDays.push(laDays);
+                    //         let newDays = {day: tempDate, description: [graRecord.description]};
+                    //         tempEDays[lastIdx].push(newDays);
+                    //     }
+                    // }
+                    // else {
+                    //     console.log("3", laDays);
+
+                    //     laDays = {day: tempDate, description: [graRecord.description]};
+                    //     tempEDays[lastIdx].push(laDays);
+                    // }
+                    // console.log('end', tempEDays);
                 });
                 // for (let i = 0; i < tempDG.length; i++ ){
                 //     if (tempDG[i].length == 0)
                 // }
                 this.setData({
                     weekGratitude: tempDG,
+                    eachDayGratiture: tempEDays,
+                    eDays:  tD,
                 }, ()=> {
-                    console.log(this.data.weekGratitude)
+                    console.log(this.data.eDays)
                     // this.setUrl(this.data.thisDay)
                 });
     
