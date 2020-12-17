@@ -108,7 +108,7 @@ class MoodRecordViewSet(
             mood_records = self.get_queryset().filter(user=request.user).filter(
                 created_at__year=year,
                 created_at__month=month,
-            ).exclude(type=MoodType.GRATITUDE)
+            ).exclude(type=MoodType.GRATITUDE).order_by('-id')
 
             # only reserve the latest record of each day
             mood_values = mood_records.values('id', 'created_at')
