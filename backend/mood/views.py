@@ -117,9 +117,13 @@ class MoodRecordViewSet(
             for i in range(len(mood_values)):
                 mood_values[i]['created_at'] = tz.normalize(mood_values[i]['created_at'])
 
+            # Remove duplicate: only keep the mood record with largest ID on that day
+            day_set = set()
             for i in range(len(mood_values)):
-                if i > 0 and mood_values[i]['created_at'].day == mood_values[i - 1]['created_at'].day:
+                if mood_values[i]['created_at'].day in day_set:
                     mood_records = mood_records.exclude(id=mood_values[i]['id'])
+                else:
+                    day_set.add(mood_values[i]['created_at'].day)
 
             # get all gratitude journals in a month
             gratitude_journals = MoodRecord.objects.filter(user=request.user).filter(
