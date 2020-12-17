@@ -69,20 +69,9 @@ Page({
             this.imageIntro(that);
             return;
         }
-        if (getApp().isAuthenticated()) {
-            // swan.navigateTo ({
-            //     url: '/pages/mysetting/mysetting'
-            // })
-            swan.navigateTo ({
-                url: '/pages/myCalender/myCalender'
-            })
-        } else {
-            this.setData({
-                showPrivacy: 1,
-                loginRecord: 1,
-            })
-
-        }
+        swan.navigateTo ({
+            url: '/pages/myCalender/myCalender'
+        })
     },
     startChat() {
         console.log("transition finish")
