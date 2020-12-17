@@ -18,11 +18,19 @@
 }
 
 .portrait {
+    z-index: 999;
     align-self: center;
-    margin-left: 34.5vw;
-    margin-bottom: 5rpx;
+    margin-left: 28vw;
+    /* margin-bottom: 5rpx; */
+    margin-top: 1vh;
+    height: 13vh;
+    width: 13vh;
     /* border: 1px solid rgba(128 186 161 );
     border-radius: 50%; */
+}
+.portrait-anim {
+    height: 13vh;
+    width: 13vh;
 }
 
 /* 聊天文字 */

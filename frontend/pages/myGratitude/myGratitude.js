@@ -11,7 +11,7 @@ Page({
         weekGratitude: [], // item [{day: , description: }]  [{day: , description: }] in array for each week
         eachDayGratiture: [], //[  [ {day: ,description: []}, {day: }, ], []  ]
         eDays: [{day: 0, description: []}],
-        openCard: 1,
+        openCard: 0,
         openIdx: 0,
         
     },
@@ -77,6 +77,7 @@ Page({
         // 用户点击右上角转发
     },
     returnNav(e) {
+        console.log(1);
         swan.navigateBack();
     },
     downLoadGMage: function() {

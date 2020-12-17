@@ -18,6 +18,7 @@
     position: fixed;
     top: 100rpx;
     left: 44rpx;
+    z-index: 600;
 }
 
 .scroll-box{

@@ -256,6 +256,11 @@ Page({
     this.setData({
         transBubble: 'bubble'
     })
+  },
+  goGratitude(e) {
+      swan.navigateTo({
+        url: '/pages/myGratitude/myGratitude'
+      })
   }
     
 });

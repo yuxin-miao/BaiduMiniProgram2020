@@ -7,13 +7,24 @@
             style="width: 60rpx"
             src="../../images/arrow.svg"
             bindtap="returnNav"/>
+            <view class="portrait" bind:tap="clickTool">
+            <animation-view 
+                class="portrait-anim" 
+                path="/anims/mg2.json" 
+                loop="true"
+                autoplay="true" 
+                action="play"
+                hidden="false"
+                bind:tap="clickTool" >
+        </animation-view>
+                        </view>
 
-            <image
+            <!-- <image
             class="portrait"
             mode="widthFix"
             style="width: 100rpx"
             src="../../images/portrait-chat.svg"
-            bind:tap="clickTool"/>
+            bind:tap="clickTool"/> -->
         </view>
     </view>
     <view class="tool-box-{{showWhether}}">

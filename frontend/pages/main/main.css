@@ -9,17 +9,20 @@
 }
 
 .top {
+    position: relative;
     display: flex;
     align-items: center;
     width: 100%;
     height: 40%;
-    padding: 10% 0 0 8%;
+    padding: 10% 0 0 0;
     align-self: center;
     justify-content: space-around;
 }
 .welcome-text {
-    padding: 30% 0 5% 20rpx;
-    width: 450rpx;
+    position: fixed;
+    right: 0;
+    padding: 30% 0 5% 0;
+    width: 300rpx;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -27,7 +30,7 @@
 .big-text {
     font-size: .25rem;
     font-family: PingFangSC-Medium, sans-serif;
-    color: rgba(128 186 161);
+    color: rgba(80,189,155);
 }
 
 .small-text {
@@ -38,11 +41,16 @@
     color: rgba(181 181 181);
 }
 .portrait {
-    margin-top: 80rpx;
-    margin-right: 30rpx;
+    /* margin-top: 80rpx; */
     /* margin-left: 300rpx;
     margin-top: 50rpx; */
+    z-index: 10;
+    position: fixed;
+    right: 130rpx;
+    top: 8%;
     align-self: center;
+    height: 750rpx;
+    width: 750rpx;
 }
 
 .middle {
@@ -53,13 +61,14 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 30%;
+    height: 25%;
     text-align: center;
 
 }
 .intro-text {
+    z-index: 100;
     width: 100%;
-    padding: 0 25% 30rpx 25%;
+    padding: 0 25% 0 32%;
     display: flex;
     flex-direction: row;
 }
@@ -71,6 +80,7 @@
 }
 .prodc-text {
     padding-left: 20rpx;
+    padding-bottom: 30rpx;
     align-self: center;
     font-size: .18rem;
     font-family: PingFangSC-Medium, sans-serif;
@@ -78,7 +88,7 @@
 }
 .bottom {
     width: 100%;
-    height: 30%;
+    height: 35%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -90,11 +100,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 19%;
     margin-left: 250rpx;
     margin-bottom: 100rpx;
     width: 250rpx;
     height: 250rpx;
-    background-color: rgba(207 244 209);
+    background-color: rgba(181,246,201);
     border-radius: 50%;
     box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
     -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);/*for IOS*/
@@ -102,7 +113,7 @@
 
 .chat-text {
     font-size: .25rem;
-    color: rgba(128 186 161);
+    color: rgba(80,189,155);
     font-family: PingFangSC-Medium, sans-serif;
     
 }
