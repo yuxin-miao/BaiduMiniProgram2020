@@ -142,7 +142,7 @@ App({
                         swan.showToast({
                             title: '登录成功'
                         });
-                        toSuc();
+                        if (toSuc) toSuc();
                     },
                     fail: err => {
                         swan.showModal({
@@ -150,7 +150,7 @@ App({
                             content: '请检查网络连接'
                         });
                         swan.hideLoading();
-                        toFail();
+                        if (toFail) toFail();
                     }
                 });
             },
