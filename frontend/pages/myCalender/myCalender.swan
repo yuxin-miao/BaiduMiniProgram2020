@@ -4,9 +4,8 @@
         <image
         class="back-arrow"
         mode="widthFix"
-        style="width: 120rpx"
         src="../../images/arrow.svg"
-         bindtap="returnNav"
+        bindtap="returnNav"
         />
 
         <view class="month-change">
@@ -17,101 +16,132 @@
     </view>
     <view class="no-navigation">
         <view class="calender" id="wrapper" bind:tap="drawCanvas">
-          <!-- <text class="title draw" data-text="Hello there">Hello there</text> -->
             <view class="calender-week">
-                <view class="grid" s-for="item, index in weekText">{{item}}</view>
+                <view class="grid-week" s-for="item, index in weekText">{{item}}</view>
             </view>
+
             <view class="calender-day">
+                <view class="grid jigsaw" s-for="item, index in allGrids" style="background-color: {{ item.col < 7 ? colors[item.col] : backColors[index%2] }}">
+                        <block s-if="{{index > 6 && index%9 != 0 }}">
+                            <view class="tout" style="background-color: {{ item.col < 7 ? colors[item.col] : backColors[index%2] }}"></view>
+                        </block>
+                        <block s-if="{{(index+1) % 7 && (index+1)%5!=0}}">
+                            <view class="rout" style="background-color: {{ item.col < 7 ? colors[item.col] : backColors[index%2] }}"></view>
+                        </block>
+                        <block s-if="{{index%5 == 0 && index !=0}}">
+                             <view class="lout" style="background-color: {{ item.col < 7 ? colors[item.col] : backColors[index%2] }}"></view>
+                        </block>
+                        <block s-if="{{(index + 7) % 9 == 0 && index < allGrids.length - 8}}">
+                             <view class="bout" style="background-color: {{ item.col < 7 ? colors[item.col] : backColors[index%2] }}"></view>
+                        </block>
 
-                <view class="grid lighter" s-for="item, index in emptyGridsBefore">{{item}}</view>
-                <view class="grid {{item.date==selectDay ? 'select-no-mood' : '' }}" s-for="item, index in thisMonthDays">
-                    <block s-if="{{item.mood != 0}}">
-                        <image
-                        class="mood-image {{item.date==selectDay ? 'select' : '' }}"
-                        mode="widthFix"
-                        style="width: 55%"
-                        src="../../images/mood_{{item.mood}}.svg"
-                        data-day = "{{item.date}}"
-                        bind:tap="toSelectDay"
-                        />
-                        <view class="mood-date with-image">{{item.date}}</view>
-                    </block>
-                    <block s-else>
+                <block s-if="{{index < firstLength}}">
+
+                    <view class="jigsaw-text lighter" style="color:rgba(181 181 181 0.5)"> 
+                    {{item.date}}
+                        <!-- {{index}}  -->
+                    
+                    </view>
+                    
+                </block>
+                <block s-elif="{{index >= (firstLength + secondLength)}}">
+                    <view class="jigsaw-text lighter" style="color:rgba(181 181 181)"> 
+                                    {{item.date}}
+
+                    <!-- {{index}}  -->
+                
+                    </view>
+                </block>
+                <block s-else>
+                        <block s-if="{{item.col != 7}}">
+                            <!-- {{index}} -->
+                            <!-- class="mood-image {{item.date==selectDay ? 'select' : '' }}" -->
+
+                            <image
+                            class="mood-image"
+                            mode="widthFix"
+                            style="width: 45%"
+                            src="../../images/mood{{item.col}}.svg"
+                            data-day = "{{item.date}}"
+                            bind:tap="toSelectDay"
+                            />
+                        </block>
+                        <block s-else>
                         
-                        <view data-day = "{{item.date}}" bind:tap="toSelectDay"> {{item.date}}</view>
-                    </block>
+                            <view class="jigsaw-text " style="color:rgba(181 181 181)" data-day = "{{item.date}}" bind:tap="toSelectDay"> 
+                            <!-- {{index}} -->
+                                            {{item.date}}
+                            </view>
+                        </block>
+                </block>
                 </view>
-                <view class="grid lighter" s-for="item, index in emptyGridsAfter">{{item}}</view>
-
-            </view>
         </view>
+        </view>
+        <view class="oval"> </view>
 
         <view class="today">
-            <scroll-view class="journal" scroll-y>
-                <view class="record-row">
-                    <image
+            <view class="journal" >
+                <view class="record-row-first">
+                    <!-- <image
                         class="mood-image-first"
                         mode="widthFix"
                         style="width: 50rpx"
-                        src="../../images/icon-point.svg"/>
-
-                    <view class="day-text"> {{thisMonth}}.{{selectDay}} </view>
-                    <image
+                        src="../../images/icon-point.svg"/> -->
+                    <view class='day-mon-text'>
+                        <view class='big-text'>
+                            {{selectDay}}
+                        </view>
+                        <view class='small-text'>
+                            {{monthName[thisMonth - 1]}}
+                        </view>
+                    </view>
+                    <!-- <view class="day-text"> {{thisMonth}}.{{selectDay}} </view> -->
+                    <!-- <image
                         class="mood-image-first"
                         mode="widthFix"
                         style="width: 50rpx"
                         src="../../images/mood_{{thisMonthDays[selectDay-1].mood}}.svg"
-                        bind:tap="modifyMood"/>
-                    <view class="row-mood-text" bind:tap="modifyMood"> {{thisDescription}}</view>
+                        bind:tap="modifyMood"/> -->
+                    <!-- <view class="row-mood-text" bind:tap="modifyMood"> {{thisDescription}}</view> -->
                     <view class="share"  bind:tap="shareThis">
-                        <!-- <animation-view 
-                            class="controls" 
+                        <animation-view 
+                            class="share-first" 
                             path="/anims/share.json" 
-                            loop="false"
-                            autoplay="false" 
+                            loop="true"
+                            autoplay="true" 
                             action="play"
                             hidden="false" 
-                            bindended="openToShare">
-                        </animation-view> -->
-                        <image
-                        class="mood-image-first"
-                        mode="widthFix"
-                        style="width: 37rpx"
-                        src="../../images/share-begin.svg"/>
+                            bind:tap="shareThis"
+                            >
+                        </animation-view>
                     </view>
+
                 </view>
-                <view class="oval"> </view>
-                 <view class="record-row" s-for="gratitudeRecord">
-                    <image
-                        class="mood-image"
-                        mode="widthFix"
-                        style="width: 50rpx"
-                        src="../../images/icon-point.svg"/>
-                    <view class="day-text"> {{thisMonth}}.{{item.day}} </view>
-                    <image
-                        class="mood-image"
-                        mode="widthFix"
-                        style="width: 50rpx"
-                        src="../../images/gratitude_icon.png"/>
-                    <view class="row-text">{{item.description}} </view>
-                </view> 
-            </scroll-view>
+                <text class="row-mood-text" bind:tap="modifyMood" style="white-space:pre-wrap"> {{'     ' + thisDescription}}</text>
+            </view>
+
 
         </view>
 
     </view>
 </view>
 
+<image
+    class="back-border"
+    src='https://cdn.xiaou.tech/backBorder.png'    />
+
+<image
+    class="back-people"
+    mode="widthFix"
+    style="width: 700rpx"
+    src='{{peoTempUrl[thisMonthDays[selectDay - 1].col]}}' 
+
+    bind:tap="modifyMood"/>
+
 <block s-if="{{whetherShare == 1}}">
 <view class='mask'/>
-    <!-- <view class="poster-father"> -->
         <view class='poste-box' id='canvas-container' bind:tap="hidePoster" bind:longpress="showSave" style="width:{{totWidth}};height:{{totHeight}};left:{{totLeft}};top:{{totTop}}">
             <canvas canvas-id="myCanvas" width="{{ctxWidth}}" height="{{ctxHeight}}" style="width:{{totWidth}};height:{{totHeight}};" />
         </view>
-        <!-- <block s-if="{{generateFinish == 1}}">
-            <view class="save-button" bind:tap="saveImg"> 保存至本地相册 </view>
-        </block> -->
-    <!-- </view> -->
 </block>
 
-<!-- <canvas canvas-id="canvas-map" class="share-canvas"></canvas> -->

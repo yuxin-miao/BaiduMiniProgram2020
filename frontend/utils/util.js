@@ -31,8 +31,15 @@ const formatTime = date => {
     return wd + ' '+ [month, day].map(formatNumber).join('.')  + ' ' + [hour, minute].map(formatNumber).join(':');
   }
 
+  const dictDate = date => {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return {year: year, month: month, day: day}
+  }
   module.exports = {
     formatTime: formatTime,
     formatDay: formatDay,
-    chatTime: chatTime
+    chatTime: chatTime,
+    dictDate: dictDate,
   };

@@ -1,6 +1,6 @@
 var moods = require('../../utils/constants.js');
-const wxml2canvas = require('../../utils/wxml2canvas.js');
 import {MoodName, MoodType, MoodNumber} from '../../utils/constants.js';
+var util = require('../../utils/util.js');
 
 import 'weapp-cookie';
 import cookies from 'weapp-cookie';
@@ -9,24 +9,29 @@ export const API = "https://xiaou.tech/api";
 
 Page({
     data: {
+        colors: ['rgba(255,229,122)', 'rgba(252,217,80)', 'rgba(255,182,95)', 'rgba(174,215,167)', 'rgba(146,189,239)', 'rgba(255,133,132)', 'rgba(213,213,213)', 'rgba(247,247,247)', 'rgba(181 181 181)'],
+        backColors: ['#ffffff', 'rgba(247,247,247)'],
         constMonth: '',
         constDay: '',
         thisYear: '',
         thisMonth: '',
         thisDay: '',
         selectDay: '',
+        firstLength: 0,
+        secondLength: 0,
+        thirdLength: 0,
         thisMonthDays: [], // attention for difference in index and date
         emptyGridsBefore: [],
         emptyGridsAfter: [],
+        allGrids: [],
         weekText: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-
         // GET data
         // moodTypeList: {}, // item {day: , type: } in array
         gratitudeRecord: [], // item {day: , description: } in array
         thisDescription: '', // string of description for thisDay
 
         returnMoodRecord: [],
-
+        peoTempUrl: [],
         // used for poster share
         haveRecord: 0,
         whetherShare: 0,
@@ -45,24 +50,16 @@ Page({
             avater: 'https://cdn.xiaou.tech/share',
             //需要https图片路径
             qrCode: "https://cdn.xiaou.tech/logo16_9.png",
-            // //需要https图片路径
-            // TagText: "Ucho",
-            // //标签
-            // Name: 'Ucho',
-            // //姓名
-            // Position: "程序员鼓励师",
-            // //职位
-            // Mobile: "13888888888",
-            // //手机
-            // Company: "才华无限有限公司" //公司
 
-        }
+        },
+        monthName: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
 
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
         getApp().whetherWeb();
+        this.downloadPeoImg();
     },
     methods : {
         // number of days in this month
@@ -77,6 +74,7 @@ Page({
                 thisMonthDays.push({
                     date: i,
                     mood: 0,
+                    col: 7,
                 });
             }
             return thisMonthDays;
@@ -93,24 +91,33 @@ Page({
 
             //空出日期
             for (let i = 1; i <= emptyDays; i++) {
-                emptyGridsBefore.push(preMonthDays - (emptyDays - i));
+                emptyGridsBefore.push( {date: preMonthDays - (emptyDays - i), col:7,  mood: 0});
             }
 
             let after = (42 - thisMonthDays - emptyDays) - 7 >= 0
                         ? (42 - thisMonthDays - emptyDays) - 7
                         : (42 - thisMonthDays - emptyDays);
             for (let i = 1; i <= after; i++) {
-                emptyGridsAfter.push(i);
+                emptyGridsAfter.push({date: i, col:7, mood: 0});
             }
             if (emptyGridsBefore.length == 7) {
                 emptyGridsBefore = [];
             }
+            
             return { before: emptyGridsBefore, after: emptyGridsAfter};
         },
         //补全0
         zero: function (i) {
             return i >= 10 ? i : '0' + i;
-        }
+        },
+        getAllGrids: function(Y, M) {
+            let mday = this.gridThisMonth(Y, M);
+            let emptys = this.emptyGrid(Y, M);
+            let before = emptys.before;
+            let after = emptys.after;
+            let alldays = before.concat(mday, after);
+            return {all: alldays,  beforeM: before, thisM: mday, afterM: after};
+        },
     },
 
     onShow: function () {
@@ -140,51 +147,50 @@ Page({
 
         // 监听页面加载的生命周期函数
 
-        let timestamp = Date.parse(new Date());
-        let date = new Date(timestamp);
-        //获取年份  
-        let Y =date.getFullYear();
-        //获取月份  
-        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
-        //获取当日日期 
-        let D = date.getDate();
-
+        let dictD = util.dictDate(new Date());
         // call function to create grids
-        let mday = this.methods.gridThisMonth(Y, M);
-        let emptys = this.methods.emptyGrid(Y, M);
-
+        let mday = this.methods.gridThisMonth(dictD.year, dictD.month);
+        let emptys = this.methods.emptyGrid(dictD.year, dictD.month);
+        let tempAll = this.methods.getAllGrids(dictD.year, dictD.month);
         // set the default selectDay as today
         this.setData({
+            firstLength: emptys.before.length,
+            secondLength: mday.length,
+            thirdLength: emptys.after.length,
+            allGrids: tempAll.all,
             thisMonthDays: mday,
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
-            thisDay: D,
-            constMonth: M,
-            constDay: D,
-            thisMonth: M,
-            thisYear: Y,
-            selectDay: D,
+            thisDay: dictD.day,
+            constMonth: dictD.month,
+            constDay: dictD.day,
+            thisMonth: dictD.month,
+            thisYear: dictD.year,
+            selectDay: dictD.day,
         }, () => {
-            this.moodTypeGratitude({
-                year: Y,
-                month: M
-            },
-            );
-            this.dayMoodDescrip({
-                year: Y,
-                month: M,
-                day: D,
-            });
+            // console.log("allthisgrids", this.data.allGrids);
+            if (getApp().isAuthenticated()) {
+                this.moodTypeGratitude({
+                    year: dictD.year,
+                    month: dictD.month
+                });
+                this.dayMoodDescrip({
+                    year: dictD.year,
+                    month: dictD.month,
+                    day: dictD.day,
+                });
+            } else {
+                swan.showToast({
+                    title: '你还没有登录哦',
+                    icon: 'none'
+                });
+            }
         });
 
     },
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数
 
-    },
-    onLoad: function() {
-        // 监听页面显示的生命周期函数
-        this.getSystemInfo()
     },
     onHide: function() {
         // 监听页面隐藏的生命周期函数
@@ -201,7 +207,42 @@ Page({
     onShareAppMessage: function () {
         // 用户点击右上角转发
     },
+     // get all people image as tempFile 
+    downloadPeoImg: function () {
+        let tempImgSrcs = [];
+        let that = this;
+        for (let i = 0; i < 8; i++) {
+            let tempUrl = 'https://cdn.xiaou.tech/peo'+ i + '.png'
+            swan.downloadFile({
+                url: tempUrl,
+                success: function (res) {        
+                    if (res.statusCode === 200) {
+                        tempImgSrcs.push(res.tempFilePath); //下载成功返回结果
+                        if (i === 7) {
+                            that.setData({
+                                peoTempUrl: tempImgSrcs,
+                            })
+                        }
+                    } 
+                    else {
+                        swan.showToast({
+                            title: '加载失败！',
+                            icon: 'none',
+                            duration: 2000,
+                        });
+                    }
+                },
+                fail: err => {
+                    swan.showToast({
+                        title: '加载失败！',
+                        icon: '请检查网络连接',
+                        duration: 2000,
+                    });
+                }
+            });
+        }
 
+    },
     // navigation bar used
     returnNav(e) {
         swan.navigateBack();
@@ -232,8 +273,6 @@ Page({
 
     toSelectDay(e) {
         // used when select a new day in this month
-        // jump to the day if
-        // console.log('Clicked', e.currentTarget.dataset.day);
 
         if (e.currentTarget.dataset.day > this.data.constDay & this.data.thisMonth == this.data.constMonth) {
             // cant jump to futrue
@@ -246,8 +285,9 @@ Page({
         }
 
         this.setData({selectDay: e.currentTarget.dataset.day});
-
-
+        // console.log('toCol',this.data.thisMonthDays[e.currentTarget.dataset.day-1].col);
+        // console.log('toDay',e.currentTarget.dataset.day);
+        // console.log()
         if (this.data.thisMonthDays[e.currentTarget.dataset.day - 1].mood == 0) {
             swan.navigateTo({
                 url: '/pages/record/record'
@@ -273,11 +313,16 @@ Page({
         // call function to create grids
         let mday = this.methods.gridThisMonth(this.data.thisYear, this.data.thisMonth);
         let emptys = this.methods.emptyGrid(this.data.thisYear, this.data.thisMonth);
+        let tempAll = this.methods.getAllGrids(this.data.thisYear, this.data.thisMonth);
         // set the default selectDay as today
         this.setData({
+            firstLength: emptys.before.length,
+            secondLength: mday.length,
+            thirdLength: emptys.after.length,
             thisMonthDays: mday,
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
+            allGrids: tempAll,
         }, () => {
             this.moodTypeGratitude({
                 year: this.data.thisYear,
@@ -302,11 +347,16 @@ Page({
         // call function to create grids
         let mday = this.methods.gridThisMonth(this.data.thisYear, this.data.thisMonth);
         let emptys = this.methods.emptyGrid(this.data.thisYear, this.data.thisMonth);
+        let tempAll = this.methods.getAllGrids(this.data.thisYear, this.data.thisMonth);
         // set the default selectDay as today
         this.setData({
+            firstLength: emptys.before.length,
+            secondLength: mday.length,
+            thirdLength: emptys.after.length,
             thisMonthDays: mday,
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
+            allGrids: tempAll,
         });
         this.moodTypeGratitude({
             year: this.data.thisYear,
@@ -334,7 +384,7 @@ Page({
             success: res => {
                 let returnMood = []; //used to return
                 if (res.statusCode != 200) {
-                    this.clearAndReenter(this.moodTypeGratitude(selectMonth));
+                    // this.clearAndReenter(this.moodTypeGratitude(selectMonth));
 
                     // swan.showModal({
                     //     title: '加载中...',
@@ -353,6 +403,7 @@ Page({
                 res.data.moodList.forEach(mood => {
                     let tempDate = (new Date(mood.created_at)).getDate();
                     tempMonthList[tempDate - 1].mood = MoodName[mood.type];
+                    tempMonthList[tempDate - 1].col = mood.type;
                 });
                 res.data.gratitudeList.forEach(graRecord => {
                     let tempDate = (new Date(graRecord.created_at)).getDate();
@@ -361,8 +412,9 @@ Page({
                         description: graRecord.description,
                     })
                 });
-
+                let tempA = this.data.emptyGridsBefore.concat(tempMonthList, this.data.emptyGridsAfter);
                 this.setData({
+                    "allGrids": tempA,
                     thisMonthDays: tempMonthList,
                     gratitudeRecord: tempGradList,
                 }, ()=> {
@@ -391,7 +443,7 @@ Page({
             success: res => {
 
                 if (res.statusCode != 200) {
-                    this.clearAndReenter(this.dayMoodDescrip(selectDay));
+                    // this.clearAndReenter(this.dayMoodDescrip(selectDay));
 
                     // swan.showModal({
                     //     title: '加载中...',
@@ -421,12 +473,14 @@ Page({
     },
     updateMood(a, b) {
         this.setData({
+            "thisMonthDays[selectDay-1].col": MoodNumber[a],
             "thisMonthDays[selectDay-1].mood": a,
             thisDescription: b
         })
     },
         // function for poster share
     shareThis(e) {
+        // console.log("to share")
         if (this.data.thisMonthDays[this.data.selectDay - 1].mood == 0) {
             swan.showToast({
                 title: '未添加心情，无法分享',
@@ -574,7 +628,7 @@ Page({
         //         };
         //         imageObj.src = "avaterSrc"; 
         //    };
-            console.log("height:", rect.height);
+            // console.log("height:", rect.height);
             var height = rect.height;
             var right = rect.right;
             let topProp = 0.5;
@@ -637,7 +691,7 @@ Page({
                 var group = empty[0] + "..."//这里只显示放得开的行数，超出的用...表示
                 rowCut.splice(rowNum - 1, 1, group);
                 row = rowCut;
-                console.log(row)
+                // console.log(row)
             }
             // let diffRow = rowNum - row.length;
             // if (diffRow != 0) {
@@ -778,7 +832,7 @@ Page({
                                                     
                                                 }, () => {
 
-                                                    console.log("share fail");
+                                                    // console.log("share fail");
                                                     that.setData({
                                                         whetherShare: 0,
                                                         generateFinish: 0,
@@ -832,7 +886,7 @@ Page({
             tempW = tempW + 'rpx';
             tempL = tempL + 'rpx';
             tempT = tempT + 'rpx';
-            console.log(tempH , tempW, tempL, res.pixelRatio);
+            // console.log(tempH , tempW, tempL, res.pixelRatio);
 
             this.setData({
                 ctxHeight: tempcH,
@@ -864,7 +918,7 @@ Page({
             this.setData({
                 haveRecord: 0,
             })
-            console.log("no moode day");
+            // console.log("no moode day");
             return
         }
         else {
@@ -875,7 +929,6 @@ Page({
                 'cardInfo.avater': tempUrl,
                 haveRecord: 1,
             }, ()=> {
-                console.log(this.data.cardInfo.avater)
             })
         }
 

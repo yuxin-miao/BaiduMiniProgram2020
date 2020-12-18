@@ -41,13 +41,29 @@ body {
 }
 .back-arrow {
     padding-top: 40rpx;
-    padding-left: 30rpx;
+    padding-left: 40rpx;
     padding-bottom: 30rpx;
     align-self: center;
+    width: 55rpx;
+    /* height: 50rpx; */
+    z-index: 999;
     /* width: 10%; */
 }
 
 
+/* mask */
+.mask {
+    width:100%;
+    height:100%;
+    position:fixed;
+    background-color:#000;
+    z-index: 500;
+    top:0;
+    left:0;
+    -moz-opacity: 0.5;
+    opacity: 0.50;
+    filter: alpha(opacity=50);
+}
 
 /* 卡片区域 */
 .card-area {

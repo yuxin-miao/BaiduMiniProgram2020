@@ -82,7 +82,7 @@ Page({
             success: res => {
                 // console.log(res);
                 if (res.statusCode != 200) {
-                    getApp().clearAndReenter();
+                    // getApp().clearAndReenter();
 
                     swan.showModal({
                         title: '加载中...',

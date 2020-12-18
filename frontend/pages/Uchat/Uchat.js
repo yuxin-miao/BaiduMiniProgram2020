@@ -1,12 +1,16 @@
 import 'weapp-cookie';
 import cookies from 'weapp-cookie';
 var util = require('../../utils/util.js');
-import {MoodName} from '../../utils/constants.js';
+import {MoodName, MoodNumber} from '../../utils/constants.js';
+import {createMoodRecord} from  '../../utils/api.js';
 
 
 Page({
     data: {
         time: '',
+        thisY: '',
+        thisM: '',
+        thisD: '',
         scrollTop: 0,
         prevMsgs: [], // previous messages
         thisSenderMsg: '', // 即时输入
@@ -24,26 +28,34 @@ Page({
         MoodName: ["smile", "like", "happy", "upset", "sad", "angry", "ok"],
         chatPaddingBottom: "10vh",
         chatHeight: 0,
-        toolChoice: 0, // used for toolbox select 
+        doToolBoxChoice: 0, // used for toolbox select 
+        showWhether: false,
+        tools: [0, 0, 0, 0, 0],
+        toolIntro: ["未解锁","疏解", "感恩", "时间", "心情", "闲聊"],
+        toolKeys: ['relief', 'gratitude', 'time', 'mood', 'robot'],
         robot: 0,
+        moodChIdx: -1,
     },
     onLoad: function () {
         //     // chat Animation
-        // this.chatAni = swan.createAnimation({
-        
-        // })
         getApp().whetherWeb();
         swan.showLoading({
             title: '努力加载中',
             mask: true
         });
+
+        let dictD = util.dictDate(new Date());
         var time = util.chatTime(new Date());
         this.setData({
             time: time,
             endAll: 0,
+            thisY: dictD.year,
+            thisM: dictD.month,
+            thisD: dictD.day,
         }, () => {
             this.initial();
         });
+        this.getToolBoxList();
     },
     onReady: function() {
     },
@@ -73,7 +85,74 @@ Page({
             url: '/pages/myCalender/myCalender'
         });
     },
+    getToolBoxList: function() {
+        let that = this;
+        let tempT = [];
+        swan.request({
+            url: getApp().getUrl('/toolbox/'),
+            method: 'GET',
+            success: res => {
+                if (res.statusCode != 200) {
+                    swan.showModal({
+                        title: '请求失败',
+                        content: '工具箱加载失败',
+                        duration: 1400
+                    })  
+                }
+                else {
+                    let idx = 1;
+                    for (var key in res.data.status) {
+                        let tempS = res.data.status[key] === true ? idx : 0;
+                        tempT.push(tempS);
+                        idx = idx + 1;
+                        if (idx === 6) {
+                            that.setData({
+                                tools: tempT,
+                            }, ()=>{
+                                // console.log(this.data.tools)
+                            })
+                        }
+                    }
 
+                }
+            }
+
+        })
+    },
+    unlockTools: function(choiceIndex) {
+        let tempTool = this.data.tools;
+        tempTool[choiceIndex] = choiceIndex + 1;
+        this.setData({
+            doToolBoxChoice: 0,
+            tools: tempTool,
+        })
+        // console.log("unlock", choiceIndex);
+        swan.request({
+            url: getApp().getUrl('/toolbox/unlock/'),
+            method: 'POST',
+            header: {
+                // POST 携带
+                'X-CSRFToken': cookies.get('csrftoken')
+            },
+            data: {item: this.data.toolKeys[choiceIndex]},
+            success: res => {
+                if (res.statusCode != 200) {
+                    swan.showModal({
+                        title: '请求失败',
+                        content: '工具箱更新失败',
+                        duration: 1400
+                    })  
+                }
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '请求失败',
+                    content: '请检查网络连接',
+                    duration: 1400
+                })  
+            }
+        })
+    },
     scrollToBottomTemp(callback){
         if(typeof callback != 'function') callback = function(){};
         let bottomHeight = 0;
@@ -92,7 +171,6 @@ Page({
         }
 
         this.setData({ chatHeight: info.windowHeight - bottomHeight }, () => {
-            // console.log("chatHeight", this.data.chatHeight);
 
             const selectorQuery = swan.createSelectorQuery();
             selectorQuery.selectAll('.chat-row').boundingClientRect();
@@ -100,27 +178,17 @@ Page({
                 const prevHeight = this.data.scrollTop;
                 if (res[0][res[0].length-1].bottom < prevHeight) {
                     // 若高度检测未生效
-                    // console.log("invalid", prevHeight);
                     this.setData({ scrollTop: prevHeight + 5000 }, ()=> {
-                        // console.log("1 I will call!")
                         callback();
                     });
                 } else {
                     // 若高度检测生效，则使用系统高度
-                    // console.log("valid", res[0][res[0].length-1].bottom)
                     this.setData({ scrollTop: res[0][res[0].length-1].bottom }, ()=>{
-                        // console.log("2 I will call!")
 
                         callback();
                     });
                 }
             });
-            // if (match == 1) {
-            //     this.matchingQuestion(this.data.thisSenderMsg );
-            // }
-            // else if (match == 0) {
-            //     this.notMatchingQuestion();
-            // }
         });
 
     },
@@ -129,7 +197,8 @@ Page({
     SenderMsg:function(e){
         // console.log('sned', e.detail.value);
         this.setData({
-            thisSenderMsg:e.detail.value
+            thisSenderMsg:e.detail.value,
+            showWhether: false,
         });
     },
     // RAW input: SEND data and GET NEW
@@ -166,18 +235,15 @@ Page({
                 },
                 data: {query: this.data.thisSenderMsg},
                 success: res => {
-                    // console.log("set nickname", this.data.thisSenderMsg);
                     if (res.statusCode != 200) {
                         swan.showModal({
                             title: '请求失败',
                             content: '聊天机器人未上线',
                             duration: 1400
                         })
-                        // return;
                     }
                     if (res.data.message.content.length != 0) {
                         this.allQuestionUpdate(res);
-                        // return;
                     }
                 }
             })
@@ -281,15 +347,19 @@ Page({
     // CHOICE: send choice
     selectChoice(e) {
         // update user's reply and u's reply
-        console.log('select choice: ',this.data.endAll, this.data.toolChoice, this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch, e.currentTarget.dataset.choiceIndex);
+
         let choiceIndex = e.currentTarget.dataset.choiceIndex;
+        if (this.data.doToolBoxChoice === 1) {
+            this.unlockTools(choiceIndex);
+        }
         let tempMsgs = this.data.displayMsgs;
         tempMsgs.push ({
             type:'0',
             msg: this.data.uChRely[choiceIndex],
         });
         this.setData({
-            displayMsgs: tempMsgs
+            displayMsgs: tempMsgs,
+            showWhether: false,
         }, ()=> {
             this.scrollToBottomTemp(this.updateChoice(choiceIndex));
         })
@@ -297,14 +367,13 @@ Page({
     updateChoice: function(choiceIndex) {
         let tempMsgs = this.data.displayMsgs;
         if (this.data.endAll == 1) {
-            console.log("navi")
             swan.navigateBack();
             return;
             
         }
 
         if (this.data.justEnter == "0" &&  this.data.taskFinish == false) {
-            console.log('POST SC:', choiceIndex);
+            // console.log('POST SC:', choiceIndex);
             swan.request({
                 url: getApp().getUrl('/message/reply/'),
                 method: 'POST',
@@ -314,9 +383,9 @@ Page({
                 },
                 data: {content: choiceIndex},
                 success: res => {
-                    console.log('selectChoice: ', res);
+                    // console.log('selectChoice: ', res);
                     if (res.data.message.content.length != "") {
-                        console.log("update")
+                        // console.log("update")
                         this.allQuestionUpdate(res);
                         return
                     }
@@ -345,17 +414,9 @@ Page({
                 }
             })
         }
-        // else if (this.data.toolChoice == 1) {
-        //     console.log("tool");
-        //     this.scrollToBottomTemp(this.notMatchingQuestion());
-        //     // this.notMatchingQuestion();
-        //     this.setData({
-        //         toolChoice: 0
-        //     })
-        // }
         else if (this.data.taskFinish == true) {
 
-            console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch);
+            // console.log("select+taskFinish", this.data.justEnter, this.data.taskFinish, this.data.whetherDetermineMatch);
 
             if (choiceIndex == '0') {
                 tempMsgs.push({
@@ -374,9 +435,6 @@ Page({
                 })
             }
             else if(choiceIndex == '1') {
-                this.setData({
-                    toolChoice: 0,
-                })
                 this.scrollToBottomTemp(this.notMatchingQuestion());
                 // this.notMatchingQuestion();
             }
@@ -399,7 +457,7 @@ Page({
             }
         }
         else if (this.data.whetherDetermineMatch === '0') {
-            console.log("1whether");
+            // console.log("1whether");
                 this.getInitialUpdateData(choiceIndex);
                 return
         }
@@ -453,7 +511,7 @@ Page({
         let tempDis = this.data.displayMsgs;
 
         if (this.data.doChoice === '1' &&  this.data.taskFinish == false && chIndex == 0) {
-            // 非初次进入+上次话题未结束+想继续聊
+            // 非初次进入+上次话题未结束+想接着聊
             // get last question
             this.getLastQuestion();
 
@@ -474,9 +532,6 @@ Page({
             }
             else {
                 // not matching
-                this.setData({
-                    toolChoice: 0,
-                })
                 this.scrollToBottomTemp(this.notMatchingQuestion());
                 // this.notMatchingQuestion();
             }
@@ -504,7 +559,6 @@ Page({
                 doChoice: '1',
                 whetherDetermineMatch: '1',
                 taskFinish: true,
-                toolChoice: 0,
             },() => {
                 this.scrollToBottomTemp(this.notMatchingQuestion());
             });
@@ -520,7 +574,6 @@ Page({
             doChoice: '1',
             whetherDetermineMatch: '1',
             taskFinish: true,
-            toolChoice: 1,
         },() => {
             this.scrollToBottomTemp(this.notMatchingQuestion());
         })
@@ -660,6 +713,7 @@ Page({
                 this.setData({
                     taskFinish: false,
                     justEnter: '0',
+                    doToolBoxChoice: 1,
                 })
             },
             fail: err => {
@@ -709,6 +763,7 @@ Page({
                         content: '请重新进入'
                     })
                 }
+                
                 let tempDis = this.data.displayMsgs;
                 tempDis.push({
                     type: '1',
@@ -716,7 +771,12 @@ Page({
                 })
                 let tempCh = [];
                 let tempChRe = [];
-                if (res.data.process_type == '2') {    // 心情日记
+                if (res.data.process_type == '4') { // robot 
+                    this.setData({
+                        robot: 1,
+                    })
+                }
+                else if (res.data.process_type == '2') {    // 心情日记
                     this.setData({
                         displayMsgs: tempDis,
                         uChoices: tempCh,
@@ -736,7 +796,7 @@ Page({
                 }
                 this.setData({
                     displayMsgs: tempDis,
-                    uChoices: tempChRe,
+                    uChoices: tempCh,
                     uChRely: tempChRe,
                     taskFinish: false,
                     doChoice: res.data.reply_type,
@@ -897,5 +957,217 @@ Page({
             }
         });
     },
+    clickTool(e) { // show/hide toolbox 
+        let that = this;
+        let tempShow = this.data.showWhether == true ? false : true;
+        console.log(tempShow);
+        this.setData({
+            showWhether: tempShow,
+        }, ()=> {
+            if (that.data.tools.every(item => {item === 0}) ) {
+                // console.log("ak")
+                that.showToast({
+                    title: '尚未解锁任何工具，快去和小U聊天吧！',
+                    icon: 'none',
+                })
+            }
+        })
+        this.data.tools.forEach(ele => {
+            if (ele != 0) return;
+        }, ()=> {
+            that.showToast({
+                title: '尚未解锁任何工具，快去和小U聊天吧！',
+                icon: 'none',
+            })
+        })
+        if (that.data.tools.every(item => {item === 0}) ) {
+            console.log("ak")
+            that.showToast({
+                title: '尚未解锁任何工具，快去和小U聊天吧！',
+                icon: 'none',
+            })
+        }
+
+    },
+    
+     // record mood in chat 
+    moodChoice(e) {
+        this.setData({
+            moodChIdx: e.currentTarget.dataset.choiceIndex
+        })
+        
+    },
+     // update 心情日志
+    moodRecord(e) {
+        let that = this;
+        let choiceIndex = this.data.moodChIdx;
+        if (choiceIndex === -1) {
+            swan.showToast({
+                title: '请选择心情！',
+                icon: 'none',
+                duration: 1000
+            })
+            return;
+        }
+        if(this.data.thisSenderMsg == ''){
+            swan.showToast({
+                title: '记录不能为空',
+                icon: 'none',
+                duration: 1000
+            })
+            return ;
+        }
+        let thisMoodMsg = this.data.thisSenderMsg == '' ? MoodNumber[choiceIndex] : this.data.thisSenderMsg;
+        let tempMsgs = this.data.displayMsgs;
+        tempMsgs.push ({
+            type:'',
+            msg: thisMoodMsg,
+        }); // for user msg
+        this.setData({
+            displayMsgs: tempMsgs,
+        }, ()=> {
+            this.scrollToBottomTemp();
+        });
+        swan.request({
+            url: getApp().getUrl('/message/reply/'),
+            method: 'POST',
+            header: {
+                // POST 携带
+                'X-CSRFToken': cookies.get('csrftoken')
+            },
+            data: {content: choiceIndex},
+            success: res => {
+                if (res.data.message.content.length != "") {
+                    let tempDis = that.data.displayMsgs;
+                    tempDis.push({
+                        type: "1",
+                        msg: res.data.message.content
+                    });
+                    let tempCh = [];
+                    let tempChRe = []; 
+                    if (res.data.question.reply_type == 1) {
+                        res.data.question.choices.forEach(element => {
+                            tempCh.push(element.title),
+                            tempChRe.push(element.reply_content)
+                        })
+                    }
+                    this.setData({
+                        displayMsgs: tempDis,
+                        uChoices: tempCh,
+                        uChRely: tempChRe,
+                        doChoice: res.data.question.reply_type,
+                        justEnter: '0',
+                        moodChIdx: -1
+                    },() => {
+                        this.scrollToBottomTemp();
+                        let moodData = {year: this.data.thisY,  
+                                        month: this.data.thisM, 
+                                        day: this.data.thisD, 
+                                        type: choiceIndex, 
+                                        description: thisMoodMsg}
+                        swan.request({
+                                url: getApp().getUrl('/mood/'),
+                                method: 'POST',
+                                data: moodData,
+                                
+                                header: {
+                                    // POST 携带
+                                    'X-CSRFToken': cookies.get('csrftoken')
+                                },
+                                success: res =>{
+                                    // console.log("suc")
+                                }
+                        })
+                    })
+
+                }
+                else {
+                    swan.showModal({
+                        title: '记录失败',
+                        content: '请检查网络连接'
+                    })
+                }
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        })
+
+    },
+     // toolbox select 
+    toolChoice(e) {
+        let choiceIndex = e.currentTarget.dataset.toolIndex;
+        // console.log(choiceIndex)
+        if (this.data.tools[choiceIndex] === 0) {
+            swan.showToast({
+                title: '快去和小U聊天解锁吧！',
+                icon: 'none'
+            })
+            this.setData({
+                showWhether: false,
+            })
+            return;
+        }
+
+        let that = this;
+        swan.request({
+            url: getApp().getUrl('/message/bye/'),
+            method: 'POST',
+            header: {
+                // POST 携带
+                'X-CSRFToken': cookies.get('csrftoken')
+            },
+            success: res => {
+                // console.log("bye");
+                if (res.statusCode == 200) {
+                    swan.request({ // not matching question
+                        url: getApp().getUrl('/message/get_question/'),
+                        method: 'POST',
+                        header: {
+                            // POST 携带
+                            'X-CSRFToken': cookies.get('csrftoken')
+                        },
+                        success: res => {
+                            let tempMsgs = that.data.displayMsgs;
+                            tempMsgs.push ({
+                                type:'0',
+                                msg: that.data.toolIntro[choiceIndex + 1],
+                            });
+                            that.setData({
+                                displayMsgs: tempMsgs,
+                                justEnter: '0',
+                                taskFinish: false,
+                            }, ()=> {
+                                that.setData({
+                                    showWhether: false,
+                                }, ()=>{
+                                    that.scrollToBottomTemp(that.updateChoice(choiceIndex));
+                                })
+                                // that.updateChoice(choiceIndex)
+                                // that.scrollToBottomTemp(that.updateChoice(choiceIndex));
+                            })
+                        },
+                        fail: err => {
+                            swan.showModal({
+                                title: '网络异常',
+                                content: '请检查网络连接'
+                            });
+                        }
+                    })
+                }
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '网络异常',
+                    content: '请检查网络连接'
+                });
+            }
+        });        
+    },
+
+    
 
 });

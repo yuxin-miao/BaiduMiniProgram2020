@@ -6,10 +6,9 @@
         <image
         class="back-arrow"
         mode="widthFix"
-        style="width: 120rpx"
         src="../../images/arrow.svg"
-         bindtap="returnNav"
-     />
+        bindtap="returnNav"
+        />
      </view>
 
 <view class="drawer_box">

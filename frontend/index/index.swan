@@ -1,34 +1,34 @@
  <view class="wrap" bind:tap="nextAni">
     <view s-if="{{anmi === 1}}">
-        <animation-view 
-            class="controls" 
-            path="/anims/1.json" 
+        <animation-view
+            class="controls"
+            path="/anims/1.json"
             loop="false"
-            autoplay="true" 
+            autoplay="true"
             action="play"
-            hidden="false" 
+            hidden="false"
             bindended="playArrow">
         </animation-view>
     </view>
     <view s-elif="{{anmi === 2}}" >
-        <animation-view 
-            class="controls" 
-            path="/anims/2.json" 
+        <animation-view
+            class="controls"
+            path="/anims/2.json"
             loop="false"
-            autoplay="true" 
+            autoplay="true"
             action="play"
-            hidden="false" 
+            hidden="false"
             bindended="playArrow2">
         </animation-view>
     </view>
     <view s-elif="{{anmi === 3}}">
-        <animation-view 
-            class="controls" 
-            path="/anims/3.json" 
+        <animation-view
+            class="controls"
+            path="/anims/3.json"
             loop="false"
-            autoplay="true" 
+            autoplay="true"
             action="play"
-            hidden="false" 
+            hidden="false"
             bindended="playArrow3">
         </animation-view>
     </view>

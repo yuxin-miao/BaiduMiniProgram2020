@@ -1,37 +1,28 @@
 Page({
     data: {
         isWeb: 0,
+        showPrivacy: 0,
+        loginChat: 0,
+        loginRecord: 0,
+        showIntro: 0,
+        transBubble: '',
+        showAd: 0,
+        // privacyContent: 
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
-
         swan.getSystemInfo({
+            
             success: res => {
                 if (res.platform == 'web') {
                     this.setData({
                         isWeb: 1
                     })
-
-                    swan.showModal({
-                        title:'Web功能受限',
-                        content: '请至百度app体验完整功能，是否查看产品简介',
-                        showCancel: true,
-                        confirmText: '是',
-                        confirmColor: '#55C595',
-                        cancelText: '否',
-                        cancelColor: '#c2c2c2',
-                        success: function (res) {
-                            if (res.confirm) {
-                                swan.navigateTo({
-                                    url: '/pages/intro/intro'
-                                })
-                            }
-                            else if (res.cancel) {
-                            }
-                        },
-                        fail: function (res) {}
+                }
+                else {
+                    this.setData({
+                        isWeb: 0,
                     })
-            
                 }
             },
             fail: err => {
@@ -75,40 +66,19 @@ Page({
     },
     goMoodRecord(e) {
         if (this.data.isWeb == 1) {
-            swan.showModal({
-                title: '提示',
-                content: '请至百度app体验该功能'
-            })
-            return
+            var that = this;
+            this.imageIntro(that);
+            return;
         }
-        if (getApp().isAuthenticated()) {
-            // swan.navigateTo ({
-            //     url: '/pages/mysetting/mysetting'
-            // })
-            swan.navigateTo ({
-                url: '/pages/myCalender/myCalender'
-            })
-        } else {
-            swan.authorize({
-                scope: 'scope.userInfo',
-                success: res => {
-                    getApp().login(this.toMood);
-                },
-                fail: err => {
-                    swan.showToast({
-                        title: '授权失败',
-                        icon: 'none'
-                    })
-                }
-            })
-        }
+        swan.navigateTo ({
+            url: '/pages/myCalender/myCalender'
+        })
     },
-    startChat(e) {
+    startChat() {
+        console.log("transition finish")
         if (this.data.isWeb == 1) {
-            swan.showModal({
-                title: '提示',
-                content: '请至百度app体验该功能'
-            })
+            var that = this;
+            this.imageIntro(that);
             return
         }
         if (getApp().isAuthenticated()) {
@@ -116,19 +86,12 @@ Page({
                 url: '/pages/Uchat/Uchat'
             })
         } else {
-            swan.authorize({
-                scope: 'scope.userInfo',
-                success: res => {
-                    getApp().login(this.toChat);
-                },
-                fail: err => {
-                    swan.showToast({
-                        title: '授权失败',
-                        icon: 'none'
-                    })
-                }
+            this.setData({
+                showPrivacy: 1,
+                loginChat: 1,
             })
         }
+
     },
     goIntro(e) {
         swan.navigateTo ({
@@ -159,5 +122,144 @@ Page({
     
             }
         });
-    }
+    },
+    showPri(e) {
+        this.setData({
+            showPrivacy: 1,
+        })
+    },
+    hideModal(e) {
+        this.setData({
+            showPrivacy: 0,
+        })
+        if (this.data.loginChat == 1) {
+            swan.authorize({
+                scope: 'scope.userInfo',
+                success: res => {
+                    getApp().login(this.toChat);
+                },
+                fail: err => {
+                    swan.showToast({
+                        title: '授权失败',
+                        icon: 'none'
+                    })
+                }
+            })
+        }
+        else if (this.data.loginRecord == 1) {
+            swan.authorize({
+                scope: 'scope.userInfo',
+                success: res => {
+                    getApp().login(this.toMood);
+                },
+                fail: err => {
+                    swan.showToast({
+                        title: '授权失败',
+                        icon: 'none'
+                    })
+                }
+            })
+        }
+    },
+    imageIntro(that) {
+
+        swan.showModal({
+            title:'Web功能受限',
+            content: '请至百度app体验完整功能，是否查看产品简介',
+            showCancel: true,
+            confirmText: '是',
+            confirmColor: '#55C595',
+            cancelText: '否',
+            cancelColor: '#c2c2c2',
+            success: function (res) {
+                if (res.confirm) {
+
+                    swan.showLoading();
+
+                    swan.downloadFile({
+                        url: 'https://cdn.xiaou.tech/introtop.svg',
+                        success: res => {
+                            if (res.statusCode === 200) {
+                                that.setData({
+                                    backTopUrl: res.tempFilePath,
+                                })
+                                console.log("finish", res.tempFilePath)
+
+                            }    
+                            else {
+                                swan.showToast({
+                                    title: '页面加载失败',
+                                    icon: 'none',
+                                    duration: 2000,
+                                });
+                            }
+                        },
+                        fail: err => {
+                            swan.showModal ({
+                                title: '页面加载失败',
+                                content: '请检查网络连接'
+                            });
+                        },
+                        complete: cmp => {
+                            swan.hideLoading();
+                            that.setData({
+                                showIntro: 1,
+                            }) 
+                        }
+                    });
+                }
+                else if (res.cancel) {
+                }
+            },
+            fail: function (res) {}
+        })
+        return;
+    },
+    hideIntro(e) {
+        this.setData({
+            showIntro: 0,
+        })
+
+    },
+
+    /* From Modernizr */
+    whichTransitionEvent(){
+        var t;
+        var el = document.createElement('fakeelement');
+        var transitions = {
+        'transition':'transitionend',
+        'OTransition':'oTransitionEnd',
+        'MozTransition':'transitionend',
+        'WebkitTransition':'webkitTransitionEnd'
+        }
+    
+        for(t in transitions){
+            if( el.style[t] !== undefined ){
+                return transitions[t];
+            }
+        }
+    },
+    transitionEnd: function () {
+    console.log('渐变已结束')
+  },
+  triggerTransition(e) {
+    this.setData({
+        transBubble: 'bubble'
+    })
+  },
+  goGratitude(e) {
+      swan.navigateTo({
+        url: '/pages/myGratitude/myGratitude'
+      })
+  },
+  showAdEvent(e) {
+      this.setData ({
+          showAd: 1,
+      })
+  },
+  hideAdEvent(e) {
+    this.setData ({
+        showAd: 0,
+    })
+  },
 });
