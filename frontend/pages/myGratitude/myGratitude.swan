@@ -46,14 +46,10 @@
       </view>
 
     </view>
-    <view class="card-box">
+    <!-- <view class="card-box">
 
         <view class="card">
-                    <!-- <view class="part">
-                <view class="top-text">
-                    <view class="big-text"> DEC </view>
-                    <view class="small-text"> <text> {{days[index*2]}} </text> <view class="dots">...</view> <text>{{days[index*2+1] }}</text> </view>
-                </view> -->
+
             <image
             class="card-image"
             mode="widthFix"
@@ -64,9 +60,8 @@
             binderror="imageError"
             bindload="imageLoad" />
         </view>
-        <!-- </view> -->
 
-    </view>
+    </view> -->
 </scroll-view>
 </view>
 

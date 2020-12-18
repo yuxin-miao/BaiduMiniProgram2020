@@ -46,21 +46,15 @@ Page({
             title: '努力加载中',
             mask: true
         });
-        let timestamp = Date.parse(new Date());
-        let date = new Date(timestamp);
-        //获取年份  
-        let Y =date.getFullYear();
-        //获取月份  
-        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
-        //获取当日日期 
-        let D = date.getDate();
+
+        let dictD = util.dictDate(new Date());
         var time = util.chatTime(new Date());
         this.setData({
             time: time,
             endAll: 0,
-            thisY: Y,
-            thisM: M,
-            thisD: D,
+            thisY: dictD.year,
+            thisM: dictD.month,
+            thisD: dictD.day,
         }, () => {
             this.initial();
         });
@@ -112,7 +106,6 @@ Page({
         }
 
         this.setData({ chatHeight: info.windowHeight - bottomHeight }, () => {
-            // console.log("chatHeight", this.data.chatHeight);
 
             const selectorQuery = swan.createSelectorQuery();
             selectorQuery.selectAll('.chat-row').boundingClientRect();
@@ -120,27 +113,17 @@ Page({
                 const prevHeight = this.data.scrollTop;
                 if (res[0][res[0].length-1].bottom < prevHeight) {
                     // 若高度检测未生效
-                    // console.log("invalid", prevHeight);
                     this.setData({ scrollTop: prevHeight + 5000 }, ()=> {
-                        // console.log("1 I will call!")
                         callback();
                     });
                 } else {
                     // 若高度检测生效，则使用系统高度
-                    // console.log("valid", res[0][res[0].length-1].bottom)
                     this.setData({ scrollTop: res[0][res[0].length-1].bottom }, ()=>{
-                        // console.log("2 I will call!")
 
                         callback();
                     });
                 }
             });
-            // if (match == 1) {
-            //     this.matchingQuestion(this.data.thisSenderMsg );
-            // }
-            // else if (match == 0) {
-            //     this.notMatchingQuestion();
-            // }
         });
 
     },
@@ -186,18 +169,15 @@ Page({
                 },
                 data: {query: this.data.thisSenderMsg},
                 success: res => {
-                    // console.log("set nickname", this.data.thisSenderMsg);
                     if (res.statusCode != 200) {
                         swan.showModal({
                             title: '请求失败',
                             content: '聊天机器人未上线',
                             duration: 1400
                         })
-                        // return;
                     }
                     if (res.data.message.content.length != 0) {
                         this.allQuestionUpdate(res);
-                        // return;
                     }
                 }
             })

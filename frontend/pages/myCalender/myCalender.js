@@ -1,5 +1,6 @@
 var moods = require('../../utils/constants.js');
 import {MoodName, MoodType, MoodNumber} from '../../utils/constants.js';
+var util = require('../../utils/util.js');
 
 import 'weapp-cookie';
 import cookies from 'weapp-cookie';
@@ -145,19 +146,11 @@ Page({
 
         // 监听页面加载的生命周期函数
 
-        let timestamp = Date.parse(new Date());
-        let date = new Date(timestamp);
-        //获取年份  
-        let Y =date.getFullYear();
-        //获取月份  
-        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
-        //获取当日日期 
-        let D = date.getDate();
-
+        let dictD = util.dictDate(new Date());
         // call function to create grids
-        let mday = this.methods.gridThisMonth(Y, M);
-        let emptys = this.methods.emptyGrid(Y, M);
-        let tempAll = this.methods.getAllGrids(Y, M);
+        let mday = this.methods.gridThisMonth(dictD.year, dictD.month);
+        let emptys = this.methods.emptyGrid(dictD.year, dictD.month);
+        let tempAll = this.methods.getAllGrids(dictD.year, dictD.month);
         // set the default selectDay as today
         this.setData({
             firstLength: emptys.before.length,
@@ -167,23 +160,23 @@ Page({
             thisMonthDays: mday,
             emptyGridsBefore: emptys.before,
             emptyGridsAfter: emptys.after,
-            thisDay: D,
-            constMonth: M,
-            constDay: D,
-            thisMonth: M,
-            thisYear: Y,
-            selectDay: D,
+            thisDay: dictD.day,
+            constMonth: dictD.month,
+            constDay: dictD.day,
+            thisMonth: dictD.month,
+            thisYear: dictD.year,
+            selectDay: dictD.day,
         }, () => {
             console.log("allthisgrids", this.data.allGrids);
             if (getApp().isAuthenticated()) {
                 this.moodTypeGratitude({
-                    year: Y,
-                    month: M
+                    year: dictD.year,
+                    month: dictD.month
                 });
                 this.dayMoodDescrip({
-                    year: Y,
-                    month: M,
-                    day: D,
+                    year: dictD.year,
+                    month: dictD.month,
+                    day: dictD.day,
                 });
             } else {
                 swan.showToast({
@@ -248,8 +241,6 @@ Page({
 
     toSelectDay(e) {
         // used when select a new day in this month
-        // jump to the day if
-        // console.log('Clicked', e.currentTarget.dataset.day);
 
         if (e.currentTarget.dataset.day > this.data.constDay & this.data.thisMonth == this.data.constMonth) {
             // cant jump to futrue
