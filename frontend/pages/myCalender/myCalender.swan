@@ -134,7 +134,7 @@
     class="back-people"
     mode="widthFix"
     style="width: 700rpx"
-    src='https://cdn.xiaou.tech/peo{{thisMonthDays[selectDay - 1].col}}.png' 
+    src='{{peoTempUrl[thisMonthDays[selectDay - 1].col]}}' 
 
     bind:tap="modifyMood"/>
 

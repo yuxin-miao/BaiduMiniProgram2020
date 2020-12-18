@@ -31,7 +31,7 @@ Page({
         thisDescription: '', // string of description for thisDay
 
         returnMoodRecord: [],
-
+        peoTempUrl: [],
         // used for poster share
         haveRecord: 0,
         whetherShare: 0,
@@ -59,6 +59,7 @@ Page({
     onLoad: function () {
         // 监听页面加载的生命周期函数
         getApp().whetherWeb();
+        this.downloadPeoImg();
     },
     methods : {
         // number of days in this month
@@ -167,7 +168,7 @@ Page({
             thisYear: dictD.year,
             selectDay: dictD.day,
         }, () => {
-            console.log("allthisgrids", this.data.allGrids);
+            // console.log("allthisgrids", this.data.allGrids);
             if (getApp().isAuthenticated()) {
                 this.moodTypeGratitude({
                     year: dictD.year,
@@ -191,10 +192,6 @@ Page({
         // 监听页面初次渲染完成的生命周期函数
 
     },
-    onLoad: function() {
-        // 监听页面显示的生命周期函数
-        this.getSystemInfo()
-    },
     onHide: function() {
         // 监听页面隐藏的生命周期函数
     },
@@ -210,7 +207,42 @@ Page({
     onShareAppMessage: function () {
         // 用户点击右上角转发
     },
+     // get all people image as tempFile 
+    downloadPeoImg: function () {
+        let tempImgSrcs = [];
+        let that = this;
+        for (let i = 0; i < 8; i++) {
+            let tempUrl = 'https://cdn.xiaou.tech/peo'+ i + '.png'
+            swan.downloadFile({
+                url: tempUrl,
+                success: function (res) {        
+                    if (res.statusCode === 200) {
+                        tempImgSrcs.push(res.tempFilePath); //下载成功返回结果
+                        if (i === 7) {
+                            that.setData({
+                                peoTempUrl: tempImgSrcs,
+                            })
+                        }
+                    } 
+                    else {
+                        swan.showToast({
+                            title: '加载失败！',
+                            icon: 'none',
+                            duration: 2000,
+                        });
+                    }
+                },
+                fail: err => {
+                    swan.showToast({
+                        title: '加载失败！',
+                        icon: '请检查网络连接',
+                        duration: 2000,
+                    });
+                }
+            });
+        }
 
+    },
     // navigation bar used
     returnNav(e) {
         swan.navigateBack();
@@ -253,8 +285,8 @@ Page({
         }
 
         this.setData({selectDay: e.currentTarget.dataset.day});
-        console.log('toCol',this.data.thisMonthDays[e.currentTarget.dataset.day-1].col);
-        console.log('toDay',e.currentTarget.dataset.day);
+        // console.log('toCol',this.data.thisMonthDays[e.currentTarget.dataset.day-1].col);
+        // console.log('toDay',e.currentTarget.dataset.day);
         // console.log()
         if (this.data.thisMonthDays[e.currentTarget.dataset.day - 1].mood == 0) {
             swan.navigateTo({
@@ -448,7 +480,7 @@ Page({
     },
         // function for poster share
     shareThis(e) {
-        console.log("to share")
+        // console.log("to share")
         if (this.data.thisMonthDays[this.data.selectDay - 1].mood == 0) {
             swan.showToast({
                 title: '未添加心情，无法分享',
@@ -596,7 +628,7 @@ Page({
         //         };
         //         imageObj.src = "avaterSrc"; 
         //    };
-            console.log("height:", rect.height);
+            // console.log("height:", rect.height);
             var height = rect.height;
             var right = rect.right;
             let topProp = 0.5;
@@ -659,7 +691,7 @@ Page({
                 var group = empty[0] + "..."//这里只显示放得开的行数，超出的用...表示
                 rowCut.splice(rowNum - 1, 1, group);
                 row = rowCut;
-                console.log(row)
+                // console.log(row)
             }
             // let diffRow = rowNum - row.length;
             // if (diffRow != 0) {
@@ -800,7 +832,7 @@ Page({
                                                     
                                                 }, () => {
 
-                                                    console.log("share fail");
+                                                    // console.log("share fail");
                                                     that.setData({
                                                         whetherShare: 0,
                                                         generateFinish: 0,
@@ -854,7 +886,7 @@ Page({
             tempW = tempW + 'rpx';
             tempL = tempL + 'rpx';
             tempT = tempT + 'rpx';
-            console.log(tempH , tempW, tempL, res.pixelRatio);
+            // console.log(tempH , tempW, tempL, res.pixelRatio);
 
             this.setData({
                 ctxHeight: tempcH,
@@ -886,7 +918,7 @@ Page({
             this.setData({
                 haveRecord: 0,
             })
-            console.log("no moode day");
+            // console.log("no moode day");
             return
         }
         else {
