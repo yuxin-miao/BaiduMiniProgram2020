@@ -44,8 +44,8 @@ body {
     padding-left: 40rpx;
     padding-bottom: 30rpx;
     align-self: center;
-    width: 100rpx;
-    height: 50rpx;
+    width: 55rpx;
+    /* height: 50rpx; */
     z-index: 999;
     /* width: 10%; */
 }

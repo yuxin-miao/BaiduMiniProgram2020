@@ -35,9 +35,9 @@
 
 
 
-.intro-arrow {
+.back-arrow {
     position: fixed;
-    margin: 100rpx 0 0 44rpx;
+    margin: 100rpx 0 0 0;
     align-self: start;
 }
 .empty {

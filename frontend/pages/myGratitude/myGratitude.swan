@@ -1,10 +1,10 @@
 <view class="wrap" bind:tap="test">
-    <image
-        class="intro-arrow"
-        mode="widthFix"
-        style="width: 20rpx"
-        src="../../images/arrow.svg"
-        bind:tap="returnNav"/>
+        <image
+            class="back-arrow"
+            mode="widthFix"
+            src="../../images/arrow.svg"
+            bindtap="returnNav"
+        />
     <!-- <scroll-view class="scroll-box" scroll-x="true" scroll-y="false" scroll-with-animation="true">
     <view class="card-box">
         <view class="card" s-for="item, index in allMonths"></view>

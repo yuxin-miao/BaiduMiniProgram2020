@@ -1,12 +1,12 @@
 <view class="chat-page">
     <view id="uchat-top">
         <view class="top-navigation">
-            <image
+        <image
             class="back-arrow"
             mode="widthFix"
-            style="width: 60rpx"
             src="../../images/arrow.svg"
-            bindtap="returnNav"/>
+            bindtap="returnNav"
+        />
             <view class="portrait" bind:tap="clickTool">
             <animation-view 
                 class="portrait-anim" 

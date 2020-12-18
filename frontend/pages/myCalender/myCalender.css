@@ -6,6 +6,10 @@
 }
 .top-navigation {
     background: transparent;
+    padding-top: 8vh;
+}
+.back-arrow {
+    padding-top: 10rpx;
 }
 .back-border {
     z-index: 1;
@@ -83,12 +87,12 @@
 
 .calender-week {
     z-index: 200;
-
+    /* height: 10vw; */
     display:flex;
     flex-direction: row;
     align-items: center;
-    padding: 10rpx 30rpx 10rpx 30rpx;
-    border-bottom: 1px solid rgba(181 181 181);
+    padding: .7vh 30rpx 10rpx 30rpx;
+    border-bottom: 1px solid rgba(247,247,247);
 
 }
 
@@ -98,7 +102,7 @@
     text-align: center;
     font-family: "Microsoft YaHei",sans-serif;
     width: calc(100% / 7);
-    line-height: 70rpx;
+    line-height: 3vh;
 }
 
 .calender-day {
@@ -222,7 +226,7 @@
 
 .oval {
     margin-left: 65rpx;
-    z-index: 599;
+    z-index: 499;
     width: 570rpx;
     height: 1.3rpx;
     background: rgba(207 244 209);

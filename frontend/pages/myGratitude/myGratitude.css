@@ -14,10 +14,10 @@
     background-attachment:fixed;
 }
 
-.intro-arrow {
+.back-arrow{
     position: fixed;
     top: 100rpx;
-    left: 44rpx;
+    left: 0rpx;
     z-index: 600;
 }
 

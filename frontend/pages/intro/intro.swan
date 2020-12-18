@@ -24,14 +24,12 @@
         </view>
     </view>
 </view> -->
-<image
-    class="intro-arrow"
-    mode="widthFix"
-    style="width: 20rpx"
-    src="../../images/arrow.svg"
-    bind:tap="returnNav"
-
-/>
+        <image
+            class="back-arrow"
+            mode="widthFix"
+            src="../../images/arrow.svg"
+            bindtap="returnNav"
+        />
 <view class='images-intro'>
 <image
     mode="widthFix"
