@@ -1,23 +1,23 @@
 <view class="chat-page">
     <view id="uchat-top">
         <view class="top-navigation">
-        <image
-            class="back-arrow"
-            mode="widthFix"
-            src="../../images/arrow.svg"
-            bindtap="returnNav"
-        />
-            <view class="portrait" bind:tap="clickTool">
-            <animation-view 
-                class="portrait-anim" 
-                path="/anims/mg2.json" 
-                loop="true"
-                autoplay="true" 
-                action="play"
-                hidden="false"
-                bind:tap="clickTool" >
-        </animation-view>
-                        </view>
+            <image
+                class="back-arrow"
+                mode="widthFix"
+                src="../../images/arrow.svg"
+                bindtap="returnNav"
+            />
+            <view class="portrait"  bind:tap="clickTool">
+                <animation-view 
+                    class="portrait-anim" 
+                    path="/anims/mg2.json" 
+                    loop="true"
+                    autoplay="true" 
+                    action="play"
+                    hidden="false"
+
+                    />
+            </view>
 
             <!-- <image
             class="portrait"
@@ -28,14 +28,16 @@
         </view>
     </view>
     <view class="tool-box-{{showWhether}}">
-            <view s-for="item, index in tools">
-            <image
-                mode="widthFix"
-                style="width: 80rpx"
-                class="each-tool-{{showWhether}}"
-                src="../../images/{{item}}.svg"
-                bind:tap="toolChoice" data-tool-index="{{index}}"/>
+            <view class="tool-img-text" s-for="item, index in tools">
+                <image
+                    mode="widthFix"
+                    style="width: 80rpx"
+                    class="each-tool-{{showWhether}}"
+                    src="../../images/{{item}}.svg"
+                    bind:tap="toolChoice" data-tool-index="{{index}}"/>
+                <view class="tool-text"> {{toolIntro[item]}} </view>
             </view>
+
     </view>
     <scroll-view
         scroll-y

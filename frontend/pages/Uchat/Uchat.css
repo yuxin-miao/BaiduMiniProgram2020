@@ -16,21 +16,30 @@
     background-color: #ffffff;
     z-index: 995;
 }
+/* .back-arrow {
+    z-index: 999;
+    width: 21vw;
+    padding-right: 14vw;
+     margin-right: 14vw; 
+} */
 
 .portrait {
     z-index: 999;
     align-self: center;
-    margin-left: 28vw;
+    padding-left: 14vw;
+    margin-left: 14vw;
     /* margin-bottom: 5rpx; */
     margin-top: 1vh;
     height: 13vh;
-    width: 13vh;
+    width: 27vh;
+    background: transparent;
     /* border: 1px solid rgba(128 186 161 );
     border-radius: 50%; */
 }
 .portrait-anim {
     height: 13vh;
     width: 13vh;
+    z-index: 900;
 }
 
 /* 聊天文字 */
@@ -250,7 +259,7 @@
     flex-direction: row;
     justify-content: space-around;
     background: linear-gradient(rgb(255, 255, 255), rgba(242, 255, 242, 0.82));
-    padding: 20rpx 20rpx 20rpx 20rpx;
+    padding: 20rpx 20rpx 0 20rpx;
     max-height: 150rpx;
     animation: 0.4s cubic-bezier(0.215, 0.610, 0.355, 1.000) dropDown;
     /* transition: max-height 0.25s ease-out; */
@@ -265,7 +274,7 @@
     flex-direction: row;
     justify-content: space-around;
     background: linear-gradient(rgb(255, 255, 255), rgba(242, 255, 242, 0.82));
-    padding: 20rpx 20rpx 20rpx 20rpx;
+    padding: 20rpx 20rpx 0 20rpx;
     max-height: 150rpx;
     animation: 0.2s linear slideUp;
     /* transition: max-height 0.25s ease-out; */
@@ -278,6 +287,16 @@
     animation: 0.4s linear slideUp;
 
 }
+.tool-img-text {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    
+}
+.tool-text {
+    font-size: .1rem;
+    color:rgb(80,189,155)
+}
 @keyframes dropDown {
     0% {
         height: 0;
@@ -287,13 +306,13 @@
         height: 9vh;
         top: 12vh;
     }
-  }
+}
 
-  @keyframes slideUp {
+@keyframes slideUp {
     0% {
         top: 12vh;
     }
     100% {
         top: 4vh;
     }
-  }
+}

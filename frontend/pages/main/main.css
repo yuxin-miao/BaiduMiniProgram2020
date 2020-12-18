@@ -151,20 +151,56 @@
     animation: 0.2s ease slidein;
 }
 .bottom-text {
-    position: fixed;
-    margin-left: 340rpx;
+    /* position: fixed; */
+    /* margin-left: 340rpx; */
+    padding-top: 10%;
+    height: 100%;
     bottom: 2.3vh;
     font-size: .10rem;
     color: rgba(181,181,181);
 }
+.left {
+    text-align: right;
+    width: 48%;
+    /* padding-left: 280rpx; */
+}
+.middle-bottom {
+    text-align: center;
+    width: 4%;
+}
+.right {
+    text-align: left;
+    width: 48%;
+}
 .tap-bottom {
+    display: flex;
+    flex-direction: row;
     height: 30%;
 }
+.ad-policy {
+    position: fixed;
+    z-index: 998;
+    margin-left: 10vw;
+    bottom: 15vh;
+    height: 60vh;
+    width: 80vw;
+    /* padding: 0 50rpx; */
+    display: flex;
+    flex-direction: column;
+    border-radius: 40rpx;
+    background-color: #ffffff;
+    animation: 0.2s ease slidein;
+}
+.card-image {
+    padding: 5% 0;
+    z-index: 999;
+}
+
 .privacy-policy {
     position: fixed;
     z-index: 998;
     margin-left: 10vw;
-    bottom: 5vh;
+    bottom: 4vh;
     height: 80vh;
     width: 80vw;
     padding: 0 50rpx;
@@ -181,6 +217,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: small;
     
 }
 .sure-buttom {
@@ -188,11 +225,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: small;
+    padding-bottom: 1vh;
 }
 .privacy-content {
     margin: 10rpx 0;
     font-size: small;
-    color: rgba(112,112,112 );
+    color: rgba(112,112,112);
 
 }
 

@@ -6,6 +6,7 @@ Page({
         loginRecord: 0,
         showIntro: 0,
         transBubble: '',
+        showAd: 0,
         // privacyContent: 
     },
     onLoad: function () {
@@ -122,7 +123,7 @@ Page({
             }
         });
     },
-    showModal(e) {
+    showPri(e) {
         this.setData({
             showPrivacy: 1,
         })
@@ -250,6 +251,15 @@ Page({
       swan.navigateTo({
         url: '/pages/myGratitude/myGratitude'
       })
-  }
-    
+  },
+  showAdEvent(e) {
+      this.setData ({
+          showAd: 1,
+      })
+  },
+  hideAdEvent(e) {
+    this.setData ({
+        showAd: 0,
+    })
+  },
 });
