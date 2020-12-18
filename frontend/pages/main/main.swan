@@ -49,7 +49,7 @@
                     style="width: 60rpx;"
                     bind:tap="goIntro"/>
             <view class="prodc-text" bind:tap="goGratitude">
-            感恩日志
+            感恩日记
             </view>
         </view>
         <view class="intro-text">

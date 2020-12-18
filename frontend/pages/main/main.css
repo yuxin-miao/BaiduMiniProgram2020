@@ -5,7 +5,7 @@
     margin-left: 323rpx;
     font-size: .2rem;
     font-family: PingFangSC-Medium, sans-serif;
-    color: rgba(128 186 161);
+    color: rgba(128,186,161);
 }
 
 .top {
@@ -38,7 +38,7 @@
     font-size: .16rem;
     font-family: PingFangSC-Regular, sans-serif;
 
-    color: rgba(181 181 181);
+    color: rgba(181,181,181);
 }
 .portrait {
     /* margin-top: 80rpx; */
@@ -86,7 +86,7 @@
     align-self: center;
     font-size: .18rem;
     font-family: PingFangSC-Medium, sans-serif;
-    color: rgba(181 181 181);
+    color: rgba(181,181,181);
 }
 .bottom {
     width: 100%;
@@ -155,7 +155,7 @@
     margin-left: 340rpx;
     bottom: 2.3vh;
     font-size: .10rem;
-    color: rgba(181 181 181 );
+    color: rgba(181,181,181);
 }
 .tap-bottom {
     flex-grow: 2;
@@ -192,7 +192,7 @@
 .privacy-content {
     margin: 10rpx 0;
     font-size: small;
-    color: rgba(112 112 112 );
+    color: rgba(112,112,112 );
 
 }
 

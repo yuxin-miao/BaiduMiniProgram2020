@@ -4,7 +4,7 @@
     font-size: .16rem;
     display: flex;
     flex-direction: column;
-    background-color: rgba(245 251 245);
+    background-color: rgba(245,251,245);
     /* justify-content: space-between; */
 }
 /* top bar */
@@ -13,7 +13,7 @@
     top: 0;
     width: 100%;
     height: 12vh;
-    background-color: #ffff;
+    background-color: #ffffff;
     z-index: 995;
 }
 
@@ -40,13 +40,13 @@
     /* padding-bottom: 10vh; */
     width: 100%;
     font-size: 30rpx;
-    background-color: rgba(245 251 245);
+    background-color: rgba(245,251,245);
     /* height: calc(88% - 170rpx); */
 }
 /* display time */
 .chat-time {
     font-size: 30rpx;
-    color: rgba(181 181 181);
+    color: rgba(181,181,181);
     padding: 10rpx 0 10rpx 0;
     text-align: center;
 }
@@ -66,7 +66,7 @@
     padding: 15rpx 25rpx;
     border-radius: 20rpx;
     border-bottom-right-radius: 0;
-    background-color: rgba(207 244 209);
+    background-color: rgba(207,244,209);
     text-align: left;
     transform-origin: 100% 0% !important;
     -webkit-transform-origin: 100% 0% !important;
@@ -104,7 +104,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    background-color: rgba(245 251 245);
+    background-color: rgba(245,251,245);
 }
 .chat-icon {
     align-self: center;
@@ -127,7 +127,7 @@
     align-items: center;
     height: 80rpx;
     padding-top: 5rpx;
-    border: 1px solid rgba(207 244 209);
+    border: 1px solid rgba(207,244,209);
     border-radius: 3px;
     background-color: #ffffff;
 
@@ -149,7 +149,7 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    background-color: rgba(245 251 245);
+    background-color: rgba(245,251,245);
 }
 .all-choices {
     width: 750rpx;
@@ -165,7 +165,7 @@
     flex-grow: 2;
     margin: 0 20rpx 20rpx 0;
     padding: 10rpx 30rpx;
-    border: 1px solid rgba(207 244 209);
+    border: 1px solid rgba(207,244,209);
     border-radius: 6px;
     background-color: #ffffff;
     text-align: center;
@@ -176,14 +176,14 @@
     padding: 10rpx 30rpx 10 30rpx;
     font-size: .2rem;
     font-family: PingFangSC-Medium, sans-serif;
-    color: rgba(128 186 161);
+    color: rgba(128,186,161);
 }
 .record-buttom {
     bottom: 0;
     width: 100%;
     display: flex;
     flex-direction: column;
-    background-color: rgba(245 251 245);
+    background-color: rgba(245,251,245);
 }
 .record-input {
     width: 90%;
@@ -192,7 +192,7 @@
     height: 80rpx;
     margin: 10rpx 32.5rpx 45rpx 32.5rpx;
 
-    border: 1px solid rgba(207 244 209);
+    border: 1px solid rgba(207,244,209);
     border-radius: 3px;
     background-color: #ffffff;
 }

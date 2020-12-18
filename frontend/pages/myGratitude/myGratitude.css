@@ -228,7 +228,7 @@
     top: 50%;
     transform: translate(-50%, -50%);
     border-radius: 5px;
-    background-image: linear-gradient(to top, #ffffff 0%, rgba(245 251 245) 100%);
+    background-image: linear-gradient(to top, #ffffff 0%, rgba(245,251,245) 100%);
     overflow: hidden;
   }
   
@@ -242,7 +242,7 @@
     margin-left: -500px;
     margin-top: -500px;
     border-radius: 35%;
-    background: rgba(245 251 245);
+    background: rgba(245,251,245);
     animation: wave 15s infinite linear;
 }
   
