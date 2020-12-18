@@ -131,11 +131,14 @@ Page({
                 let returnMood = []; //used to return
                 if (res.statusCode != 200) {
                     // this.clearAndReenter(this.moodTypeGratitude(selectMonth));
-
-                    swan.showModal({
-                        title: '请求失败',
-                        content: '请点击右上角选择重启'
-                    });
+                    swan.showToast({
+                        title: '你还没有登录哦',
+                        icon: 'none',
+                    })
+                    // swan.showModal({
+                    //     title: '请求失败',
+                    //     content: '请点击右上角选择重启'
+                    // });
                     return;
                 }
                 console.log(res)

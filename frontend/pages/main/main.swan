@@ -6,7 +6,7 @@
     </view>
 
     </view>
-    <view class="top">
+    <view class="top" bind:tap="goAni">
             <animation-view
             s-if="{{showPrivacy !== 1}}"
             class="portrait"
@@ -29,7 +29,7 @@
 
     </view>
     <view class="middle">
-        <view class="intro-text">
+        <view class="intro-text high">
             <image
                     mode="widthFix"
                     class="square"
@@ -37,8 +37,8 @@
                     style="width: 60rpx;"
                     bind:tap="goMoodRecord"/>
 
-            <view class="prodc-text" bind:tap="goMoodRecord">
-            心情日志
+            <view class="prodc-text high" bind:tap="goIntro">
+            产品介绍
             </view>
         </view>
         <view class="intro-text">
@@ -59,8 +59,9 @@
                     src="../../images/icon2.svg"
                     style="width: 60rpx;"
                     bind:tap="goIntro"/>
-            <view class="prodc-text" bind:tap="goIntro">
-            产品介绍
+            <view class="prodc-text" bind:tap="goMoodRecord">
+                        心情日志
+
             </view>
         </view>
     </view>

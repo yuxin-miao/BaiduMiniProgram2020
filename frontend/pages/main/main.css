@@ -59,10 +59,10 @@
     display: flex;
     flex-direction: column;
     align-content: flex-start;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     width: 100%;
-    height: 30%;
+    height: 32%;
     text-align: center;
 
 }
@@ -70,6 +70,7 @@
     z-index: 100;
     width: 100%;
     padding: 0 25% 0 32%;
+    margin-bottom: 4vw;
     display: flex;
     flex-direction: row;
 }
@@ -81,7 +82,7 @@
 }
 .prodc-text {
     padding-left: 20rpx;
-    padding-bottom: 30rpx;
+    /* padding-bottom: 30rpx; */
     align-self: center;
     font-size: .18rem;
     font-family: PingFangSC-Medium, sans-serif;
@@ -89,21 +90,23 @@
 }
 .bottom {
     width: 100%;
-    height: 30%;
+    height: 28%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     /* padding: 0 200rpx 0 200 rpx; */
     /* align-self: center; */
 }
-
+.high {
+    z-index: 500;
+}
 .circle-button {
     display: flex;
     align-items: center;
     justify-content: center;
     /* margin-top: 10%; */
     margin-left: 250rpx;
-    margin-bottom: 100rpx;
+    /* margin-bottom: 100rpx; */
     width: 250rpx;
     height: 250rpx;
     background-color: rgba(181,246,201);
