@@ -33,6 +33,7 @@ Page({
         tools: [0, 0, 0, 0, 0],
         toolIntro: ["未解锁","疏解", "感恩", "时间", "心情", "闲聊"],
         toolKeys: ['relief', 'gratitude', 'time', 'mood', 'robot'],
+        toolReturnKeys:['relief_unlocked','gratitude_unlocked','time_unlocked','mood_unlocked', 'robot_unlocked'] ,
         robot: 0,
         moodChIdx: -1,
     },
@@ -92,6 +93,7 @@ Page({
             url: getApp().getUrl('/toolbox/'),
             method: 'GET',
             success: res => {
+                console.log('get', res);
                 if (res.statusCode != 200) {
                     swan.showModal({
                         title: '请求失败',
@@ -102,14 +104,22 @@ Page({
                 else {
                     let idx = 1;
                     for (var key in res.data.status) {
-                        let tempS = res.data.status[key] === true ? idx : 0;
-                        tempT.push(tempS);
+                        if (!res.data.status.hasOwnProperty(key)) {
+                            continue;
+                        }
+                        console.log(res.data.status[key], key)
+                        let keyReIdx = this.data.toolReturnKeys.indexOf(key);
+                        
+                        let tempS = res.data.status[key] == true ? keyReIdx + 1 : 0;
+                        // console.log('idx', idx);
+                        // console.log('tempS', tempS);
+                        tempT[keyReIdx] = tempS;
                         idx = idx + 1;
                         if (idx === 6) {
                             that.setData({
                                 tools: tempT,
                             }, ()=>{
-                                // console.log(this.data.tools)
+                                console.log(this.data.tools)
                             })
                         }
                     }
@@ -126,7 +136,7 @@ Page({
             doToolBoxChoice: 0,
             tools: tempTool,
         })
-        // console.log("unlock", choiceIndex);
+        console.log("unlock", choiceIndex);
         swan.request({
             url: getApp().getUrl('/toolbox/unlock/'),
             method: 'POST',
@@ -136,6 +146,7 @@ Page({
             },
             data: {item: this.data.toolKeys[choiceIndex]},
             success: res => {
+                console.log("un res", res);
                 if (res.statusCode != 200) {
                     swan.showModal({
                         title: '请求失败',
@@ -1144,7 +1155,7 @@ Page({
                                 that.setData({
                                     showWhether: false,
                                 }, ()=>{
-                                    that.scrollToBottomTemp(that.updateChoice(choiceIndex));
+                                    that.updateChoice(choiceIndex);
                                 })
                                 // that.updateChoice(choiceIndex)
                                 // that.scrollToBottomTemp(that.updateChoice(choiceIndex));
