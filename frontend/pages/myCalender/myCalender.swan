@@ -56,9 +56,10 @@
                 <block s-else>
                         <block s-if="{{item.col != 7}}">
                             <!-- {{index}} -->
+                            <!-- class="mood-image {{item.date==selectDay ? 'select' : '' }}" -->
 
                             <image
-                            class="mood-image {{item.date==selectDay ? 'select' : '' }}"
+                            class="mood-image"
                             mode="widthFix"
                             style="width: 45%"
                             src="../../images/mood{{item.col}}.svg"
@@ -74,47 +75,6 @@
                             </view>
                         </block>
                 </block>
-                <!-- <view class="lighter" s-for="item, index in emptyGridsBefore"> -->
-                    <!-- <view class="jigsaw1">
-                    	<view class="t"></view>
-                        <view class="r"></view>
-                        <view class="b"></view>
-                        <view class="l"></view> -->
-                        <!-- <view class="text">{{index}} </view> -->
-                    <!-- </view> -->
-                <!-- </view> -->
-                <!-- <view class="{{item.date==selectDay ? 'select-no-mood' : '' }}" s-for="item, index in thisMonthDays"> -->
-                    <!-- <block s-if="{{item.mood != 0}}"> -->
-                        <!-- <image
-                        class="mood-image {{item.date==selectDay ? 'select' : '' }}"
-                        mode="widthFix"
-                        style="width: 55%"
-                        src="../../images/mood_{{item.mood}}.svg"
-                        data-day = "{{item.date}}"
-                        bind:tap="toSelectDay"
-                        /> -->
-                        <!-- <view> {{item.date}} </view> -->
-                        <!-- <view class="mood-date with-image">{{item.date}}</view> -->
-                    <!-- </block> -->
-                    <!-- <block s-else> -->
-                        
-                        <!-- <view data-day = "{{item.date}}" bind:tap="toSelectDay">  -->
-                        
-                        <!-- {{item.date}} -->
-            <!--                         
-                            <view class="jigsaw1">
-                                <view class="t"></view>
-                                <view class="r"></view>
-                                <view class="b"></view>
-                                <view class="l"></view>
-                        <view class="text">{{item}} </view>
-                            </view> -->
-                        <!-- </view> -->
-                    <!-- </block> -->
-                <!-- </view> -->
-                <!-- <view class="lighter" s-for="item, index in emptyGridsAfter">{{item}}</view> -->
-
-            <!-- </view> -->
                 </view>
         </view>
         </view>
@@ -175,7 +135,7 @@
     class="back-people"
     mode="widthFix"
     style="width: 700rpx"
-    src='{{peopleUrl}}' 
+    src='https://cdn.xiaou.tech/peo{{thisMonthDays[selectDay - 1].col}}.png' 
 
     bind:tap="modifyMood"/>
 

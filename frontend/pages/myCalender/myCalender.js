@@ -24,7 +24,6 @@ Page({
         emptyGridsAfter: [],
         allGrids: [],
         weekText: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-        peopleUrl: 'https://cdn.xiaou.tech/peo7.png' ,
         // GET data
         // moodTypeList: {}, // item {day: , type: } in array
         gratitudeRecord: [], // item {day: , description: } in array
@@ -902,14 +901,11 @@ Page({
         else {
             let num = MoodNumber[this.data.thisMonthDays[day - 1].mood];
             let tempUrl = 'https://cdn.xiaou.tech/share' + num + '.png';
-            let tempPe = 'https://cdn.xiaou.tech/peo' + num + '.png';
             // console.log(tempUrl);
             this.setData({
                 'cardInfo.avater': tempUrl,
                 haveRecord: 1,
-                peopleUrl: tempPe,
             }, ()=> {
-                console.log(this.data.peopleUrl)
             })
         }
 
