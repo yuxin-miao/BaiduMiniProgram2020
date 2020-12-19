@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'mood',
     'chat',
     'user_config',
+    'feedback',
     'rest_framework',
 ]
 
