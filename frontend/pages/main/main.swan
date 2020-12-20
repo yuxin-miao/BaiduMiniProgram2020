@@ -114,7 +114,7 @@
         <view class="privacy-title">
             Ucho隐私政策
         </view>
-        <scroll-view scroll-y class="privacy-content" style="height: 70vh">
+        <scroll-view scroll-y class="privacy-content">
         <text>
 Ucho非常重视您的个人信息，并让您对个人信息拥有控制权，我们将采取相应的安全保护措施来保护你的个人信息。当您使用我们提供的服务前，您需要同意本政策中关于我们如何收集、使用、储存和分享您的相关信息的规定。如果您不同意本隐私政策中的任何内容，请立即停止使用或访问我们的产品和服务。\n
 

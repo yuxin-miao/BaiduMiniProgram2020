@@ -1,4 +1,5 @@
 .wrap {
+    
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -13,7 +14,16 @@
     background-position: center center;
     background-attachment:fixed;
 }
+.coverAll {
+    position: fixed;
+    z-index: 500;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: transparent;
 
+}
 .back-arrow{
     position: fixed;
     top: 100rpx;
@@ -24,11 +34,11 @@
 .scroll-box{
     white-space: nowrap;
     height: 105vh;
+    padding-top: 25vh;
 }
   
 .card-box{
     display: inline-block;
-    margin-top: 25vh;
 }
 .ad-card-box {
     display: inline-block;

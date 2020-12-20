@@ -1,65 +1,49 @@
 <view class="wrap">
-        <image
-            class="back-arrow"
-            mode="widthFix"
-            src="../../images/arrow.svg"
-            bindtap="returnNav"
-        />    
+<view class="coverAll">
+    <image
+        class="back-arrow"
+        mode="widthFix"
+        src="../../images/arrow.svg"
+        bindtap="returnNav"
+    />    
 
-    <scroll-view class="scroll-box" scroll-x scroll-with-animation
-        scroll-into-view="{= toView =}"
-        bindtouchstart="touchStart"
-        bindtouchend="touchEnd">
-    <view s-for="item, index in allMonths"  class="card-box" id="{{item.id}}">
-      <view class="card" bind:tap="openThisOne" data-cardIdx="{{index}}">
-            <view class="part">
-                <view class="top-text">
-                    <view class="big-text"> {{item.month}} </view>
-                    <view class="small-text"> <text> {{days[index*2]}} </text> <view class="dots">...</view> <text>{{days[index*2+1]}}</text> </view>
-                </view>
-                <image
-                    class="card-image"
-                    src='https://cdn.xiaou.tech/g{{index%gNum}}.png'
-                    lazy-load="true"
-                    binderror="imageError"
-                    bindload="imageLoad" />
-
-                <view class="bottom-part">
-                    <block s-if="{{today<days[index*2+1]}}">
-                        <text class="journal-text" style="white-space:pre-wrap">        {{'       记得这时候也要来和小U聊天哦！'}} </text>
-                    </block>
-                    <block s-else>
-                        <text class="journal-text" style="white-space:pre-wrap"> {{weekGratitude[index].length != 0 ? weekGratitude[index][0].description : '       没有记录哦，记得多和小U聊天～'}} </text>
-                    </block>
+    <scroll-view class="scroll-box" scroll-x scroll-with-animation bind:scroll="scrollChange"
+            scroll-left="{= scrollLeft =}">
+        <view s-for="item, index in allMonths"  class="card-box" id="{{item.id}}">
+            <view class="card" bind:tap="openThisOne" data-cardIdx="{{index}}">
+                <view class="part">
+                    <view class="top-text">
+                        <view class="big-text"> {{item.month}} </view>
+                        <view class="small-text"> <text> {{days[index*2]}} </text> <view class="dots">...</view> <text>{{days[index*2+1]}}</text> </view>
+                    </view>
                     <image
-                        class="journal-icon"
-                        src="../../images/journal.svg"
+                        class="card-image"
+                        src='https://cdn.xiaou.tech/g{{index%gNum}}.png'
                         lazy-load="true"
                         binderror="imageError"
                         bindload="imageLoad" />
+
+                    <view class="bottom-part">
+                        <block s-if="{{today<days[index*2+1]}}">
+                            <text class="journal-text" style="white-space:pre-wrap">        {{'       记得这时候也要来和小U聊天哦！'}} </text>
+                        </block>
+                        <block s-else>
+                            <text class="journal-text" style="white-space:pre-wrap"> {{weekGratitude[index].length != 0 ? weekGratitude[index][0].description : '       没有记录哦，记得多和小U聊天～'}} </text>
+                        </block>
+                        <image
+                            class="journal-icon"
+                            src="../../images/journal.svg"
+                            lazy-load="true"
+                            binderror="imageError"
+                            bindload="imageLoad" />
+                    </view>
                 </view>
+
             </view>
 
-      </view>
-
-    </view>
-    <!-- <view class="card-box">
-
-        <view class="card">
-
-            <image
-            class="card-image"
-            mode="widthFix"
-            style="width: 100%;"
-            src='https://cdn.xiaou.tech/adCardAll.png'
-            bind:longpress="openQR"
-            lazy-load="true"
-            binderror="imageError"
-            bindload="imageLoad" />
         </view>
-
-    </view> -->
-</scroll-view>
+    </scroll-view>
+</view>
 </view>
 
 <block s-if="{{openCard == 1}}">
@@ -93,9 +77,6 @@
                 </block>
             </view>
         </scroll-view>
-
     </view>
-
 </block>
-
 

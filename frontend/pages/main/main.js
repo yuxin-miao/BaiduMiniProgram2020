@@ -239,27 +239,27 @@ Page({
             }
         }
     },
-    transitionEnd: function () {
-    console.log('渐变已结束')
-  },
-  triggerTransition(e) {
-    this.setData({
-        transBubble: 'bubble'
-    })
-  },
-  goGratitude(e) {
-      swan.navigateTo({
+        transitionEnd: function () {
+        console.log('渐变已结束')
+    },
+    triggerTransition(e) {
+        this.setData({
+            transBubble: 'bubble'
+        })
+    },
+    goGratitude(e) {
+        swan.navigateTo({
         url: '/pages/myGratitude/myGratitude'
-      })
-  },
-  showAdEvent(e) {
-      this.setData ({
-          showAd: 1,
-      })
-  },
-  hideAdEvent(e) {
-    this.setData ({
-        showAd: 0,
-    })
-  },
+        })
+    },
+    showAdEvent(e) {
+        this.setData ({
+            showAd: 1,
+        })
+    },
+    hideAdEvent(e) {
+        this.setData ({
+            showAd: 0,
+        })
+    },
 });
