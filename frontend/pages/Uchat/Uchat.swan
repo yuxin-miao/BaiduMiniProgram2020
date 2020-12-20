@@ -1,12 +1,12 @@
-<view class="portrait"  bind:tap="clickTool">
+<view class="portrait" >
     <animation-view 
+        bind:tap="clickTool"
         class="portrait-anim" 
         path="/anims/mg2.json" 
         loop="true"
         autoplay="true" 
         action="play"
         hidden="false"
-
         />
 </view>
 
@@ -125,12 +125,12 @@
             <!-- <view class="choice-buttom" bind:tap="scrollToBottomTemp"> -->
 
                 <view class="all-choices-image">
-                    <view s-for="moodname, chIndex in MoodName">
+                    <view class="each-choice-mood" style="background-color:{{colors[chIndex]}}" s-for="moodname, chIndex in MoodName">
                     <image
                         mode="widthFix"
-                        style="width: 90rpx"
+                        style="width: 70%"
                         class="each-choice-image  {{chIndex == moodChIdx ? 'selectMood' : ''}}"
-                        src="../../images/mood_{{moodname}}.svg"
+                        src="../../images/mood{{chIndex}}.svg"
                         bind:tap="moodChoice" data-choice-index="{{chIndex}}"/>
                     </view>
                 </view>

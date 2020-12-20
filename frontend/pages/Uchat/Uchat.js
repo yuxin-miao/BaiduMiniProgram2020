@@ -1,12 +1,12 @@
 import 'weapp-cookie';
 import cookies from 'weapp-cookie';
 var util = require('../../utils/util.js');
-import {MoodName, MoodNumber} from '../../utils/constants.js';
-import {createMoodRecord} from  '../../utils/api.js';
+import {MoodName, MoodNumber, MoodColor} from '../../utils/constants.js';
 
 
 Page({
     data: {
+        colors: MoodColor,
         time: '',
         thisY: '',
         thisM: '',

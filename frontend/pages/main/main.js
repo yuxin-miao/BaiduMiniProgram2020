@@ -14,17 +14,17 @@ Page({
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
-        if (swan.getStorageSync('first_main') === 'no') {
+        // if (swan.getStorageSync('first_main') === 'no') {
 
 
-        }
-        else {
-            this.setData({
-                isFirstMain: 1,
-            })
+        // }
+        // else {
+        //     this.setData({
+        //         isFirstMain: 1,
+        //     })
 
-        }
-        getApp().setLocalStorage('first_main', 'no');
+        // }
+        // getApp().setLocalStorage('first_main', 'no');
         swan.getSystemInfo({
             
             success: res => {
