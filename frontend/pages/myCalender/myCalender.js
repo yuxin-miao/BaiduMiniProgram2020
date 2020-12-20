@@ -1,15 +1,14 @@
-var moods = require('../../utils/constants.js');
-import {MoodName, MoodType, MoodNumber} from '../../utils/constants.js';
+import {MoodName, MoodType, MoodNumber, MoodColor} from '../../utils/constants.js';
 var util = require('../../utils/util.js');
-
 import 'weapp-cookie';
 import cookies from 'weapp-cookie';
+import {letUserLogin} from  '../../utils/api.js';
 
 export const API = "https://xiaou.tech/api";
 
 Page({
     data: {
-        colors: ['rgba(255,229,122)', 'rgba(252,217,80)', 'rgba(255,182,95)', 'rgba(174,215,167)', 'rgba(146,189,239)', 'rgba(255,133,132)', 'rgba(213,213,213)', 'rgba(247,247,247)', 'rgba(181 181 181)'],
+        colors: MoodColor,
         backColors: ['#ffffff', 'rgba(247,247,247)'],
         constMonth: '',
         constDay: '',
@@ -184,6 +183,9 @@ Page({
                     title: '你还没有登录哦',
                     icon: 'none'
                 });
+                this.setData({
+                    notLogin: true,
+                })
             }
         });
 
@@ -248,6 +250,10 @@ Page({
         swan.navigateBack();
     },
     modifyMood(e) {
+        if (!getApp().isAuthenticated()) {
+            letUserLogin();
+            return;
+        }
         swan.showModal({
             title:'是否修改心情',
             content: '',
@@ -273,7 +279,10 @@ Page({
 
     toSelectDay(e) {
         // used when select a new day in this month
-
+        if (!getApp().isAuthenticated()) {
+            letUserLogin();
+            return;
+        }
         if (e.currentTarget.dataset.day > this.data.constDay & this.data.thisMonth == this.data.constMonth) {
             // cant jump to futrue
             swan.showToast({
@@ -305,6 +314,10 @@ Page({
     },
     // when change month
     changePrevMonth(e) {
+        if (!getApp().isAuthenticated()) {
+            letUserLogin();
+            return;
+        }
         this.setData({
             selectDay: this.data.thisDay,
             thisMonth: this.data.thisMonth == 1 ? 12 : this.data.thisMonth - 1,

@@ -1,6 +1,9 @@
 var util = require('../../utils/util.js');
+import {letUserLogin} from  '../../utils/api.js';
+
 let scrollOne = false;
 let newMonth = true;
+
 
 
 Page({
@@ -141,6 +144,8 @@ Page({
             toView: tempId,
             leftCardNum: tempLeftWhole,
         }, ()=>{
+            this.setScrollLeft();
+
             this.moodTypeGratitude({year: year, month: month});
         })
         
@@ -249,7 +254,6 @@ Page({
                     eachDayGratiture: tempEDays,
                     eDays: tD,
                 }, ()=> {
-                    this.setScrollLeft();
                 });
     
 
@@ -276,6 +280,9 @@ Page({
         })
     },
     openThisOne(e) {
+        if (!getApp().isAuthenticated()) {
+            letUserLogin();
+        }
         this.setData({
             openIdx: e.currentTarget.dataset.cardIdx,
             openCard: 1,
@@ -312,6 +319,10 @@ Page({
     },
 
     changeOneCard: function(changeX) {
+        if (!getApp().isAuthenticated()) {
+            letUserLogin(true);
+            return;
+        }
         console.log('change', changeX)
         scrollOne = true;
 
@@ -337,6 +348,7 @@ Page({
 
     },
     scrollChange(e) {
+
         let tempChX = e.detail.deltaX;
         // console.log(scrollOne, newMonth, tempChX);
         if (scrollOne===false && newMonth===true && Math.abs(tempChX) < this.data.windowWidth) {

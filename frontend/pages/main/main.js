@@ -7,10 +7,24 @@ Page({
         showIntro: 0,
         transBubble: '',
         showAd: 0,
+        isFirstMain: 0,
+        whichToTop: 1,
+
         // privacyContent: 
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
+        if (swan.getStorageSync('first_main') === 'no') {
+
+
+        }
+        else {
+            this.setData({
+                isFirstMain: 1,
+            })
+
+        }
+        getApp().setLocalStorage('first_main', 'no');
         swan.getSystemInfo({
             
             success: res => {
@@ -28,6 +42,22 @@ Page({
             fail: err => {
     
             }
+        });
+        
+        var that = this;
+        this.updateManager = swan.getUpdateManager();
+        this.updateManager.onUpdateReady(res => {
+            swan.showModal({
+                title: '更新提示',
+                content: '新版本已经准备好，是否重启小程序？',
+                confirmText: '重启',
+                success:res => {
+                    if (res.confirm) {
+                        // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+                        this.updateManager.applyUpdate();
+                    }
+                }
+            });
         });
     },
     onReady: function() {

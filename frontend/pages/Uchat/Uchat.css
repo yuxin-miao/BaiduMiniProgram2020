@@ -14,7 +14,7 @@
     width: 100%;
     height: 12vh;
     background-color: #ffffff;
-    z-index: 995;
+    z-index: 655;
 }
 /* .back-arrow {
     z-index: 999;
@@ -22,12 +22,32 @@
     padding-right: 14vw;
      margin-right: 14vw; 
 } */
-
+.mask {
+    z-index: 695;
+}
+.mask-text-top {
+    position: fixed;
+    z-index: 999;
+    top: 20vh;
+    left: 30vw;
+} 
+.arrow-text {
+    position: fixed;
+    z-index: 999;
+    top: 20vh;
+    width: 100vw;
+    text-align: center;
+    /* left: 20vw; */
+    font-size: .2rem;
+    line-height: 200%;
+    color:  rgba(247,247,247);
+}
 .portrait {
+    position: fixed;
     z-index: 999;
     align-self: center;
     padding-left: 14vw;
-    margin-left: 14vw;
+    margin-left: 21vw;
     /* margin-bottom: 5rpx; */
     margin-top: 1vh;
     height: 13vh;
@@ -39,7 +59,7 @@
 .portrait-anim {
     height: 13vh;
     width: 13vh;
-    z-index: 900;
+    z-index: 999;
 }
 
 /* 聊天文字 */

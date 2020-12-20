@@ -1,3 +1,9 @@
+<block s-if="{{isFirstMain == 1}}">
+    <view class="mask"/>
+    <block s-if="{{whichToTop == 1}}">
+    </block>
+
+</block>
 <view class="wrap">
     <view class="top-navigation">
 
@@ -12,7 +18,8 @@
             loop="true"
             autoplay="true"
             action="play"
-            hidden="false" />
+            hidden="false" 
+            style="z-index:{{whichToTop == 1 ? 999: inherit}}"/>
         <!-- <image
         mode="widthFix"
         class="portrait"

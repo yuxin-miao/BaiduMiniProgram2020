@@ -35,7 +35,14 @@
     color: #55C595;
     font-family: PingFangSC-Medium;
 }
-
+.each-mood {
+    width: 1.05rem;
+    height: 1.05rem;
+    margin: 10rpx 13rpx 10rpx 13rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 /* mood */
 .card-area:nth-child(2){
     width: 100%;
@@ -46,13 +53,11 @@
     justify-content: space-between;
 }
 
-.mood-item {
-    /* display: inline-block; */
-    width: 1.05rem;
-    height: 1.05rem;
-    margin: 10rpx 13rpx 10rpx 13rpx;
+/* .mood-item {
+    display: flex;
+    align-self: center;
     justify-content: center;
-}
+} */
 
 .mood-border {
     /* box-sizing: content-box; */

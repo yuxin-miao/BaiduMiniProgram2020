@@ -1,10 +1,11 @@
 import {createMoodRecord} from  '../../utils/api.js';
-import {MoodNumber} from '../../utils/constants.js';
+import {MoodNumber, MoodColor} from '../../utils/constants.js';
 
 const app = getApp();
 
 Page({
     data: {
+        colors: MoodColor,
         nickname: '',
         moodtype: [ "smile", "like",  "happy", "upset", "sad", "angry", "ok"],
         selectedMood: "",
