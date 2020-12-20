@@ -70,7 +70,7 @@
         </view>
     </view>
     <view class="bottom">
-        <view class="circle-button {{transBubble}}" bind:tap="triggerTransition" bindtransitionend="startChat">
+        <view class="circle-button {{transBubble}}" bind:touchstart="triggerTransition" bind:touchend="startChat">
             <view class="chat-text">开始聊天 </view>
         </view>
         <view class ='tap-bottom'>

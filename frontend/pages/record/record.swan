@@ -27,7 +27,7 @@
             <image
             class="mood-item {{mood == selectedMood ? 'mood-border' : ''}}",
             mode="widthFix"
-            style="width: 80%"
+            style="width: 70%"
             src="../../images/mood{{index}}.svg"
             data-mood="{{mood}}"
             bind:tap="selectMood"

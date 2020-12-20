@@ -36,7 +36,7 @@ Page({
         toolReturnKeys:['relief_unlocked','gratitude_unlocked','time_unlocked','mood_unlocked', 'robot_unlocked'] ,
         robot: 0,
         moodChIdx: -1,
-        isFirstChat: 1,
+        isFirstChat: 0,
     },
     onLoad: function () {
         //     // chat Animation

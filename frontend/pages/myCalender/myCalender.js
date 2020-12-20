@@ -214,7 +214,7 @@ Page({
         let tempImgSrcs = [];
         let that = this;
         for (let i = 0; i < 8; i++) {
-            let tempUrl = 'https://cdn.xiaou.tech/peo'+ i + '.png'
+            let tempUrl = 'https://cdn.xiaou.tech/cpp'+ i + '.png'
             swan.downloadFile({
                 url: tempUrl,
                 success: function (res) {        

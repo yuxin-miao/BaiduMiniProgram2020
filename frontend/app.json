@@ -10,8 +10,17 @@
         "pages/intro/intro",
         "pages/logo/logo",
         "pages/index/index",
-        "pages/myGratitude/myGratitude",
-        "pages/logo/logo"
+        "pages/myGratitude/myGratitude"
+    ],
+    "subPackages": [
+        {
+            "root": "packageInfo/pages",
+            "name": "packageInfo",
+            "pages": [
+                "feedback/feedback"
+            ],
+            "independent": true
+        }
     ],
     "window": {
         "navigationBarBackgroundColor": "#ffffff",

@@ -104,9 +104,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* margin-top: 10%; */
     margin-left: 250rpx;
-    /* margin-bottom: 100rpx; */
     width: 250rpx;
     height: 250rpx;
     background-color: rgba(181,246,201);
@@ -116,6 +114,7 @@
 }
 
 .chat-text {
+    z-index: 300;
     font-size: .25rem;
     color: rgba(80,189,155);
     font-family: PingFangSC-Medium, sans-serif;
@@ -247,17 +246,17 @@
     }
   }
 
-  @keyframes slidein {
+@keyframes slidein {
     from { transform: scaleY(0); }
     to   { transform: scaleY(1); }
-  }
+}
 
 
-  .bubble{  
+.bubble{  
     position: relative;
     overflow: hidden;
-  }
-  .bubble:after{
+}
+.bubble:after{
     content: "";
     background: #cff4d1;
     position: absolute; 
@@ -270,8 +269,8 @@
     border-radius: 50%;
     /* transform: scale(1); */
     transition: all 0.4s ease-in-out;
-  }
-  .bubble:active:after {
-    /* transform: scale(0); */
+}
+.bubble:active:after {
+/* transform: scale(0); */
     opacity: 1;
-  }
+}   
