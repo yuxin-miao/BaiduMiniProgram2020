@@ -43,7 +43,7 @@ class FeedbackDetailSerializer(serializers.ModelSerializer):
 
     def get_replies(self, obj):
         if isinstance(obj, Feedback):
-            msgs = FeedbackMessage.objects.filter(feedback=obj)
+            msgs = obj.feedbackmessage_set.all()
             return FeedbackMessageSerializer(instance=msgs, many=True).data
         return []
 
