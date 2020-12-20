@@ -1,69 +1,52 @@
+/* 全局整页面 */
 .wrap {
-    height: 100%;
-    display: flex;
-}
-.controls {
-    /* position: fixed; */
-    z-index: 1;
-    width: 50%;
-    height: 100%;
-    margin: 0 auto;
-    margin-top: 40%;
-
-    
+  font-family: PingFangSC-Regular, sans-serif;
+  max-height: 100vh;
+  /* height: 100vh; */
+  font-size: .16rem;
 }
 
-/* body {
-    min-height:100vh;
-    display:grid;
-    justify-content:center;
-    align-content:center;
-    perspective:1000px;
-    perspective-origin:center top;
-    transform-style:preserve-3d;
-    overflow:hidden;
-  } */
-  
-  @keyframes h {
-    from {transform:rotate(-50deg)}
-    to {transform:rotate(-40deg)}
-  }
-  a.circle {
-    width:50vw;
-    height:50vh;
-    transform-style:preserve-3d;
-    position:relative;
-    animation:h 1s both;
-    transform-origin:center bottom;
-  }
-    
-  a.circle:before, a.circle:after {
-      content:'';
-      display:block;
-      position:absolute;
-      width:100%;
-      height:100%;
-      border-radius:50%;
-      background:center/cover url(https://images.unsplash.com/photo-1486736065690-45e0655d038a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80);  
-    }
-    
-    a.circle:before {
-      animation:f 4s both;
-      @keyframes f {
-        from {clip-path:inset(0 80% 0 0);}
-        50%, to {clip-path:inset(0 0% 0 0);}
-      }  
-    }
-    @keyframes g {
-        from {clip-path:inset(0 0 0 20%);transform-origin:20% 0;}
-        50%, to {clip-path:inset(0 0 0 100%);transform-origin:100% 0;}
-      }
-    a.circle:after {
-      filter:brightness(0.2);
-      transform:rotateY(-180deg);
-      animation:g 4s both;
+/* 组件容器 */
+.container {
+  font-size: .16rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+}
+.top-navigation {
+  /* top: 0;
+  position: fixed; */
 
-    }
-    
+  display: flex;
+  padding-top:70rpx;
+  flex-direction: row;
+  width: 100%;
+  height: 160rpx;
+  background-color: #ffff;
+  z-index: 995;
+}
+.back-arrow {
+  position: fixed;
+  top: 0;
+  left: 5.3vw;
+  padding-top: 14.6vw;
+  /* padding-top: 55rpx;
+  padding-left: 40rpx;
+  padding-bottom: 30rpx;
+  align-self: center; */
+  width: 15rpx;
+  /* height: 50rpx; */
+  z-index: 999;
+  /* width: 10%; */
+}
 
-  
+.main-text {
+  position: fixed;
+  top: 0;
+  padding-top: 12.6vw;
+  margin-left: 300rpx;
+  font-size: 1.2rem;
+  font-family: PingFangSC-Medium, sans-serif;
+  color: rgba(128,186,161);
+}

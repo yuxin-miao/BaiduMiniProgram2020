@@ -1,11 +1,17 @@
-<animation-view 
-    class="controls" 
-    path="/anims/loading.json" 
-    loop="true"
-    autoplay="true" 
-    action="play"
-    hidden="false">
-</animation-view>
+<view class="wrap">
 
-<!-- <view class='a.circle'>
-</view> -->
+
+    <image
+        class="back-arrow"
+        mode="widthFix"
+        src="../../../images/arrow.svg"
+        bindtap="returnNav"
+    />
+    
+    <view class='main-text'> 意见反馈 </view>
+
+    <view class="middle-return">
+
+
+    </view>
+</view>

@@ -50,6 +50,12 @@ body {
     /* width: 10%; */
 }
 
+.main-text {
+    margin-left: 323rpx;
+    font-size: .2rem;
+    font-family: PingFangSC-Medium, sans-serif;
+    color: rgba(128,186,161);
+}
 
 /* mask */
 .mask {
