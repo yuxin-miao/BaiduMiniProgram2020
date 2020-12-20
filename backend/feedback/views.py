@@ -70,23 +70,6 @@ class FeedbackViewSet(
             return Response(data=FeedbackMessageSerializer(instance=obj).data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['POST'])
-    def official_reply(self, request, pk=None):
-        """
-        Create an official reply to a feedback. Requires higher permission.
-        """
-        serializer = self.get_serializer(data=request.data)
-
-        if serializer.is_valid():
-            content = serializer.validated_data['content']
-
-            obj = FeedbackMessage.objects.create(
-                feedback=self.get_object(),
-                content=content
-            )
-            return Response(data=FeedbackMessageSerializer(instance=obj).data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class FeedbackManageViewSet(
     viewsets.GenericViewSet,
