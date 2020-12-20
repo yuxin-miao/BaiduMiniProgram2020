@@ -1,0 +1,11 @@
+<animation-view 
+    class="controls" 
+    path="/anims/loading.json" 
+    loop="true"
+    autoplay="true" 
+    action="play"
+    hidden="false">
+</animation-view>
+
+<!-- <view class='a.circle'>
+</view> -->
