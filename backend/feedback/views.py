@@ -1,14 +1,15 @@
 from rest_framework import viewsets, response, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin, UpdateModelMixin
 
 from feedback.models import Feedback, FeedbackMessage
 from feedback.serializers import (
     FeedbackDetailSerializer,
     FeedbackMiniSerializer,
     FeedbackMessageSerializer,
-    FeedbackReplySerializer
+    FeedbackReplySerializer,
+    FeedbackManageMiniSerializer
 )
 
 from backend.permissions import IsAuthenticated, IsStaff
@@ -20,6 +21,7 @@ class FeedbackViewSet(
     RetrieveModelMixin,
     CreateModelMixin
 ):
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Feedback.objects.filter(user=self.request.user).order_by('-id')
@@ -31,14 +33,10 @@ class FeedbackViewSet(
             return FeedbackReplySerializer
         return FeedbackDetailSerializer
 
-    def get_permissions(self):
-        if self.action == 'official_reply':
-            permission_classes = [IsAuthenticated, IsStaff]
-        else:
-            permission_classes = [IsAuthenticated]
-        return [permission() for permission in permission_classes]
-
     def create(self, request, *args, **kwargs):
+        """
+        创建一个用户反馈工单
+        """
         try:
             serializer = self.get_serializer(data=request.data)
 
@@ -56,6 +54,9 @@ class FeedbackViewSet(
 
     @action(detail=True, methods=['POST'])
     def reply(self, request, pk=None):
+        """
+        用户回复一个Feedback工单
+        """
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid():
@@ -71,9 +72,45 @@ class FeedbackViewSet(
 
     @action(detail=True, methods=['POST'])
     def official_reply(self, request, pk=None):
-        '''
+        """
         Create an official reply to a feedback. Requires higher permission.
-        '''
+        """
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            content = serializer.validated_data['content']
+
+            obj = FeedbackMessage.objects.create(
+                feedback=self.get_object(),
+                content=content
+            )
+            return Response(data=FeedbackMessageSerializer(instance=obj).data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FeedbackManageViewSet(
+    viewsets.GenericViewSet,
+    ListModelMixin,
+    RetrieveModelMixin,
+    UpdateModelMixin
+):
+    permission_classes = [IsAuthenticated, IsStaff]
+
+    def get_queryset(self):
+        return Feedback.objects.order_by('-id')
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return FeedbackManageMiniSerializer
+        if self.action == 'official_reply':
+            return FeedbackReplySerializer
+        return FeedbackDetailSerializer
+
+    @action(detail=True, methods=['POST'])
+    def official_reply(self, request, pk=None):
+        """
+        Create an official reply to a feedback. Requires higher permission.
+        """
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid():

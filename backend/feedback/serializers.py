@@ -22,6 +22,17 @@ class FeedbackMiniSerializer(serializers.ModelSerializer):
     #         return obj.content[:21] + '...'
 
 
+class FeedbackManageMiniSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField(required=False)
+
+    class Meta:
+        model = Feedback
+        fields = ('id', 'user', 'created_at',)
+
+    def get_user(self, obj):
+        return obj.user.username
+
+
 class FeedbackDetailSerializer(serializers.ModelSerializer):
     replies = serializers.SerializerMethodField(required=False)
 

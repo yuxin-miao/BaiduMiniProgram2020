@@ -73,6 +73,25 @@ export default [
     },
   },
 
+  // Feedback
+  {
+    path: '/feedback',
+    name: 'feedback.index',
+    component: () => import('@/views/Feedback/Index.vue'),
+    meta: {
+      auth: true,
+    },
+  },
+
+  {
+    path: '/feedback/:id',
+    name: 'feedback.detail',
+    component: () => import('@/views/FeedbackDetail/Index.vue'),
+    meta: {
+      auth: true,
+    },
+  },
+
   {
     path: '/',
     redirect: '/home',

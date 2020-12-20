@@ -140,6 +140,18 @@ class BaseProxy {
   }
 
   /**
+   * Method used to partial update an item.
+   *
+   * @param {int}    id   The given identifier.
+   * @param {Object} item The given item.
+   *
+   * @returns {Promise} The result in a promise.
+   */
+  partialUpdate(id, item) {
+    return this.submit('patch', `/${this.endpoint}/${id}/`, item);
+  }
+
+  /**
    * Method used to destroy an item.
    *
    * @param {int} id The given identifier.

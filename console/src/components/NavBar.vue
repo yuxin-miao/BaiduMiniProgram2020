@@ -8,6 +8,10 @@
       <i class="el-icon-question"></i>
       <span slot="title">问题模板</span>
     </el-menu-item>
+    <el-menu-item index="feedback.index">
+      <i class="el-icon-info"></i>
+      <span slot="title">用户反馈</span>
+    </el-menu-item>
   </el-menu>
 </template>
 
