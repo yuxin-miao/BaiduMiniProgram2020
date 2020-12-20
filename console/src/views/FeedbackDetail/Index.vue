@@ -1,29 +1,63 @@
 <template>
-  <el-row type="flex" v-loading="loading">
+  <el-row
+    v-loading="loading"
+    type="flex"
+  >
     <el-col :span="24">
       <el-divider>反馈信息</el-divider>
       <h2>用户反馈 #{{ this.$route.params.id }}</h2>
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form
+        ref="form"
+        :model="form"
+        label-width="80px"
+      >
         <el-form-item label="系统信息">
-          <el-input :rows="3" type="textarea" v-model="form.system_info"></el-input>
+          <el-input
+            v-model="form.system_info"
+            :rows="3"
+            type="textarea"
+          />
         </el-form-item>
         <el-form-item label="反馈详情">
-          <el-input :rows="5" type="textarea" v-model="form.content"></el-input>
+          <el-input
+            v-model="form.content"
+            :rows="5"
+            type="textarea"
+          />
         </el-form-item>
       </el-form>
       <el-divider>后续回复</el-divider>
-      <el-row class="chat-row" v-for="(item, index) in form.replies" :key="index">
+      <el-row
+        v-for="(item, index) in form.replies"
+        :key="index"
+        class="chat-row"
+      >
         <div :class="[item.sender ? '' : 'chat-right', 'chat-box']">
           {{ item.content }} {{ item.sender }}
         </div>
       </el-row>
 
-      <el-form ref="replyForm" :model="replyForm" label-width="100px" style="margin-top: 30px">
+      <el-form
+        ref="replyForm"
+        :model="replyForm"
+        label-width="100px"
+        style="margin-top: 30px"
+      >
         <el-form-item label="回复内容">
-          <el-input :rows="4" type="textarea" v-model="replyForm.content"></el-input>
+          <el-input
+            v-model="replyForm.content"
+            :rows="4"
+            type="textarea"
+          />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" style="width: 100%" @click="addReply">回复</el-button>
+          <el-button
+            type="primary"
+            style="width: 100%"
+            @click="addReply"
+          >
+            回复
+          </el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -72,7 +106,6 @@ export default {
     },
     addReply() {
       this.loading = true;
-      console.log(this.replyForm);
       new FeedbackProxy().reply(this.$route.params.id, this.replyForm)
         .then(res => {
           this.$notify({

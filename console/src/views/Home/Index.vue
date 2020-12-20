@@ -2,7 +2,9 @@
   <el-row>
     <h1>XiaoU 问题管理系统</h1>
     <h2>用户名: {{ this.$store.state.auth.username }}</h2>
-    <el-button @click="onLogout">注销</el-button>
+    <el-button @click="onLogout">
+      注销
+    </el-button>
   </el-row>
 </template>
 

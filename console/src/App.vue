@@ -1,12 +1,22 @@
 <template>
-  <el-row id="app" type="flex">
+  <el-row
+    id="app"
+    type="flex"
+  >
     <el-col :span="4">
-      <NavBar class="nav-side"/>
+      <NavBar class="nav-side" />
     </el-col>
-    <el-col :span="20" class="main-content">
-      <el-row type="flex" justify="center" align="middle">
+    <el-col
+      :span="20"
+      class="main-content"
+    >
+      <el-row
+        type="flex"
+        justify="center"
+        align="middle"
+      >
         <el-col :span="20">
-          <router-view/>
+          <router-view />
         </el-col>
       </el-row>
     </el-col>

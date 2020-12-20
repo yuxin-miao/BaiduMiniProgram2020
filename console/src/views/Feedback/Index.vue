@@ -1,22 +1,20 @@
 <template>
   <el-row>
     <el-table
+      v-loading="loading"
       :data="tableData"
       style="width: 100%"
-      v-loading="loading"
     >
       <el-table-column
         label="ID"
         prop="id"
         width="100"
-      >
-      </el-table-column>
+      />
       <el-table-column
         label="用户"
         prop="user"
         show-overflow-tooltip
-      >
-      </el-table-column>
+      />
       <el-table-column
         label="创建时间"
         prop="created_at"
@@ -29,12 +27,15 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="操作">
+        label="操作"
+      >
         <template slot-scope="scope">
           <el-button
             size="mini"
             style="margin-right: 5px"
-            @click="handleEdit(scope.$index, scope.row)">查看
+            @click="handleEdit(scope.$index, scope.row)"
+          >
+            查看
           </el-button>
         </template>
       </el-table-column>

@@ -12,27 +12,28 @@ import { Message } from 'element-ui';
 import AccountProxy from '@/proxies/AccountProxy';
 
 export const find = ({ commit }) => {
-  new AccountProxy()
-    .login(payload)
-    .then((response) => {
-      commit(types.LOGIN, response);
-      store.dispatch('account/find');
-      Vue.router.push({
-        name: 'home.index',
-      });
-    })
-    .catch(() => {
-      console.log('Request failed...');
-      Message.error('获取用户信息失败');
-    });
-
-  const account = {
-    first_name: 'John',
-    last_name: 'Doe',
-    email: 'jonh@doe.com',
-  };
-
-  commit(types.FIND, Transformer.fetch(account));
+  // TODO: temporarily not using store to manage state
+  // new AccountProxy()
+  //   .login(payload)
+  //   .then((response) => {
+  //     commit(types.LOGIN, response);
+  //     store.dispatch('account/find');
+  //     Vue.router.push({
+  //       name: 'home.index',
+  //     });
+  //   })
+  //   .catch(() => {
+  //     console.log('Request failed...');
+  //     Message.error('获取用户信息失败');
+  //   });
+  //
+  // const account = {
+  //   first_name: 'John',
+  //   last_name: 'Doe',
+  //   email: 'jonh@doe.com',
+  // };
+  //
+  // commit(types.FIND, Transformer.fetch(account));
 };
 
 export default {
