@@ -80,6 +80,9 @@
   height: 20vh;
   width: 100%;
 }
+.feedback-input {
+  width: 100%;
+}
 /* .feedback-input{
   height: 25vh;
   width: 100%;
@@ -164,8 +167,12 @@ checkbox {
   padding-left: 2%;
   width: 96%;
 }
-.each-feedbak{
+.each-feedback{
+  background-color: white;
+  margin-top: 15rpx;
   padding: 3%;
+  color:  rgba(181,181,181);
+  font-size: .8rem;
   box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);
   -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);
 }
@@ -225,3 +232,34 @@ checkbox {
 /* transform: scale(0); */
   opacity: 1;
 }  
+
+/* mask */
+.mask {
+  width:100%;
+  height:100%;
+  position:fixed;
+  background-color:#000;
+  z-index: 500;
+  top:0;
+  left:0;
+  -moz-opacity: 0.5;
+  opacity: 0.50;
+  filter: alpha(opacity=50);
+}
+.one-feed{
+  position: fixed;
+  z-index: 800;
+  height: 70vh;
+  top: 15vh;
+  left: 10vw;
+  width: 80vw;
+  background-color: white;
+  border-radius: 20rpx;
+  animation: 0.2s ease slidein;
+
+}
+
+@keyframes slidein {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}

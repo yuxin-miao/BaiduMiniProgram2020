@@ -17,7 +17,8 @@
             "root": "packageInfo/pages",
             "name": "packageInfo",
             "pages": [
-                "feedback/feedback"
+                "feedback/feedback",
+                "activity/activity"
             ],
             "independent": true
         }

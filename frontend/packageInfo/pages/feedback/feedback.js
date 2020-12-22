@@ -7,9 +7,10 @@ Page({
         whetherShow: true,
         transBubble: '',
         userThisInput: '',
-        feedUrl: 'https://xiaou.tech/api/feedback/',
         modelInfo: '',
-        allFeed: [{user: '暂无反馈内容', reply: '暂无回复内容'}],
+        allFeed: [],
+        showOneFeed: 0,
+        oneFeed: {},
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
@@ -34,15 +35,35 @@ Page({
             url: 'https://xiaou.tech/api/feedback/',
             method: 'GET',
             success: res => {
-                console.log(res)
                 if (res.data !== []) {
+                    res.data.forEach(element => {
+                        this.requestEachID(element.id)
+                    })
+                }
+                else {
                     this.setData({
-                        // feedId: res.data.id,
-                        feedUrl: 'https://xiaou.tech/api/feedback/' +  res.data.id,
+                        tempAllFeed: [{content: '暂无反馈内容', replies: []}],
                     })
                 }
 
             }  
+        })
+    },
+    requestEachID: function(id) {
+        swan.request({
+            url: 'https://xiaou.tech/api/feedback/' + id + '/',
+            method: 'GET',
+            success: res => {
+                let tempAllFeed = this.data.allFeed;
+                tempAllFeed.push({
+                    content: res.data.content,
+                    replies: res.data.replies,
+                })
+                this.setData({
+                    allFeed: tempAllFeed,
+                })
+            }
+
         })
     },
     onShow: function() {
@@ -77,7 +98,8 @@ Page({
             })
             return;
         }
-        console.log(this.data.userThisInput)
+        let that = this;
+        // console.log(this.data.userThisInput)
         swan.request({
             url: 'https://xiaou.tech/api/feedback/',
             method: 'POST',                
@@ -90,31 +112,42 @@ Page({
                 content: this.data.userThisInput
             },
             success: res => {
-                this.setData({
-                    userThisInput: ''
+                if (res.statusCode != 201) {
+                    swan.showToast({
+                        title: '提交失败，请稍后再试',
+                        icon: 'none',
+                    })
+                }
+                let tempAllFeed = that.data.allFeed;
+                tempAllFeed.push({
+                    content: res.data.content,
+                    replies: res.data.replies,
                 })
-                console.log(res)
+                this.setData({
+                    userThisInput: '',
+                    allFeed: tempAllFeed,
+
+                })
+                // console.log(res)
+            },
+            fail: res => {
+                swan.showModal({
+                    title: '提交失败',
+                    content: '请检查您的网络连接'
+                })
             }
         })
     },
-    getFeedback: function()  {
-        swan.request({
-            url: 'https://xiaou.tech/api/feedback/',
-            method: 'POST',                
-            header: {
-                // POST 携带
-                'X-CSRFToken': cookies.get('csrftoken')
-            },
-            data: {
-                system_info: this.data.modelInfo,
-                content: this.data.userThisInput
-            },
-            success: res => {
-                this.setData({
-                    userThisInput: ''
-                })
-                console.log(res)
-            }
+    openThisFeed(e) {
+        let tmepFeedId = e.currentTarget.dataset.feedIndex;
+        this.setData({
+            showOneFeed: 1,
+            oneFeed: this.data.allFeed[tmepFeedId],
         })
     },
+    hideOneFeed(e) {
+        this.setData({
+            showOneFeed: 0,
+        })
+    }
 });
