@@ -22,10 +22,10 @@
 
 
     <view class="card-area">
-        <view class="each-mood" style="background-color:{{colors[index]}}" s-for="mood, index in moodtype">
+        <view class="each-mood  {{mood == selectedMood ? 'select-shadow' : ''}}" style="background-color:{{colors[index]}}" s-for="mood, index in moodtype">
             
             <image
-            class="mood-item {{mood == selectedMood ? 'mood-border' : ''}}",
+            class="mood-item",
             mode="widthFix"
             style="width: 70%"
             src="../../images/mood{{index}}.svg"
