@@ -1,17 +1,40 @@
 <view class="wrap">
 
-
-    <image
-        class="back-arrow"
-        mode="widthFix"
-        src="../../../images/arrow.svg"
-        bindtap="returnNav"
-    />
-    
-    <view class='main-text'> 意见反馈 </view>
-
-    <view class="middle-return">
-
-
+    <view class="top-navigation">
+        <image
+            class="back-arrow"
+            mode="widthFix"
+            src="../../../images/arrow.svg"
+            bindtap="returnNav"
+        />
+        
+        <view class='main-text'> 意见反馈 </view>
     </view>
+    <view class="middle-return">
+        <!-- <view class="top-descrip"> 反馈内容</view> -->
+        <view class="feedback-card">
+            <textarea class="feedback-input" placeholder="请输入反馈内容..." bindinput="userInput"/>
+            <checkbox value="whetherDis" disabled="false" checked="false" color="rgba(80,189,155)"> <text class="check-text">你是否愿意这条反馈公开 </text></checkbox>
+
+        </view>
+            <view class="feedback-submit {{transBubble}}" bind:touchstart="triggerTransition" bind:touchend="submitFeedback"> 提交</view>
+        <view class="bottom-record">
+            <scroll-view class="content-record">
+            <text class="displayContent"> 感谢您对Ucho的支持！开发团队会仔细阅读每一条反馈并及时给出回复。 </text>
+            <view class="all-feedback">
+                <view class="chat-row">
+                    <view class="m-right"> 机器人回复不够智能</view>
+                </view>
+                <view class="chat-row">
+
+                    <view class="u-left"> 感谢反馈 </view>
+
+                </view>
+            </view>
+
+            </scroll-view>
+
+        </view>
+    </view>
+
 </view>

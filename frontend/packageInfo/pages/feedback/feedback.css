@@ -1,9 +1,15 @@
 /* 全局整页面 */
 .wrap {
+  background-color: rgba(245,251,245);
   font-family: PingFangSC-Regular, sans-serif;
   max-height: 100vh;
+  height: 100vh;
   /* height: 100vh; */
   font-size: .16rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 /* 组件容器 */
@@ -23,7 +29,7 @@
   flex-direction: row;
   width: 100%;
   height: 160rpx;
-  background-color: #ffff;
+  background-color: transparent;
   z-index: 995;
 }
 .back-arrow {
@@ -48,5 +54,174 @@
   margin-left: 300rpx;
   font-size: 1.2rem;
   font-family: PingFangSC-Medium, sans-serif;
-  color: rgba(128,186,161);
+  color: rgba(80,189,155);
 }
+
+.middle-return{ 
+  flex-grow: 2;
+  width: 80%;
+  padding: 0 10%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+.top-descrip {
+  height: 4%;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+}
+.feedback-card {
+  background-color: white;
+  padding: 40rpx 40rpx 10rpx 40rpx;
+  margin-bottom: 3vh;
+  border-radius: 10px;
+  height: 20vh;
+  width: 100%;
+}
+/* .feedback-input{
+  height: 25vh;
+  width: 100%;
+} */
+.feedback-submit {
+  width: 180rpx;
+  /* padding: 0 20%; */
+  height: 80rpx;
+  background-color: rgba(181,246,201);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(80,189,155);
+  border-radius: 50rpx;
+  font-size: 1rem;
+  /* box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1); */
+}
+checkbox {
+  margin-top: 10rpx;
+  align-self: start;
+  /* width: 100%;
+  height: 5rpx; */
+
+}
+.check-text{
+  color:  rgba(181,181,181);
+  font-size: .8rem;
+
+}
+/*checkbox 整体大小  */
+/* checkbox{
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  border: 10rpx solid #48b0b9;
+  position: relative;
+} */
+/*checkbox 选项框大小  */
+ /* checkbox .swan-checkbox-input {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%; 
+  position: absolute;
+  top: 4rpx;
+  left: 4rpx;
+  border-color: transparent;
+} */
+/*checkbox选中后样式  */
+/* checkbox .swan-checkbox-input.wx-checkbox-input-checked {
+  background: #48b0b9;
+} */
+/*checkbox选中后图标样式  */
+/* checkbox .swan-checkbox-input.wx-checkbox-input-checked::before {
+  color: transparent; 
+} */
+
+.bottom-record {
+  /* flex-grow: 2; */
+  /* background-color: white; */
+  padding: 40rpx 40rpx;
+
+  margin: 3vh 0;
+  height: 30vh;
+  width: 100%;
+}
+.displayContent {
+  color: rgba(181,181,181);
+  font-size: .8rem;
+
+}
+.content-record{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.all-feedback {
+  align-self: center;
+  color: black;
+  font-size: 1rem;
+  padding-left: 2%;
+  width: 96%;
+}
+.each-feedbak{
+  padding: 3%;
+  box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);
+}
+
+.chat-row {
+  display: inline-block;
+  width: 100%;
+  padding: 10rpx 0;
+  white-space: pre-wrap;
+}
+.m-right {
+  position: relative;
+  float: right;
+  right: 30rpx;
+  max-width: 600rpx;
+  padding: 15rpx 25rpx;
+  border-radius: 20rpx;
+  border-bottom-right-radius: 0;
+  background-color: rgba(207,244,209);
+  text-align: left;
+  transform-origin: 100% 0% !important;
+  -webkit-transform-origin: 100% 0% !important;
+}
+
+.u-left {
+  position: relative;
+  float: left;
+  left: 30rpx;
+  max-width: 600rpx;
+  padding: 15rpx 25rpx;
+  border-radius: 20rpx;
+  border-bottom-left-radius: 0;
+  background-color: #ffffff;
+  text-align: left;
+  transform-origin: 0% 100% !important;
+  -webkit-transform-origin: 0% 100% !important;
+}
+.bubble{  
+  position: relative;
+  overflow: hidden;
+}
+.bubble:after{
+  content: "";
+  background: #cff4d1;
+  position: absolute; 
+  width: 750rpx;
+  height: 750rpx;
+  left: calc(50% - 375rpx);
+  top: calc(50% - 375rpx);
+  opacity: 0;
+  margin: auto;
+  border-radius: 50%;
+  /* transform: scale(1); */
+  transition: all 0.4s ease-in-out;
+}
+.bubble:active:after {
+/* transform: scale(0); */
+  opacity: 1;
+}  

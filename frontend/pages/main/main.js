@@ -105,7 +105,7 @@ Page({
         })
     },
     startChat() {
-        console.log("transition finish")
+        // console.log("transition finish")
         if (this.data.isWeb == 1) {
             var that = this;
             this.imageIntro(that);
@@ -270,7 +270,7 @@ Page({
         }
     },
         transitionEnd: function () {
-        console.log('渐变已结束')
+        // console.log('渐变已结束')
     },
     triggerTransition(e) {
         this.setData({
