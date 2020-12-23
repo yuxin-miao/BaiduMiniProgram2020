@@ -79,7 +79,7 @@
 }
 .left-top-block{
     width: 350rpx; 
-    height: 22vh;
+    height: 23.5vh;
     background-image: url(https://cdn.xiaou.tech/lefttopJ.png);
     background-size: 100% 100%;
     /* display: flex;
@@ -90,7 +90,7 @@
 }
 .left-bottom-block {
     width: 310rpx; 
-    height: 25vh;
+    height: 26vh;
     background-image: url(https://cdn.xiaou.tech/leftbottomJ.png);
     background-size: 100% 100%;
     /* display: flex;
@@ -397,3 +397,8 @@
 }
 
 
+.shake {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }

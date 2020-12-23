@@ -29,10 +29,13 @@
             <view class="left-top-block"> 
                 <view class="inner-block lt"> 
                     <image
+                        class="inner-block-image {{shakeThis == 0 ? 'shake' : ''}}"
                         mode="widthFix"
-                        src="../../images/lt-icon.png"
+=                       src="../../images/lt-icon.png"
                         class="inner-block-image"
-                        bind:tap="goMoodRecord"/>
+                        bind:animationend="goMoodRecord"
+                        bind:touchstart="beginShake"
+                        data-which-shake="0"/>
                 心情日志 
                 
                 </view> 
@@ -42,9 +45,11 @@
                 <view class="inner-block lb"> 
                     <image
                         mode="widthFix"
-                        class="inner-block-image"
+                        class="inner-block-image {{shakeThis == 1 ? 'shake' : ''}}"
                         src="../../images/lb-icon.png"
-                        bind:tap="goMoodRecord"/>
+                        bind:animationend="goGratitude"
+                        bind:touchstart="beginShake"
+                        data-which-shake="1"/>
                 
                 感恩日志 
                 
@@ -60,8 +65,10 @@
                     <image
                         mode="widthFix"
                         src="../../images/r-icon.png"
-                        class="inner-block-image"
-                        bind:tap="goMoodRecord"/>
+                        class="inner-block-image {{shakeThis == 2 ? 'shake' : ''}}"
+                        bind:touchstart="beginShake"
+                        bind:animationend="resetShake"
+                        data-which-shake="2"/>
                         个人中心
                 </view>
 
@@ -70,7 +77,7 @@
                     <text class="rb-text"> <text class="rb-border-b"> 支持 <text style="letter-spacing:1rpx">Ucho</text> </text></text>
                     <text class="rb-text"> <text class="rb-border">关于\n我们 </text> </text>
 
-                    <text class="rb-text"><text style="width:100%;border-left: 1px rgba(112, 112, 112, 1) dashed;"> 隐私\n政策 </text></text>
+                    <text class="rb-text" ><text style="width:100%;border-left: 1px rgba(112, 112, 112, 1) dashed;"  bind:tap="showPri"> 隐私\n政策 </text></text>
 
                 </view>
              </view> 

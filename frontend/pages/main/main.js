@@ -9,7 +9,7 @@ Page({
         showAd: 0,
         isFirstMain: 0,
         whichToTop: 1,
-
+        shakeThis: -1,
         // privacyContent: 
     },
     onLoad: function () {
@@ -78,6 +78,11 @@ Page({
             }
         })
 
+    },
+    resetShake(e) {
+        this.setData({
+            shakeThis: -1,
+        })
     },
     onHide: function() {
         // 监听页面隐藏的生命周期函数
@@ -275,6 +280,11 @@ Page({
     triggerTransition(e) {
         this.setData({
             transBubble: 'bubble'
+        })
+    },
+    beginShake(e) {
+        this.setData({
+            shakeThis: e.currentTarget.dataset.whichShake,
         })
     },
     goGratitude(e) {
