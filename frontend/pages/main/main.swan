@@ -5,27 +5,19 @@
 
 </block>
 <view class="wrap">
-    <view class="top-navigation">
-
-        <view class='main-text'> Ucho </view>
-
-    </view>
-    <view class="top" bind:tap="goAni">
+    <view class="top">
+            <!-- <view calss="portrait-container"> -->
             <animation-view
-            s-if="{{showPrivacy !== 1}}"
-            class="portrait"
-            path="/anims/mg1.json"
-            loop="true"
-            autoplay="true"
-            action="play"
-            hidden="false" 
-            style="z-index:{{whichToTop == 1 ? 999: inherit}}"/>
-        <!-- <image
-        mode="widthFix"
-        class="portrait"
-        src="../../images/portrait.png"
-        style="width: 550rpx;"
-        bind:tap="goAni"/> -->
+                s-if="{{showPrivacy !== 1}}"
+                class="portrait-container"
+                path="/anims/mg1.json"
+                loop="true"
+                autoplay="true"
+                action="play"
+                hidden="false" 
+                bind:tap="goAni"
+                style="z-index:{{whichToTop == 1 ? 999: inherit}}"/>
+            <!-- </view> -->
         <view class="welcome-text">
             <text class="big-text">  你好，\n 我是小U</text>
             <text class="small-text"> 快来和我聊聊吧～</text>
@@ -33,7 +25,60 @@
 
     </view>
     <view class="middle">
-        <view class="intro-text high">
+        <view class="left-jigsaw">
+            <view class="left-top-block"> 
+                <view class="inner-block lt"> 
+                    <image
+                        mode="widthFix"
+                        src="../../images/lt-icon.png"
+                        class="inner-block-image"
+                        bind:tap="goMoodRecord"/>
+                心情日志 
+                
+                </view> 
+            
+            </view>
+            <view class="left-bottom-block">
+                <view class="inner-block lb"> 
+                    <image
+                        mode="widthFix"
+                        class="inner-block-image"
+                        src="../../images/lb-icon.png"
+                        bind:tap="goMoodRecord"/>
+                
+                感恩日志 
+                
+                </view> 
+
+            </view>
+
+
+        </view>
+        <view class="right-block"> 
+            <view class="inner-block"> 
+                <view class="rt">
+                    <image
+                        mode="widthFix"
+                        src="../../images/r-icon.png"
+                        class="inner-block-image"
+                        bind:tap="goMoodRecord"/>
+                        个人中心
+                </view>
+
+                <view class="rb">
+                    <text class="rb-text"> <text style="width:100%;border-right: 1px rgba(112, 112, 112, 1) dashed;">意见\n反馈 </text> </text>
+                    <text class="rb-text"> <text class="rb-border-b"> 支持 <text style="letter-spacing:1rpx">Ucho</text> </text></text>
+                    <text class="rb-text"> <text class="rb-border">关于\n我们 </text> </text>
+
+                    <text class="rb-text"><text style="width:100%;border-left: 1px rgba(112, 112, 112, 1) dashed;"> 隐私\n政策 </text></text>
+
+                </view>
+             </view> 
+
+        </view>
+
+
+        <!-- <view class="intro-text high">
             <image
                     mode="widthFix"
                     class="square"
@@ -67,10 +112,17 @@
                         心情日志
 
             </view>
-        </view>
+        </view> -->
     </view>
     <view class="bottom">
-        <view class="circle-button {{transBubble}}" bind:touchstart="triggerTransition" bind:touchend="startChat">
+        <view class="bottom-scroll">
+            <image
+            mode="widthFix"
+            style="width:35rpx"
+            src="../../images/speaker-icon.png"/>
+            <view class="speaker-text"> 这是一条新闻</view>
+        </view>
+        <!-- <view class="circle-button {{transBubble}}" bind:touchstart="triggerTransition" bind:touchend="startChat">
             <view class="chat-text">开始聊天 </view>
         </view>
         <view class ='tap-bottom'>
@@ -83,7 +135,7 @@
             <view class="bottom-text right" bind:tap="showAdEvent">
                 支持Ucho
             </view>
-        </view>
+        </view> -->
     </view>
 </view>
 

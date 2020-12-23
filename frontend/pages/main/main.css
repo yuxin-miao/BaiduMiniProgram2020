@@ -7,15 +7,16 @@
     display: flex;
     align-items: center;
     width: 100%;
-    height: 35%;
+    height: 45%;
     padding: 10% 0 0 0;
     align-self: center;
     justify-content: space-around;
 }
 .welcome-text {
     position: fixed;
+    top: 10vh;
     right: 0;
-    padding: 30% 0 5% 0;
+    padding: 8% 0 5% 0;
     width: 300rpx;
     display: flex;
     flex-direction: column;
@@ -34,30 +35,38 @@
 
     color: rgba(181,181,181);
 }
-.portrait {
+.portrait-container {
     /* margin-top: 80rpx; */
     /* margin-left: 300rpx;
     margin-top: 50rpx; */
     z-index: 10;
     position: fixed;
     right: 130rpx;
-    top: 8%;
+    bottom: 58vh;
+    width: 100vw;
+    height: 100vw;
+    /* top: 0.035%; */
     align-self: center;
-    height: 750rpx;
-    width: 750rpx;
+    /* height: 750rpx;
+    width: 750rpx; */
 }
-
+.portrait {
+    position: relative;
+    width: 53vw;
+    height: 53vw;
+}
 .middle {
     z-index: 100;
     align-self: center;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: row;
     align-content: flex-start;
-    justify-content: flex-end;
+    justify-content: flex-end; */
     align-items: center;
     width: 100%;
-    height: 35%;
+    height: 45%;
     text-align: center;
+    padding-top: 10%;
 
 }
 .intro-text {
@@ -67,6 +76,126 @@
     margin-bottom: 4vw;
     display: flex;
     flex-direction: row;
+}
+.left-top-block{
+    width: 350rpx; 
+    height: 22vh;
+    background-image: url(https://cdn.xiaou.tech/lefttopJ.png);
+    background-size: 100% 100%;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    /* background-attachment: fixed;
+    background-position: center center; */
+}
+.left-bottom-block {
+    width: 310rpx; 
+    height: 25vh;
+    background-image: url(https://cdn.xiaou.tech/leftbottomJ.png);
+    background-size: 100% 100%;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+.right-block {
+
+    width: 380rpx;
+    height: 100%;
+    background-image: url(https://cdn.xiaou.tech/rightJ.png);
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.inner-block-image {
+    width: 60rpx;
+    margin-bottom: 1vh;
+}
+.inner-block {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: rgba(181, 181, 181, 1);
+}
+.lt {
+    position: relative;
+    height: 90%;
+    width: 87%;
+}
+.lb {
+    height: 110%;
+}
+.rt {
+    width: 85%;
+    padding-left: 15%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.rb {    
+    width: 85%;
+    height: 40%;
+    margin-top: 20%;
+    padding-left: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.rb-text {
+    width: 50%;
+    height: 50%;
+    letter-spacing:13rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.rb-border {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100%;
+    border-top: 1px rgba(112, 112, 112, 1) dashed;
+}
+.rb-border-b{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height:100%;
+    border-bottom: 1px rgba(112, 112, 112, 1) dashed;
+}
+.lb-border {
+    border-right: 1px rgba(112, 112, 112, 1) dashed;
+    
+    
+}
+.left-jigsaw{
+    width: 330rpx;
+    height: 100%;
+    padding-left: 44rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+}
+.right-jigsaw{
+    /* width: 375rpx; */
+    padding-right: 44rpx;
+
+    height: 100%;
+
+}
+.jigsaw {
+    /* background-color: rgba(181, 246, 201, 0.35); */
+    height: 40%;
 }
 .square {
     /* margin-left: 200rpx;  */
@@ -84,7 +213,7 @@
 }
 .bottom {
     width: 100%;
-    height: 30%;
+    height: 10%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -127,10 +256,10 @@
     background-attachment:fixed; */
     margin: 0; 
 
-    background-image: url(https://cdn.xiaou.tech/main-back.png);
+    /* background-image: url(https://cdn.xiaou.tech/main-back.png);
     background-size: cover;
     background-attachment: fixed;
-    background-position: center center;
+    background-position: center center; */
 }
 .images-intro {
     position: fixed;
@@ -143,6 +272,27 @@
     border-radius: 20rpx;
     background-color: #ffffff;
     animation: 0.2s ease slidein;
+}
+.bottom-scroll {
+    margin: 0 5.5%;
+    padding: 0 30rpx;
+    width: 89%;
+    height: 60%;
+    background-color: rgba(181, 246, 201, 0.35);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.speaker-text {
+    flex-grow: 2;
+    margin-left: 20rpx;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(181, 181, 181, 1);
 }
 .bottom-text {
     /* position: fixed; */
