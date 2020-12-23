@@ -4,6 +4,7 @@ import {letUserLogin} from  '../../utils/api.js';
 let scrollOne = false;
 let newMonth = true;
 
+let startX = 0;
 
 
 Page({
@@ -31,8 +32,8 @@ Page({
         openCard: 0,
         openIdx: 0,
         monthName: ['JAN', 'FEB', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'],
-        monthSmallName: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
-
+        monthSmallName: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+         // for card scroll 
         
     },
     onLoad: function () {
@@ -42,8 +43,8 @@ Page({
             success: res => {
                 that.setData({
                     windowWidth: res.windowWidth,
-                    scrollOneCard: res.windowWidth * 0.5655,
-                    scrollWholeCard: res.windowWidth * 0.735,
+                    scrollOneCard: res.windowWidth * 0.5205,
+                    scrollWholeCard: res.windowWidth * 0.655,
                 })
             },
             fail: err => {
@@ -276,7 +277,7 @@ Page({
             else {
                 // newMonth = false;
             }
-            console.log('set', scrollOne);
+            // console.log('set', scrollOne);
         })
     },
     openThisOne(e) {
@@ -294,25 +295,14 @@ Page({
         })
     },
     touchStart(e) {
-        let startPageX = e.changedTouches[0].pageX;
-        console.log('start', e.changedTouches)
+        startX = e.changedTouches[0].pageX;
+
     },
     
     touchEnd(e) {
-        let moveX = e.changedTouches[0].pageX;
-        console.log('end', e.changedTouches)
 
-        console.log(moveX);
-        // if (Math.abs(moveX) >= 150){
-        //   if (moveX > 0) {
-        //     this.currentView = this.currentView !== 0 ? this.currentView - 1 : 0;
-        //   } else {
-        //     this.currentView = this.currentView !== maxPage ? this.currentView + 1 : maxPage;
-        //   }
-        // }
-        // this.setData({
-        //   toView: `card_${this.currentView}`
-        // });
+        let endX = e.changedTouches[0].pageX;
+        this.changeOneCard(startX - endX)
     },
     touchMove(e) {
         console.log('move')
@@ -323,11 +313,11 @@ Page({
             letUserLogin(true);
             return;
         }
-        console.log('change', changeX)
+        // console.log('change', changeX)
         scrollOne = true;
 
-        if (changeX > 0) { //显示左边
-            console.log('left', changeX);
+        if (changeX < 0) { //显示左边
+            // console.log('left', changeX);
 
             this.setData({
                 leftCardNum: this.data.leftCardNum - 1,
@@ -336,8 +326,8 @@ Page({
             })
 
         }
-        else if (changeX < 0) { //  显示右边
-            console.log('right', changeX);
+        else if (changeX > 0) { //  显示右边
+            // console.log('right', changeX);
 
             this.setData({
                 leftCardNum: this.data.leftCardNum + 1,

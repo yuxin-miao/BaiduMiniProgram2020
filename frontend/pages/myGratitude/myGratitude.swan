@@ -7,10 +7,10 @@
         bindtap="returnNav"
     />    
 
-    <scroll-view class="scroll-box" scroll-x scroll-with-animation bind:scroll="scrollChange"
+    <scroll-view class="scroll-box" scroll-x="false" scroll-y="false" scroll-with-animation bind:touchstart="touchStart" bind:touchend="touchEnd"
             scroll-left="{= scrollLeft =}">
         <view s-for="item, index in allMonths"  class="card-box" id="{{item.id}}">
-            <view class="card" bind:tap="openThisOne" data-cardIdx="{{index}}">
+            <view class="card {{leftCardNum == index ? 'animBig' : 'animSmaller'}}" bind:tap="openThisOne" data-cardIdx="{{index}}">
                 <view class="part">
                     <view class="top-text">
                         <view class="big-text"> {{item.month}} </view>
