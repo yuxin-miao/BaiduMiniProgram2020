@@ -19,16 +19,22 @@
         </view>
             <view class="feedback-submit {{transBubble}}" bind:touchstart="triggerTransition" bind:touchend="submitFeedback"> 提交</view>
         <view class="bottom-record">
-            <scroll-view class="content-record">
-            <text class="displayContent"> 感谢您对Ucho的支持！开发团队会仔细阅读每一条反馈并及时给出回复。 </text>
-            <view class="all-feedback">
+            <view class="content-record">
+            <text class="displayContent"> 感谢您对Ucho的支持！开发团队会仔细阅读每一条反馈并及时给出回复。您的每一条反馈均为匿名提交。 </text>
+            <scroll-view scroll-y class="all-feedback">
                 <view class="each-feedback" s-for="item, index in allFeed" bind:tap="openThisFeed" data-feed-index="{{index}}">
-                    {{item.content}}
-
+                    <text class="one-line-text">{{item.content}} </text>
+                    <animation-view
+                    class="feed-arrow"
+                    path="/anims/arrow.json"
+                    loop="true"
+                    autoplay="true"
+                    action="play"
+                    hidden="false" />
                 </view>
-            </view>
-
             </scroll-view>
+
+            </view>
 
         </view>
     </view>
@@ -43,9 +49,12 @@
         <view class="m-right"> {{oneFeed.content}}</view>
     </view>
     <view class="chat-row" s-for="item, index in oneFeed.replies">
-
-        <view class="u-left"> {{item.content}} </view>
-
+        <block s-if="item.sender">
+            <view class="m-right"> {{item.content}}</view>
+        </block>
+        <block s-else>
+            <view class="u-left" > {{item.content}} </view>
+        </block>
     </view>
     <!-- <image
         mode="widthFix"

@@ -292,4 +292,9 @@ Page({
             showAd: 0,
         })
     },
+    toFeed(e) {
+        swan.navigateTo({
+            url: '/packageInfo/pages/feedback/feedback'
+        })
+    },
 });

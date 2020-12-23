@@ -77,8 +77,8 @@
             <view class="bottom-text left"  bind:tap="showPri">
                 隐私政策 
             </view>
-            <view class="bottom-text middle-bottom">
-             |
+            <view class="bottom-text middle-bottom" bind:tap="toFeed">
+             意见反馈
             </view>
             <view class="bottom-text right" bind:tap="showAdEvent">
                 支持Ucho

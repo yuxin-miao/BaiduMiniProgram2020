@@ -35,6 +35,15 @@ Page({
             url: 'https://xiaou.tech/api/feedback/',
             method: 'GET',
             success: res => {
+                if (res.statusCode != 200) {
+                    // this.clearAndReenter(this.moodTypeGratitude(selectMonth));
+                    swan.showToast({
+                        title: '你还没有登录哦',
+                        icon: 'none',
+                    })
+
+                    return;
+                }
                 if (res.data !== []) {
                     res.data.forEach(element => {
                         this.requestEachID(element.id)
@@ -55,9 +64,19 @@ Page({
             method: 'GET',
             success: res => {
                 let tempAllFeed = this.data.allFeed;
+                let tempReplies = res.data.replies
+                if (res.data.replies.length === 0) {
+                    tempReplies.push({
+                        sender: null, 
+                        content: '感谢您的反馈！我们会尽快作出回复。'
+                    })
+                    // console.log(tempReplies)
+
+                }
+                // console.log(tempReplies)
                 tempAllFeed.push({
                     content: res.data.content,
-                    replies: res.data.replies,
+                    replies: tempReplies,
                 })
                 this.setData({
                     allFeed: tempAllFeed,
@@ -88,8 +107,10 @@ Page({
         this.setData({
             userThisInput: e.detail.value,
         })
+        console.log(this.data.allFeed)
     },
     submitFeedback(e) {
+        
         if (this.data.userThisInput === "") {
             swan.showToast({
                 title: '未填写反馈内容',
@@ -149,5 +170,8 @@ Page({
         this.setData({
             showOneFeed: 0,
         })
-    }
+    },
+    returnNav(e) {
+        swan.navigateBack();
+    },
 });
