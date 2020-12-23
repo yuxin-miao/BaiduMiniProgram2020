@@ -24,12 +24,10 @@
                         bindload="imageLoad" />
 
                     <view class="bottom-part">
-                        <block s-if="{{today<days[index*2+1]}}">
-                            <text class="journal-text" style="white-space:pre-wrap">        {{'       记得这时候也要来和小U聊天哦！'}} </text>
-                        </block>
-                        <block s-else>
-                            <text class="journal-text" style="white-space:pre-wrap"> {{weekGratitude[index].length != 0 ? weekGratitude[index][0].description : '       没有记录哦，记得多和小U聊天～'}} </text>
-                        </block>
+
+                        <text class="journal-text" style="white-space:pre-wrap"> {{weekGratitude[index].length != 0 ? weekGratitude[index][0].description :  '       没有记录哦，记得多和小U聊天～'}} </text>
+
+
                         <image
                             class="journal-icon"
                             src="../../images/journal.svg"

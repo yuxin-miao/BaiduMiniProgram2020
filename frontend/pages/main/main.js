@@ -7,9 +7,13 @@ Page({
         showIntro: 0,
         transBubble: '',
         showAd: 0,
-        isFirstMain: 0,
-        whichToTop: 1,
+        isFirstMain: 1,
+        whichToTop: 0,
         shakeThis: -1,
+        ltShow: 0,
+        lbShow: 0,
+        rShow: 0,
+        // firstEnter: 1,
         // privacyContent: 
     },
     onLoad: function () {
@@ -305,6 +309,21 @@ Page({
     toFeed(e) {
         swan.navigateTo({
             url: '/packageInfo/pages/feedback/feedback'
+        })
+    },
+    showLt(e) {
+        this.setData({
+            ltShow: 1,
+        })
+    },
+    showLb(e) {
+        this.setData({
+            lbShow: 1,
+        })
+    },
+    showR(e) {
+        this.setData({
+            rShow: 1,
         })
     },
 });

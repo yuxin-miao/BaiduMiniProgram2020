@@ -17,6 +17,9 @@
                 hidden="false" 
                 bind:tap="goAni"
                 style="z-index:{{whichToTop == 1 ? 999: inherit}}"/>
+            <view class="main-chat">
+
+            </view>
             <!-- </view> -->
         <view class="welcome-text">
             <text class="big-text">  你好，\n 我是小U</text>
@@ -24,14 +27,16 @@
         </view>
 
     </view>
-    <view class="middle">
+    <view class="middle"
+        style="z-index:{{whichToTop == 0 ? 800: inherit}}">
         <view class="left-jigsaw">
-            <view class="left-top-block"> 
+            <view class="left-top-block {{ltShow==0 ? 'lt-before' : 'to-out'}}" bind:touchstart="showLt"> 
+                <block s-if="ltShow == 1">
                 <view class="inner-block lt"> 
                     <image
                         class="inner-block-image {{shakeThis == 0 ? 'shake' : ''}}"
                         mode="widthFix"
-=                       src="../../images/lt-icon.png"
+                        src="../../images/lt-icon.png"
                         class="inner-block-image"
                         bind:animationend="goMoodRecord"
                         bind:touchstart="beginShake"
@@ -39,9 +44,12 @@
                 心情日志 
                 
                 </view> 
+                </block>
             
             </view>
-            <view class="left-bottom-block">
+            <view class="left-bottom-block {{lbShow==0 ? 'lb-before' : 'to-out'}}" bind:touchstart="showLb">
+                <block s-if="lbShow == 1">
+
                 <view class="inner-block lb"> 
                     <image
                         mode="widthFix"
@@ -54,12 +62,14 @@
                 感恩日志 
                 
                 </view> 
-
+                </block>
             </view>
 
 
         </view>
-        <view class="right-block"> 
+        <view class="right-block {{rShow==0 ? 'r-before' : 'to-out'}}" bind:touchstart="showR"> 
+            <block s-if="rShow == 1">
+
             <view class="inner-block"> 
                 <view class="rt">
                     <image
@@ -73,15 +83,15 @@
                 </view>
 
                 <view class="rb">
-                    <text class="rb-text"> <text style="width:100%;border-right: 1px rgba(112, 112, 112, 1) dashed;">意见\n反馈 </text> </text>
-                    <text class="rb-text"> <text class="rb-border-b"> 支持 <text style="letter-spacing:1rpx">Ucho</text> </text></text>
-                    <text class="rb-text"> <text class="rb-border">关于\n我们 </text> </text>
+                    <text class="rb-text"> <text style="width:100%;border-right: 1px rgba(112, 112, 112, 1) dashed;" bind:tap="toFeed">意见\n反馈 </text> </text>
+                    <text class="rb-text"> <text class="rb-border-b" bind:tap="showAdEvent"> 支持 <text style="letter-spacing:1rpx">Ucho</text> </text></text>
+                    <text class="rb-text"> <text class="rb-border" bind:tap="goIntro">关于\n我们 </text> </text>
 
                     <text class="rb-text" ><text style="width:100%;border-left: 1px rgba(112, 112, 112, 1) dashed;"  bind:tap="showPri"> 隐私\n政策 </text></text>
 
                 </view>
              </view> 
-
+            </block>
         </view>
 
 

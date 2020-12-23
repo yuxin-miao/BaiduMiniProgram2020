@@ -5,7 +5,10 @@ let scrollOne = false;
 let newMonth = true;
 
 let startX = 0;
-
+let thisMonth = 0;
+let thisYear = 0;
+var constYear = 0;
+var constMonth = 0;
 
 Page({
     data: {
@@ -61,7 +64,12 @@ Page({
         // set card number according to date 
         let dictD = util.dictDate(new Date());
         let numberDays = this.getThisMonthDays(dictD.year, dictD.month);
+        thisMonth = dictD.month;
+        constMonth = dictD.month;
+        thisYear = dictD.year;
+        constYear = dictD.year;
         this.loadOneMonth(dictD.year, dictD.month, dictD.day, numberDays);
+
 
     },
     onReady: function() {
@@ -94,14 +102,18 @@ Page({
         
     },
     loadOneMonth: function(year, month, toWhichDay, numberDays) {
-        let tempDG = [];
-        let tempEachDays =[];
-        let tempD = [];
-        let tempM = [];
+        console.log('begin', this.data.weekGratitude);
+        let tempDG = this.data.weekGratitude;
+        let tempEachDays = this.data.eachDayGratiture;
+        let tempD = this.data.days;
+        let tempM = this.data.allMonths;
         let tempId = 0;
-        let tempRightNum = 0;
-        let tempAllNum = 0;
+        let holdLength = this.data.allMonths.length;
+        let tempRightNum = this.data.allMonths.length;
+        let tempAllNum = this.data.allMonths.length;
         let tempMName = this.data.monthName[month - 1];
+        console.log('0', this.data.allMonths.length, tempM.length)
+
         for (let i = 1; i <= numberDays - 6; i+=7){
             tempAllNum = tempAllNum + 1;
             if (toWhichDay <= i + 6) {
@@ -130,10 +142,17 @@ Page({
                 
             }
         }
-        tempM.forEach(ele => {
-            tempDG.push([]);
-            tempEachDays.push([{}]);
-        })
+        console.log('1', this.data.allMonths.length, tempM.length)
+        for (let i = 0; i < tempM.length - holdLength; i++) {
+            tempDG.unshift([]);
+            tempEachDays.unshift([{}]);
+        }
+        // tempM.forEach(ele => {
+
+        // })
+        if (year != constYear || month != constMonth) {
+            tempRightNum = holdLength;
+        }
         let tempLeftWhole = (tempAllNum - tempRightNum ) == 0 ? 1 : (tempAllNum - tempRightNum);
         this.setData({
             getSelectMonth: {year: year, month: month},
@@ -146,7 +165,7 @@ Page({
             leftCardNum: tempLeftWhole,
         }, ()=>{
             this.setScrollLeft();
-
+            console.log('loadOne', tempDG)
             this.moodTypeGratitude({year: year, month: month});
         })
         
@@ -182,16 +201,6 @@ Page({
             });
         });
     },
-
-    // imageError(e) {
-    //     console.log('image 发生 error 事件，携带值为', e.detail.errMsg);
-    //   },
-    //   onTap(e) {
-    //     console.log('image 发生 tap 事件', e);
-    //   },
-    //   imageLoad(e) {
-    //       console.log('image 加载成功', e.type);
-    //   },
         /* util functions for getting data */
     moodTypeGratitude: function (selectMonth) {
             // send data: selectMonth(year & month)
@@ -202,7 +211,6 @@ Page({
             method: 'GET',
             data: selectMonth,
             success: res => {
-                let returnMood = []; //used to return
                 if (res.statusCode != 200) {
                     // this.clearAndReenter(this.moodTypeGratitude(selectMonth));
                     swan.showToast({
@@ -213,11 +221,9 @@ Page({
                     return;
                 }
                 let tempDG = this.data.weekGratitude;
-                let lastDay = this.data.today;
                 let lastIdx = 0;
-                let tempEDays = [[], [], []];
+                let tempEDays = this.data.eachDayGratiture;
                 let tD = this.data.eDays;
-
                 res.data.gratitudeList.forEach(graRecord => {
                     let tempDate = (new Date(graRecord.created_at)).getDate();
                     for (let i = 0; i < this.data.days.length - 1; i++) {
@@ -318,7 +324,14 @@ Page({
 
         if (changeX < 0) { //显示左边
             // console.log('left', changeX);
+            if (this.data.leftCardNum === 0) {
+                let tempThis = thisMonth;
+                thisMonth = thisMonth == 12 ? 1 : thisMonth + 1;
+                thisYear = tempThis == 12 ? thisYear + 1 : thisYear;
+                let numberDays = this.getThisMonthDays(thisYear, thisMonth);
 
+                this.loadOneMonth(thisYear, thisMonth, 1, numberDays)
+            }
             this.setData({
                 leftCardNum: this.data.leftCardNum - 1,
             }, ()=>{
@@ -328,7 +341,15 @@ Page({
         }
         else if (changeX > 0) { //  显示右边
             // console.log('right', changeX);
+            // if (this.data.leftCardNum === this.data.allMonths.length) {
+            //     let tempThis = thisMonth;
+            //     thisMonth = thisMonth == 1 ? 12 : thisMonth - 1;
+            //     thisYear = tempThis == 1 ? thisYear - 1 : thisYear;
+            //     let numberDays = this.getThisMonthDays(thisYear, thisMonth);
 
+            //     // console.log('prevM', thisMonth, thisYear)
+            //     this.loadOneMonth(thisYear, thisMonth, 1, numberDays)
+            // }
             this.setData({
                 leftCardNum: this.data.leftCardNum + 1,
             }, ()=>{

@@ -12,6 +12,15 @@
     align-self: center;
     justify-content: space-around;
 }
+.main-chat {
+    position: fixed;
+    bottom: 52vh;
+    width: 640rpx;
+    left: 55rpx;
+    height: 343rpx;
+    background-image: url(https://cdn.xiaou.tech/main-chat-back.png);
+    background-size: 100% 100%;
+}
 .welcome-text {
     position: fixed;
     top: 10vh;
@@ -67,6 +76,7 @@
     height: 45%;
     text-align: center;
     padding-top: 10%;
+    /* background-color: #ffffff; */
 
 }
 .intro-text {
@@ -80,7 +90,7 @@
 .left-top-block{
     width: 350rpx; 
     height: 23.5vh;
-    background-image: url(https://cdn.xiaou.tech/lefttopJ.png);
+    background-image: url(https://cdn.xiaou.tech/afterltJ.png);
     background-size: 100% 100%;
     /* display: flex;
     justify-content: center;
@@ -88,10 +98,15 @@
     /* background-attachment: fixed;
     background-position: center center; */
 }
+.lt-before {
+    background-image: url(https://cdn.xiaou.tech/beforeltJ.png);
+
+}
+
 .left-bottom-block {
     width: 310rpx; 
     height: 26vh;
-    background-image: url(https://cdn.xiaou.tech/leftbottomJ.png);
+    background-image: url(https://cdn.xiaou.tech/afterlbJ.png);
     background-size: 100% 100%;
     /* display: flex;
     justify-content: center;
@@ -101,11 +116,25 @@
 
     width: 380rpx;
     height: 100%;
-    background-image: url(https://cdn.xiaou.tech/rightJ.png);
+    background-image: url(https://cdn.xiaou.tech/afterrJ.png);
     background-size: 100% 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.lb-before {
+    background-image: url(https://cdn.xiaou.tech/beforelbJ.png);
+
+}
+.r-before {
+    background-image: url(https://cdn.xiaou.tech/beforerJ.png);
+
+
+}
+.to-out {
+    animation: 0.2s ease slideout backwards;
+    animation-direction: alternate-reverse;
+
 }
 .inner-block-image {
     width: 60rpx;
@@ -396,6 +425,17 @@
     to   { transform: scaleY(1); }
 }
 
+@keyframes slideout {
+    from { 
+        transform: scaleY(1);
+        /* opacity: 0; */
+            
+    }
+    to   { transform: scaleY(0); 
+        /* opacity: 1; */
+
+    }
+}
 
 .shake {
     animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
