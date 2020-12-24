@@ -571,7 +571,8 @@
     z-index: 2;
 }
 .mc-anim {
-    width: 100%;
+    margin-left: 10%;
+    width: 80%;
     height: 100%;
 }
 .enve-back {

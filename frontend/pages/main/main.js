@@ -32,6 +32,7 @@ Page({
     onLoad: function () {
         // 监听页面加载的生命周期函数
         if (getApp().isAuthenticated()) {
+            this.getNews();
             this.setData({
                 isLogin: 1,
             })
@@ -486,5 +487,25 @@ Page({
             })
         }
 
-    }
+    },
+    getNews: function() {
+        swan.request({
+            url: getApp().getUrl('/news/'),
+            method: 'GET',
+            success: res => {
+
+                if (res.statusCode == 200) {
+                    let tempNews = []
+                    res.data.forEach(element => {
+                        tempNews.push(element.content)
+                        if (tempNews.length == res.data.length) {
+                            this.setData({
+                                allText: tempNews
+                            })
+                        }
+                    })
+                }
+            }
+        })
+    },
 });
