@@ -15,7 +15,7 @@ Page({
         swan.showLoading();
 
         swan.downloadFile({
-            url: 'https://cdn.xiaou.tech/introtop.svg',
+            url: 'https://cdn.xiaou.tech/intro-long-middle.png',
             success: res => {
                 swan.hideLoading();
                 if (res.statusCode === 200) {
@@ -110,8 +110,10 @@ Page({
     onShareAppMessage: function () {
         // 用户点击右上角转发
     },
-    returnNav(e) {
-        swan.navigateBack();
+    returnMain(e) {
+        swan.redirectTo({
+            url: '/pages/main/main'
+        })
     },
     openCard(e) {
         this.setData({

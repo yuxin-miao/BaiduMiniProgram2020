@@ -16,7 +16,47 @@ Page({
                 console.log("download success")
                 const filePath = res.tempFilePath;
                 this.setData({
+                    path3: filePath
+                });
+                console.log(res.tempFilePath)
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '请求失败',
+                    content: '初始动画下载失败！'
+                })
+            }
+        });
+        swan.downloadFile({
+            url: 'https://cdn.xiaou.tech/1.json',
+            // header: {
+            //     'content-type': 'application/json'
+            // },
+            success: res => {
+                console.log("download success")
+                const filePath = res.tempFilePath;
+                this.setData({
                     path1: filePath
+                });
+                console.log(res.tempFilePath)
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '请求失败',
+                    content: '初始动画下载失败！'
+                })
+            }
+        });
+        swan.downloadFile({
+            url: 'https://cdn.xiaou.tech/2.json',
+            // header: {
+            //     'content-type': 'application/json'
+            // },
+            success: res => {
+                console.log("download success")
+                const filePath = res.tempFilePath;
+                this.setData({
+                    path2: filePath
                 });
                 console.log(res.tempFilePath)
             },
@@ -48,13 +88,13 @@ Page({
         console.log("play3")
 
         swan.redirectTo({
-            url: '/pages/main/main'
+            url: '/pages/intro/intro'
         })
     },
     nextAni(e) {
         if(this.data.anmi === 3) {
             swan.redirectTo({
-                url: '/pages/main/main'
+                url: '/pages/intro/intro'
             })
         }
         else {
@@ -63,5 +103,11 @@ Page({
                 anmi: tempAnmi
             })
         }
+    },
+    returnMain(e) {
+        console.log('returnM');
+        swan.redirectTo({
+            url: '/pages/intro/intro'
+        })
     }
 });

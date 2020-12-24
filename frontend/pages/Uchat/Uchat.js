@@ -1,12 +1,12 @@
 import 'weapp-cookie';
 import cookies from 'weapp-cookie';
 var util = require('../../utils/util.js');
-import {MoodName, MoodNumber} from '../../utils/constants.js';
-import {createMoodRecord} from  '../../utils/api.js';
+import {MoodName, MoodNumber, MoodColor} from '../../utils/constants.js';
 
 
 Page({
     data: {
+        colors: MoodColor,
         time: '',
         thisY: '',
         thisM: '',
@@ -36,6 +36,7 @@ Page({
         toolReturnKeys:['relief_unlocked','gratitude_unlocked','time_unlocked','mood_unlocked', 'robot_unlocked'] ,
         robot: 0,
         moodChIdx: -1,
+        isFirstChat: 0,
     },
     onLoad: function () {
         //     // chat Animation
@@ -57,6 +58,7 @@ Page({
             this.initial();
         });
         this.getToolBoxList();
+        this.firstChat();
     },
     onReady: function() {
     },
@@ -86,6 +88,19 @@ Page({
             url: '/pages/myCalender/myCalender'
         });
     },
+    firstChat: function() {
+        if (swan.getStorageSync('first_chat') === 'no') {
+
+
+        }
+        else {
+            this.setData({
+                isFirstChat: 1,
+            })
+
+        }
+        getApp().setLocalStorage('first_chat', 'no');
+    },
     getToolBoxList: function() {
         let that = this;
         let tempT = [];
@@ -93,7 +108,6 @@ Page({
             url: getApp().getUrl('/toolbox/'),
             method: 'GET',
             success: res => {
-                console.log('get', res);
                 if (res.statusCode != 200) {
                     swan.showModal({
                         title: '请求失败',
@@ -107,7 +121,6 @@ Page({
                         if (!res.data.status.hasOwnProperty(key)) {
                             continue;
                         }
-                        console.log(res.data.status[key], key)
                         let keyReIdx = this.data.toolReturnKeys.indexOf(key);
                         
                         let tempS = res.data.status[key] == true ? keyReIdx + 1 : 0;
@@ -119,7 +132,7 @@ Page({
                             that.setData({
                                 tools: tempT,
                             }, ()=>{
-                                console.log(this.data.tools)
+                                // console.log(this.data.tools)
                             })
                         }
                     }
@@ -136,7 +149,7 @@ Page({
             doToolBoxChoice: 0,
             tools: tempTool,
         })
-        console.log("unlock", choiceIndex);
+        // console.log("unlock", choiceIndex);
         swan.request({
             url: getApp().getUrl('/toolbox/unlock/'),
             method: 'POST',
@@ -146,7 +159,7 @@ Page({
             },
             data: {item: this.data.toolKeys[choiceIndex]},
             success: res => {
-                console.log("un res", res);
+                // console.log("un res", res);
                 if (res.statusCode != 200) {
                     swan.showModal({
                         title: '请求失败',
@@ -236,7 +249,7 @@ Page({
     },
     updateSendMsg:function() {
         if (this.data.robot == 1) {
-            console.log("4 robot");
+            // console.log("4 robot");
             swan.request({
                 url: getApp().getUrl('/message/robot/'),
                 method: 'POST',
@@ -317,7 +330,7 @@ Page({
                             return;
                         }
                         else {
-                            console.log("sendMsg: thisTaskFinish: ", this.data.taskFinish);
+                            // console.log("sendMsg: thisTaskFinish: ", this.data.taskFinish);
                             this.bye();
                             let tempDis = this.data.displayMsgs;
                             tempDis.push({
@@ -347,7 +360,7 @@ Page({
             }
         }
         else if (this.data.taskFinish == true) {
-            console.log("sendMsg taskFinish", this.data.thisSenderMsg);
+            // console.log("sendMsg taskFinish", this.data.thisSenderMsg);
             this.scrollToBottomTemp(this.matchingQuestion(this.data.thisSenderMsg));
             this.setData({
                 taskFinish: false
@@ -969,9 +982,14 @@ Page({
         });
     },
     clickTool(e) { // show/hide toolbox 
+        if (this.data.isFirstChat) {
+            this.setData({
+                isFirstChat: 0,
+            })
+        }
         let that = this;
         let tempShow = this.data.showWhether == true ? false : true;
-        console.log(tempShow);
+        // console.log(tempShow);
         this.setData({
             showWhether: tempShow,
         }, ()=> {
@@ -992,7 +1010,7 @@ Page({
             })
         })
         if (that.data.tools.every(item => {item === 0}) ) {
-            console.log("ak")
+            // console.log("ak")
             that.showToast({
                 title: '尚未解锁任何工具，快去和小U聊天吧！',
                 icon: 'none',

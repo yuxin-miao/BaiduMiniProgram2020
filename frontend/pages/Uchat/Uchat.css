@@ -14,7 +14,7 @@
     width: 100%;
     height: 12vh;
     background-color: #ffffff;
-    z-index: 995;
+    z-index: 655;
 }
 /* .back-arrow {
     z-index: 999;
@@ -22,12 +22,32 @@
     padding-right: 14vw;
      margin-right: 14vw; 
 } */
-
+.mask {
+    z-index: 695;
+}
+.mask-text-top {
+    position: fixed;
+    z-index: 999;
+    top: 20vh;
+    left: 30vw;
+} 
+.arrow-text {
+    position: fixed;
+    z-index: 999;
+    top: 20vh;
+    width: 100vw;
+    text-align: center;
+    /* left: 20vw; */
+    font-size: .2rem;
+    line-height: 200%;
+    color:  rgba(247,247,247);
+}
 .portrait {
+    position: fixed;
     z-index: 999;
     align-self: center;
     padding-left: 14vw;
-    margin-left: 14vw;
+    margin-left: 21vw;
     /* margin-bottom: 5rpx; */
     margin-top: 1vh;
     height: 13vh;
@@ -39,7 +59,7 @@
 .portrait-anim {
     height: 13vh;
     width: 13vh;
-    z-index: 900;
+    z-index: 999;
 }
 
 /* 聊天文字 */
@@ -185,7 +205,7 @@
     padding: 10rpx 30rpx 10 30rpx;
     font-size: .2rem;
     font-family: PingFangSC-Medium, sans-serif;
-    color: rgba(128,186,161);
+    color: rgba(80,189,155);
 }
 .record-buttom {
     bottom: 0;
@@ -226,10 +246,16 @@
     -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.05); */
 }
 
-
+.each-choice-mood{
+    width: 90rpx;
+    height: 90rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .each-choice-image {
     display: flex;
-    padding: 0 5rpx 10rpx 5rpx;
+    /* padding: 0 5rpx 10rpx 5rpx; */
 
 }
 

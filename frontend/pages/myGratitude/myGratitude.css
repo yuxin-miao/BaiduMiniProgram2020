@@ -1,4 +1,5 @@
 .wrap {
+    
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -13,7 +14,16 @@
     background-position: center center;
     background-attachment:fixed;
 }
+.coverAll {
+    position: fixed;
+    z-index: 500;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: transparent;
 
+}
 .back-arrow{
     position: fixed;
     top: 100rpx;
@@ -23,12 +33,12 @@
 
 .scroll-box{
     white-space: nowrap;
-    height: 105vh;
+    height: 80vh;
+    padding-top: 25vh;
 }
   
 .card-box{
     display: inline-block;
-    margin-top: 25vh;
 }
 .ad-card-box {
     display: inline-block;
@@ -43,7 +53,7 @@
     box-sizing: border-box;
     height: 50vh;
     width: 63.5vw;
-    margin: 0 4vw;
+    margin: 0 1.5vw;
     font-size: 40px;
     background: #ffffff;
     /* border: 1.5px solid rgba(207 244 209); */
@@ -51,6 +61,15 @@
     border-radius: 20px;
     box-shadow:0 6rpx 10rpx 2rpx rgba(207,244,209);/*for Android*/
     -webkit-box-shadow:0px 3px 5px 1px rgba(207,244,209);/*for IOS*/
+
+}
+/* .card: */
+.animBig {
+    animation: 0.2s ease toBigger forwards;
+    
+}
+.animSmaller {
+    animation: 0.2s ease toSmaller forwards;
 }
 .ad-card{
     display: flex;
@@ -185,6 +204,14 @@
     flex-direction: column;
     background-color: transparent;
     animation: 0.2s ease slidein;
+}
+@keyframes toBigger {
+    from { transform: scale(0.8); }
+    to   { transform: scale(1); }
+}
+@keyframes toSmaller {
+    from { transform: scale(1); }
+    to   { transform: scale(0.8); }
 }
 
 @keyframes slidein {

@@ -55,7 +55,7 @@
     width: 0;
     height: 0;
     border-top: 15rpx solid transparent;
-    border-right: 20rpx solid rgba(128 186 161);
+    border-right: 20rpx solid rgba(80,189,155);
     border-bottom: 15rpx solid transparent;
 }
 .triangle-right {
@@ -63,7 +63,7 @@
     width: 0;
     height: 0;
     border-top: 15rpx solid transparent;
-    border-left: 20rpx solid rgba(128 186 161);
+    border-left: 20rpx solid rgba(80,189,155);
     border-bottom: 15rpx solid transparent;
 }
 .no-navigation {
@@ -364,86 +364,7 @@
     cursor: pointer;
 }
 
-.jigsaw .bout {
-width: calc(100% / 3);
-    height: calc(100% / 3);
-    position: absolute;
-    z-index: 300;
-    bottom: -25%;
-    left: calc(100% / 3);
-    -webkit-border-radius: 67%;
-    -moz-border-radius: 67%;
-    border-radius: 67%;
-    border: 1px solid transparent;
-    /* border-image: linear-gradient(); */
 
-
-}
-  
-.jigsaw .tout {
-    width: calc(100% / 3);
-    height: calc(100% / 3);
-    position: absolute;
-    top: -25%;
-    left: calc(100% / 3);
-    -webkit-border-radius: 67%;
-    -moz-border-radius: 67%;
-    border-radius: 67%;
-    border: 1px solid transparent;
-    /* border-image: linear-gradient(); */
-
-
-}
-  
-.jigsaw .lout {
-    width: calc(100% / 3);
-    height: calc(100% / 3);
-    position: absolute;
-    z-index: 300;
-    top: calc(100% / 3);
-    right: calc(100% * 5.5 / 6);
-    -webkit-border-radius: 67%;
-    -moz-border-radius: 67%;
-    border-radius: 67%;
-    /* border: 1px solid black; */
-
-}
-.jigsaw .rout {
-    width: calc(100% / 3);
-    height: calc(100% / 3);
-    position: absolute;
-    z-index: 300;
-    top: calc(100% / 3);
-    left: calc(100% * 5.5 / 6);
-    -webkit-border-radius: 67%;
-    -moz-border-radius: 67%;
-    border-radius: 67%;
-
-}
-  
-.jigsaw .bin { 
-    width: calc(100% / 3);
-    height: calc(100% / 3);
-    position: absolute;
-    top: calc(100% * 4.5 / 6);
-    left: calc(100% * 2.2 / 6);
-    -webkit-border-radius: 67%;
-    -moz-border-radius: 67%;
-    border-radius: 67%;
-    background-color: #fff;
-}
-  
-.jigsaw .lin { 
-    width: calc(100%  / 3);
-    height: calc(100% / 3);
-    position: absolute;
-    top: calc(100% * 2.2 / 6);
-    left: calc(1 - 100% * 0.4 / 6);
-    -webkit-border-radius: 67%;
-    -moz-border-radius: 67%;
-    border-radius: 67%;
-    background-color: #fff;
-}
 
 .shadow {
     box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/

@@ -35,7 +35,14 @@
     color: #55C595;
     font-family: PingFangSC-Medium;
 }
-
+.each-mood {
+    width: 1.05rem;
+    height: 1.05rem;
+    margin: 10rpx 13rpx 10rpx 13rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 /* mood */
 .card-area:nth-child(2){
     width: 100%;
@@ -46,13 +53,11 @@
     justify-content: space-between;
 }
 
-.mood-item {
-    /* display: inline-block; */
-    width: 1.05rem;
-    height: 1.05rem;
-    margin: 10rpx 13rpx 10rpx 13rpx;
+/* .mood-item {
+    display: flex;
+    align-self: center;
     justify-content: center;
-}
+} */
 
 .mood-border {
     /* box-sizing: content-box; */
@@ -89,3 +94,12 @@
 }
 
 
+.select-shadow {
+
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);/*for Android*/
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);/*for IOS*/
+    /* width: 50rpx; */
+    /* border-radius: 50%;
+    box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.05); */
+}

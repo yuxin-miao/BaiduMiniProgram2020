@@ -1,7 +1,3 @@
-/**
- * @file app.js
- * @author swan
- */
 
 /* globals swan */
 import { API } from './utils/api';

@@ -1,0 +1,42 @@
+<view class="wrap">
+    <view class="top-navigation">
+
+
+        <image
+        class="back-arrow"
+        mode="widthFix"
+        src="../../../images/arrow.svg"
+        bindtap="returnNav"
+        />
+    </view>
+
+    <scroll-view scroll-y class="all-activity">
+        <view class="each-activity" s-for="item, index in allActivity">
+
+
+        </scroll-view>
+
+    </view>
+
+</view>
+
+<block s-if="{{showOneFeed == 1}}">
+
+<view class='mask' bind:tap="hideOneFeed"/>
+<scroll-view scroll-y class='one-feed' bind:tap="hideOneFeed">
+    <view class="chat-row">
+        <view class="m-right"> {{oneFeed.content}}</view>
+    </view>
+    <view class="chat-row" s-for="item, index in oneFeed.replies">
+
+        <view class="u-left"> {{item.content}} </view>
+
+    </view>
+    <!-- <image
+        mode="widthFix"
+        style="width: 750rpx"
+        src="{{backTopUrl}}"
+        bind:tap="hideIntro"
+    /> -->
+</scroll-view>
+</block>

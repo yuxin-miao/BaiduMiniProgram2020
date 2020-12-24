@@ -1,0 +1,97 @@
+/* 全局整页面 */
+.wrap {
+  background-image: url(https://cdn.xiaou.tech/main-back.png);
+  background-attachment: fixed;
+  font-family: PingFangSC-Regular, sans-serif;
+  max-height: 100vh;
+  height: 100vh;
+  /* height: 100vh; */
+  font-size: .16rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* 组件容器 */
+.container {
+  font-size: .16rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+}
+.top-navigation {
+  position: fixed;
+  top: 0;
+  align-self: start;
+
+  display: flex;
+  padding-top:70rpx;
+  flex-direction: row;
+  width: 100%;
+  height: 160rpx;
+  background-color:transparent;
+  z-index: 995;
+}
+.back-arrow {
+  /* margin: 100rpx 0 0 0; */
+
+  /* padding-top: 40rpx; */
+  padding-left: 40rpx;
+  padding-bottom: 30rpx;
+  align-self: center;
+  width: 15rpx;
+  /* height: 50rpx; */
+  z-index: 999;
+  /* width: 10%; */
+}
+
+.all-activity {
+  height: 75vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.each-activity {
+  width: 90vw;
+
+  margin: 0 5vw 5vh 5vw;
+  height: 20vh;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow:0 6rpx 10rpx 1rpx rgba(207,244,209);/*for Android*/
+  -webkit-box-shadow:0px 3px 5px .5px rgba(207,244,209);/*for IOS*/
+}
+/* .feedback-input{
+  height: 25vh;
+  width: 100%;
+} */
+
+/*checkbox 整体大小  */
+/* checkbox{
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  border: 10rpx solid #48b0b9;
+  position: relative;
+} */
+/*checkbox 选项框大小  */
+ /* checkbox .swan-checkbox-input {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%; 
+  position: absolute;
+  top: 4rpx;
+  left: 4rpx;
+  border-color: transparent;
+} */
+/*checkbox选中后样式  */
+/* checkbox .swan-checkbox-input.wx-checkbox-input-checked {
+  background: #48b0b9;
+} */
+/*checkbox选中后图标样式  */
+/* checkbox .swan-checkbox-input.wx-checkbox-input-checked::before {
+  color: transparent; 
+} */

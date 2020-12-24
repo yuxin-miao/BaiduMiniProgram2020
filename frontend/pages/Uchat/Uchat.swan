@@ -1,3 +1,15 @@
+<view class="portrait" >
+    <animation-view 
+        bind:tap="clickTool"
+        class="portrait-anim" 
+        path="/anims/mg2.json" 
+        loop="true"
+        autoplay="true" 
+        action="play"
+        hidden="false"
+        />
+</view>
+
 <view class="chat-page">
     <view id="uchat-top">
         <view class="top-navigation">
@@ -7,7 +19,7 @@
                 src="../../images/arrow.svg"
                 bindtap="returnNav"
             />
-            <view class="portrait"  bind:tap="clickTool">
+            <!-- <view class="portrait"  bind:tap="clickTool">
                 <animation-view 
                     class="portrait-anim" 
                     path="/anims/mg2.json" 
@@ -17,7 +29,7 @@
                     hidden="false"
 
                     />
-            </view>
+            </view> -->
 
             <!-- <image
             class="portrait"
@@ -113,12 +125,12 @@
             <!-- <view class="choice-buttom" bind:tap="scrollToBottomTemp"> -->
 
                 <view class="all-choices-image">
-                    <view s-for="moodname, chIndex in MoodName">
+                    <view class="each-choice-mood" style="background-color:{{colors[chIndex]}}" s-for="moodname, chIndex in MoodName">
                     <image
                         mode="widthFix"
-                        style="width: 90rpx"
+                        style="width: 70%"
                         class="each-choice-image  {{chIndex == moodChIdx ? 'selectMood' : ''}}"
-                        src="../../images/mood_{{moodname}}.svg"
+                        src="../../images/mood{{chIndex}}.svg"
                         bind:tap="moodChoice" data-choice-index="{{chIndex}}"/>
                     </view>
                 </view>
@@ -137,3 +149,16 @@
     </view>
 
 </view>
+
+<block s-if="{{isFirstChat == 1}}">
+    <view class="mask"/>
+    <image
+    mode="widthFix"
+    style="width: 40vw"
+    class="mask-text-top"
+    src="../../images/chatMask.svg"/>
+    <!-- <text class="arrow-text">
+        点击小U头像
+        查看你的工具箱
+    </text> -->
+</block>

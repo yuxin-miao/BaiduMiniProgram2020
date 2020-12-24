@@ -50,6 +50,12 @@ body {
     /* width: 10%; */
 }
 
+.main-text {
+    margin-left: 323rpx;
+    font-size: .2rem;
+    font-family: PingFangSC-Medium, sans-serif;
+    color: rgba(80,189,155);
+}
 
 /* mask */
 .mask {
@@ -529,4 +535,138 @@ not all {
     background: #000;
     opacity: 0.5;
     overflow: hidden;
+}
+
+.bubble{  
+    position: relative;
+    overflow: hidden;
+}
+.bubble:after{
+    content: "";
+    background: #cff4d1;
+    position: absolute; 
+    width: 750rpx;
+    height: 750rpx;
+    left: calc(50% - 375rpx);
+    top: calc(50% - 375rpx);
+    opacity: 0;
+    margin: auto;
+    border-radius: 50%;
+    /* transform: scale(1); */
+    transition: all 0.4s ease-in-out;
+}
+.bubble:active:after {
+/* transform: scale(0); */
+    opacity: 1;
+}   
+
+.jigsaw .bout {
+    width: calc(100% / 3);
+        height: calc(100% / 3);
+        position: absolute;
+        z-index: 300;
+        bottom: -25%;
+        left: calc(100% / 3);
+        -webkit-border-radius: 67%;
+        -moz-border-radius: 67%;
+        border-radius: 67%;
+        border: 1px solid transparent;
+        /* border-image: linear-gradient(); */
+    
+    
+    }
+      
+    .jigsaw .tout {
+        width: calc(100% / 3);
+        height: calc(100% / 3);
+        position: absolute;
+        top: -25%;
+        left: calc(100% / 3);
+        -webkit-border-radius: 67%;
+        -moz-border-radius: 67%;
+        border-radius: 67%;
+        border: 1px solid transparent;
+        /* border-image: linear-gradient(); */
+    
+    
+    }
+      
+    .jigsaw .lout {
+        width: calc(100% / 3);
+        height: calc(100% / 3);
+        position: absolute;
+        z-index: 300;
+        top: calc(100% / 3);
+        right: calc(100% * 5.5 / 6);
+        -webkit-border-radius: 67%;
+        -moz-border-radius: 67%;
+        border-radius: 67%;
+        /* border: 1px solid black; */
+    
+    }
+    .jigsaw .rout {
+        width: calc(100% / 3);
+        height: calc(100% / 3);
+        position: absolute;
+        z-index: 300;
+        top: calc(100% / 3);
+        left: calc(100% * 5.5 / 6);
+        -webkit-border-radius: 67%;
+        -moz-border-radius: 67%;
+        border-radius: 67%;
+    
+    }
+      
+    .jigsaw .bin { 
+        width: calc(100% / 3);
+        height: calc(100% / 3);
+        position: absolute;
+        top: calc(100% * 4.5 / 6);
+        left: calc(100% * 2.2 / 6);
+        -webkit-border-radius: 67%;
+        -moz-border-radius: 67%;
+        border-radius: 67%;
+        background-color: #fff;
+    }
+      
+    .jigsaw .lin { 
+        width: calc(100%  / 3);
+        height: calc(100% / 3);
+        position: absolute;
+        top: calc(100% * 2.2 / 6);
+        left: calc(1 - 100% * 0.4 / 6);
+        -webkit-border-radius: 67%;
+        -moz-border-radius: 67%;
+        border-radius: 67%;
+        background-color: #fff;
+    }
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+@keyframes fadeUp {
+
+  0% {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -1,0 +1,295 @@
+/* 全局整页面 */
+.wrap {
+  background-color: rgba(245,251,245);
+  background-position: center center;
+  font-family: PingFangSC-Regular, sans-serif;
+  max-height: 100vh;
+  height: 100vh;
+  /* height: 100vh; */
+  font-size: .16rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* 组件容器 */
+.container {
+  font-size: .16rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+}
+.top-navigation {
+  /* top: 0;
+  position: fixed; */
+
+  display: flex;
+  padding-top:70rpx;
+  flex-direction: row;
+  width: 100%;
+  height: 160rpx;
+  background-color: transparent;
+  z-index: 995;
+}
+.back-arrow {
+  position: fixed;
+  top: 0;
+  left: 5.3vw;
+  padding-top: 14.6vw;
+  /* padding-top: 55rpx;
+  padding-left: 40rpx;
+  padding-bottom: 30rpx;
+  align-self: center; */
+  width: 15rpx;
+  /* height: 50rpx; */
+  z-index: 999;
+  /* width: 10%; */
+}
+
+.main-text {
+  position: fixed;
+  top: 0;
+  padding-top: 12.6vw;
+  margin-left: 300rpx;
+  font-size: 1.2rem;
+  font-family: PingFangSC-Medium, sans-serif;
+  color: rgba(80,189,155);
+}
+
+.middle-return{ 
+  flex-grow: 2;
+  width: 80%;
+  padding: 0 10%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+.top-descrip {
+  height: 4%;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+}
+.feedback-card {
+  background-color: white;
+  padding: 40rpx 40rpx 10rpx 40rpx;
+  margin-bottom: 3vh;
+  border-radius: 10px;
+  height: 20vh;
+  width: 100%;
+}
+.feedback-input {
+  width: 100%;
+}
+/* .feedback-input{
+  height: 25vh;
+  width: 100%;
+} */
+.feedback-submit {
+  width: 180rpx;
+  /* padding: 0 20%; */
+  height: 80rpx;
+  background-color: rgba(181,246,201);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(80,189,155);
+  border-radius: 50rpx;
+  border: 1px solid rgba(181,246,201);
+  font-size: 1rem;
+  z-index: 300;
+  /* box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1); */
+}
+checkbox {
+  margin-top: 10rpx;
+  align-self: start;
+  /* width: 100%;
+  height: 5rpx; */
+
+}
+.check-text{
+  color:  rgba(181,181,181);
+  font-size: .8rem;
+
+}
+/*checkbox 整体大小  */
+/* checkbox{
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  border: 10rpx solid #48b0b9;
+  position: relative;
+} */
+/*checkbox 选项框大小  */
+ /* checkbox .swan-checkbox-input {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%; 
+  position: absolute;
+  top: 4rpx;
+  left: 4rpx;
+  border-color: transparent;
+} */
+/*checkbox选中后样式  */
+/* checkbox .swan-checkbox-input.wx-checkbox-input-checked {
+  background: #48b0b9;
+} */
+/*checkbox选中后图标样式  */
+/* checkbox .swan-checkbox-input.wx-checkbox-input-checked::before {
+  color: transparent; 
+} */
+
+.bottom-record {
+  /* flex-grow: 2; */
+  /* background-color: white; */
+  position: fixed;
+  top: 52vh;
+  padding: 0 40rpx;
+
+  /* margin: 2vh 0; */
+  height: 40vh;
+  width: 90%;
+}
+.displayContent {
+  color: rgba(181,181,181);
+  font-size: .8rem;
+
+}
+.content-record{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
+}
+.all-feedback {
+  align-self: center;
+  margin-top: 2vh;
+  height: 45vh;
+  color: black;
+  font-size: 1rem;
+  padding-left: 2%;
+  width: 96%;
+}
+.each-feedback{
+
+  background-color: white;
+  margin-top: 15rpx;
+  padding: 5%;
+  color:  rgba(181,181,181);
+  font-size: .8rem;
+  height: 4vh;
+  box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.one-line-text {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  
+}
+.chat-row {
+  display: inline-block;
+  width: 100%;
+  padding: 10rpx 0;
+  white-space: pre-wrap;
+}
+.m-right {
+  position: relative;
+  float: right;
+  right: 30rpx;
+  max-width: 70%;
+  padding: 15rpx 25rpx;
+  border-radius: 20rpx;
+  border-bottom-right-radius: 0;
+  background-color: rgba(207,244,209);
+  text-align: left;
+  transform-origin: 100% 0% !important;
+  -webkit-transform-origin: 100% 0% !important;
+}
+
+.u-left {
+  position: relative;
+  float: left;
+  left: 30rpx;
+  max-width: 70%;
+  padding: 15rpx 25rpx;
+  border-radius: 20rpx;
+  border-bottom-left-radius: 0;
+  background-color: #ffffff;
+  text-align: left;
+  transform-origin: 0% 100% !important;
+  -webkit-transform-origin: 0% 100% !important;
+}
+.bubble{  
+  position: relative;
+  z-index: 200;
+  overflow: hidden;
+}
+.bubble:after{
+  content: "";
+  background: rgba(181,246,201);
+  position: absolute; 
+  width: 750rpx;
+  height: 750rpx;
+  left: calc(50% - 375rpx);
+  top: calc(50% - 375rpx);
+  opacity: 0;
+  margin: auto;
+  border-radius: 50%;
+  /* transform: scale(1); */
+  transition: all 0.4s ease-in-out;
+}
+.bubble:active:after {
+/* transform: scale(0); */
+  opacity: 1;
+}  
+
+/* mask */
+.mask {
+  width:100%;
+  height:100%;
+  position:fixed;
+  background-color:#000;
+  z-index: 500;
+  top:0;
+  left:0;
+  -moz-opacity: 0.5;
+  opacity: 0.50;
+  filter: alpha(opacity=50);
+}
+.one-feed{
+  position: fixed;
+  z-index: 800;
+  /* height: 70vh; */
+  top: 30vh;
+  left: 10vw;
+  width: 80vw;
+  padding: 3vh 0;
+  background-color: white;
+  border-radius: 20rpx;
+  animation: 0.2s ease slidein;
+
+}
+.feed-arrow{
+  width: 10vw;
+  height: 10vw;
+}
+@keyframes slidein {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+
+.expand-b {
+  box-shadow: inset 0 0 0 1px white;
+}

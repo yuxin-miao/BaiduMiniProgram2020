@@ -1,9 +1,26 @@
 var util = require('../../utils/util.js');
+import {letUserLogin} from  '../../utils/api.js';
 
+let scrollOne = false;
+let newMonth = true;
+
+let startX = 0;
+let thisMonth = 0;
+let thisYear = 0;
+var constYear = 0;
+var constMonth = 0;
 
 Page({
     data: {
+        screenWidth: 0,
+        scrollOneCard: 0,
+        scrollWholeCard: 0,
+        leftCardNum: 0,
+        leftdis: 0,
+        scrollLeft: 0, // need to set AFTER scroll-view load finished 
+        scrollToday: 0,
         toView: 0,
+
         allMonths: [], // [{month: ,id: }, {month: ,id: }] id is the first date in this card 
         gNum: 3,
         // gMages: [],
@@ -18,63 +35,41 @@ Page({
         openCard: 0,
         openIdx: 0,
         monthName: ['JAN', 'FEB', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'],
-        monthSmallName: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
-
+        monthSmallName: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+         // for card scroll 
         
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
+        let that = this;
+        swan.getSystemInfo({
+            success: res => {
+                that.setData({
+                    windowWidth: res.windowWidth,
+                    scrollOneCard: res.windowWidth * 0.5205,
+                    scrollWholeCard: res.windowWidth * 0.655,
+                })
+            },
+            fail: err => {
+                that.setData({
+                    windowWidth: 400,
+                    scrollOneCard: 400 * 0.695,
+                })
+                swan.showToast({
+                    title: '信息获取失败',
+                    icon: 'none',
+                })
+            }
+        })
         // set card number according to date 
         let dictD = util.dictDate(new Date());
         let numberDays = this.getThisMonthDays(dictD.year, dictD.month);
-        // let tempM = Array(Math.ceil(numberDays/7)).fill({month: this.data.monthName[dictD.month - 1], id: 0});
-        let tempDG = [];
-        let tempEachDays =[];
-        let tempD = [];
-        let tempM = [];
-        let tempId = 0;
-        
-        let tempMName = this.data.monthName[dictD.month - 1];
-        for (let i = 1; i <= numberDays - 6; i+=7){
-            if (dictD.day <= i + 6) tempId = i;
-            tempM.unshift({
-                month: tempMName,
-                id: i,
-            })
-            tempD.unshift(i + 6, i);
-            console.log(tempD)
-        }
-        if (tempD[0] != numberDays) {
-            if (tempD.length % 2) {
-                tempD.unshift(numberDays);
-            }
-            else {
-                let first = tempD[0] + 1;
-                if (tempId == 0) tempId = first;
-                tempM.unshift({
-                    month: tempMName,
-                    id: first,
-                })
-                tempD.unshift(numberDays, first);
-                
-            }
-        }
-        tempM.forEach(ele => {
-            tempDG.push([]);
-            tempEachDays.push([{}]);
-        })
-        this.setData({
-            getSelectMonth: {year: dictD.year, month: dictD.month},
-            today: dictD.day,
-            days: tempD,
-            allMonths: tempM,
-            weekGratitude: tempDG,
-            eachDayGratiture: tempEachDays,
-            toView: tempId,
-        }, ()=>{
-            // console.log('1!',tempEachDays)
-            this.moodTypeGratitude({year: dictD.year, month: dictD.month});
-        })
+        thisMonth = dictD.month;
+        constMonth = dictD.month;
+        thisYear = dictD.year;
+        constYear = dictD.year;
+        this.loadOneMonth(dictD.year, dictD.month, dictD.day, numberDays);
+
 
     },
     onReady: function() {
@@ -83,6 +78,7 @@ Page({
     },
     onShow: function() {
         // 监听页面显示的生命周期函数
+        // newMonth = false;
     },
     onHide: function() {
         // 监听页面隐藏的生命周期函数
@@ -105,8 +101,76 @@ Page({
     setTodayIntoView: function(){
         
     },
+    loadOneMonth: function(year, month, toWhichDay, numberDays) {
+        console.log('begin', this.data.weekGratitude);
+        let tempDG = this.data.weekGratitude;
+        let tempEachDays = this.data.eachDayGratiture;
+        let tempD = this.data.days;
+        let tempM = this.data.allMonths;
+        let tempId = 0;
+        let holdLength = this.data.allMonths.length;
+        let tempRightNum = this.data.allMonths.length;
+        let tempAllNum = this.data.allMonths.length;
+        let tempMName = this.data.monthName[month - 1];
+        console.log('0', this.data.allMonths.length, tempM.length)
+
+        for (let i = 1; i <= numberDays - 6; i+=7){
+            tempAllNum = tempAllNum + 1;
+            if (toWhichDay <= i + 6) {
+                tempRightNum = tempAllNum - 1;
+                tempId = i;
+            }
+            tempM.unshift({
+                month: tempMName,
+                id: i,
+            })
+            tempD.unshift(i + 6, i);
+        }
+        if (tempD[0] != numberDays) {
+            if (tempD.length % 2) {
+                tempD.unshift(numberDays);
+            }
+            else {
+                tempAllNum = tempAllNum + 1;
+                let first = tempD[0] + 1;
+                if (tempId == 0) tempId = first;
+                tempM.unshift({
+                    month: tempMName,
+                    id: first,
+                })
+                tempD.unshift(numberDays, first);
+                
+            }
+        }
+        console.log('1', this.data.allMonths.length, tempM.length)
+        for (let i = 0; i < tempM.length - holdLength; i++) {
+            tempDG.unshift([]);
+            tempEachDays.unshift([{}]);
+        }
+        // tempM.forEach(ele => {
+
+        // })
+        if (year != constYear || month != constMonth) {
+            tempRightNum = holdLength;
+        }
+        let tempLeftWhole = (tempAllNum - tempRightNum ) == 0 ? 1 : (tempAllNum - tempRightNum);
+        this.setData({
+            getSelectMonth: {year: year, month: month},
+            today: toWhichDay,
+            days: tempD,
+            allMonths: tempM,
+            weekGratitude: tempDG,
+            eachDayGratiture: tempEachDays,
+            toView: tempId,
+            leftCardNum: tempLeftWhole,
+        }, ()=>{
+            this.setScrollLeft();
+            console.log('loadOne', tempDG)
+            this.moodTypeGratitude({year: year, month: month});
+        })
+        
+    },
     returnNav(e) {
-        console.log(1);
         swan.navigateBack();
     },
     downLoadGMage: function() {
@@ -137,16 +201,6 @@ Page({
             });
         });
     },
-
-    // imageError(e) {
-    //     console.log('image 发生 error 事件，携带值为', e.detail.errMsg);
-    //   },
-    //   onTap(e) {
-    //     console.log('image 发生 tap 事件', e);
-    //   },
-    //   imageLoad(e) {
-    //       console.log('image 加载成功', e.type);
-    //   },
         /* util functions for getting data */
     moodTypeGratitude: function (selectMonth) {
             // send data: selectMonth(year & month)
@@ -157,7 +211,6 @@ Page({
             method: 'GET',
             data: selectMonth,
             success: res => {
-                let returnMood = []; //used to return
                 if (res.statusCode != 200) {
                     // this.clearAndReenter(this.moodTypeGratitude(selectMonth));
                     swan.showToast({
@@ -167,14 +220,10 @@ Page({
 
                     return;
                 }
-                console.log(res)
                 let tempDG = this.data.weekGratitude;
-                let lastDay = this.data.today;
                 let lastIdx = 0;
-                let tempEDays = [[], [], []];
+                let tempEDays = this.data.eachDayGratiture;
                 let tD = this.data.eDays;
-                // console.log('here', tempEDays);
-
                 res.data.gratitudeList.forEach(graRecord => {
                     let tempDate = (new Date(graRecord.created_at)).getDate();
                     for (let i = 0; i < this.data.days.length - 1; i++) {
@@ -190,17 +239,13 @@ Page({
                     if (tempDate < this.data.days[lastIdx*2+1]) {
                         lastIdx = lastIdx + 1;
                     }
-                    // console.log('start', tempEDays);
                     let lED = tD.pop();
                     if (lED != undefined && lED.day !=0 ) {
                         if (lED.day == tempDate) {
-                            // console.log("1", laDays);
                             lED.description.push(graRecord.description);
                             tD.push(lED);
                         }
                         else {
-                            // console.log("2", laDays);
-
                             tD.push(lED);
                             let newDays = {day: tempDate, description: [graRecord.description]};
                             tD.push(newDays);
@@ -228,7 +273,23 @@ Page({
             }
         });
     },
+    setScrollLeft: function() {
+        this.setData({
+            scrollLeft: this.data.scrollWholeCard *( this.data.leftCardNum - 1) + this.data.scrollOneCard,
+        }, ()=>{
+            if (newMonth === false) {
+                scrollOne = false;
+            }
+            else {
+                // newMonth = false;
+            }
+            // console.log('set', scrollOne);
+        })
+    },
     openThisOne(e) {
+        if (!getApp().isAuthenticated()) {
+            letUserLogin();
+        }
         this.setData({
             openIdx: e.currentTarget.dataset.cardIdx,
             openCard: 1,
@@ -239,4 +300,80 @@ Page({
             openCard: 0,
         })
     },
+    touchStart(e) {
+        startX = e.changedTouches[0].pageX;
+
+    },
+    
+    touchEnd(e) {
+
+        let endX = e.changedTouches[0].pageX;
+        this.changeOneCard(startX - endX)
+    },
+    touchMove(e) {
+        console.log('move')
+    },
+
+    changeOneCard: function(changeX) {
+        if (!getApp().isAuthenticated()) {
+            letUserLogin(true);
+            return;
+        }
+        // console.log('change', changeX)
+        scrollOne = true;
+
+        if (changeX < 0) { //显示左边
+            // console.log('left', changeX);
+            if (this.data.leftCardNum === 0) {
+                let tempThis = thisMonth;
+                thisMonth = thisMonth == 12 ? 1 : thisMonth + 1;
+                thisYear = tempThis == 12 ? thisYear + 1 : thisYear;
+                let numberDays = this.getThisMonthDays(thisYear, thisMonth);
+
+                this.loadOneMonth(thisYear, thisMonth, 1, numberDays)
+            }
+            this.setData({
+                leftCardNum: this.data.leftCardNum - 1,
+            }, ()=>{
+                this.setScrollLeft();
+            })
+
+        }
+        else if (changeX > 0) { //  显示右边
+            // console.log('right', changeX);
+            // if (this.data.leftCardNum === this.data.allMonths.length) {
+            //     let tempThis = thisMonth;
+            //     thisMonth = thisMonth == 1 ? 12 : thisMonth - 1;
+            //     thisYear = tempThis == 1 ? thisYear - 1 : thisYear;
+            //     let numberDays = this.getThisMonthDays(thisYear, thisMonth);
+
+            //     // console.log('prevM', thisMonth, thisYear)
+            //     this.loadOneMonth(thisYear, thisMonth, 1, numberDays)
+            // }
+            this.setData({
+                leftCardNum: this.data.leftCardNum + 1,
+            }, ()=>{
+                this.setScrollLeft();
+            })
+        }
+
+    },
+    scrollChange(e) {
+
+        let tempChX = e.detail.deltaX;
+        // console.log(scrollOne, newMonth, tempChX);
+        if (scrollOne===false && newMonth===true && Math.abs(tempChX) < this.data.windowWidth) {
+            newMonth = false;
+        }
+        if (scrollOne===false && newMonth===false) {
+            scrollOne = true;
+            // console.log('in', e.detail.deltaX);
+            // this.changeOneCard( tempChX );
+
+        }
+    },
+    
+    // changeCard(e) {
+    //     console.log(e.detail);
+    // },
 });
