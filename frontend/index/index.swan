@@ -2,7 +2,7 @@
     <view s-if="{{anmi === 1}}">
         <animation-view
             class="controls"
-            path="/anims/1.json"
+            path="{{path1}}"
             loop="false"
             autoplay="true"
             action="play"
@@ -13,7 +13,7 @@
     <view s-elif="{{anmi === 2}}" >
         <animation-view
             class="controls"
-            path="/anims/2.json"
+            path="{{path2}}"
             loop="false"
             autoplay="true"
             action="play"
@@ -24,7 +24,7 @@
     <view s-elif="{{anmi === 3}}">
         <animation-view
             class="controls"
-            path="/anims/3.json"
+            path="{{path3}}"
             loop="false"
             autoplay="true"
             action="play"

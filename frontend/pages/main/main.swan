@@ -17,7 +17,7 @@
     <view class="top"  bind:tap="startChat">
             <!-- <view calss="portrait-container"> -->
             <animation-view
-                s-if="{{showPrivacy !== 1 && showAd != 1}}"
+                s-if="{{showPrivacy !== 1 && showAd != 1 && showEnve != 1}}"
                 class="portrait-container"
                 path="/anims/mg1.json"
                 loop="true"
@@ -27,7 +27,7 @@
                 style="z-index:{{whichToTop == 1 ? 999: inherit}}"/>
             <view class="main-chat">
                 <animation-view
-                    s-if="{{showPrivacy !== 1 && showAd != 1}}"
+                    s-if="{{showPrivacy !== 1 && showAd != 1 && showEnve != 1}}"
                     class="chat-anim"
                     path="/anims/chat.json"
                     loop="false"
@@ -252,19 +252,19 @@ c) 您通过我们的服务分享的内容所包含的信息（元数据）
         mode="widthFix"
         style="width: 600rpx"
         src='https://cdn.xiaou.tech/mc-envel.png' />
-    <view class="envlope-wrapper" bind:tap="openEnve" >
-        <view class="envelope">
+    <view class="envlope-wrapper">
+        <view class="envelope" bind:tap="closeEnve">
             <view class="front flap {{openEnveShow == 1 ? 'open-flap' : ''}}"></view>
             <view class="front pocket"></view>
 
             <view  class="letter {{openEnveShow == 1 ? 'open-letter' : ''}}" bindtransitionend="letterEnd" >
                 <animation-view
-                path="/anims/mc.json"
+                path="{{pathMc}}"
                 loop="true"
                 autoplay="false"
                 class="mc-anim"
                 action="{{showMc}}"
-                hidden="false" />
+                hidden="{{whetherShowMc}}" />
             </view>
 
         </view>

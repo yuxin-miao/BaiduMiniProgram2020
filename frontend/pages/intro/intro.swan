@@ -1,29 +1,4 @@
-<!-- <view class="wrap">
-    <image
-    class="intro-arrow"
-    mode="widthFix"
-    style="width: 50rpx"
-    src="../../images/arrow.svg"
-    bind:tap="returnNav"
-    />
-    <view class="empty"/>
-    
-    <view class="all-text">
-        <view class="ucho-text">
-        关于Ucho
-        </view>
-        <view class="intro-text">
-        Ucho的名字来源于University+Psychology，
-        是几个大学生创立的大学生心理陪伴小程序。
-        在Ucho心理陪伴这个小小空间里，有着小U这
-        样一个心理助手的存在。它会关注你的内心世
-        界并帮助你调整心理状态。小U形象设计的灵
-        感来源于拼图（puzzle），有着填补内心空缺
-        的寓义。同时puzzle有“困惑”之意，代表小U
-        是你遇到困惑时可以倾诉的对象~
-        </view>
-    </view>
-</view> -->
+
         <image
             class="back-arrow"
             mode="widthFix"

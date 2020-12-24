@@ -24,6 +24,8 @@ Page({
         showEnve: 0,
         openEnveShow: 0,
         showMc: 'stop',
+        pathMc: '',
+        whetherShowMc: 'true',
         // firstEnter: 1,
         // privacyContent: 
     },
@@ -38,7 +40,26 @@ Page({
 
         }
         else {
-            
+            swan.downloadFile({
+            url: 'https://cdn.xiaou.tech/mc-tree.json',
+            // header: {
+            //     'content-type': 'application/json'
+            // },
+            success: res => {
+                console.log("download success")
+                const filePath = res.tempFilePath;
+                this.setData({
+                    pathMc: filePath
+                });
+                console.log(res.tempFilePath)
+            },
+            fail: err => {
+                swan.showModal({
+                    title: '请求失败',
+                    content: '初始动画下载失败！'
+                })
+            }
+        });
             this.setData({
                 showEnve: 1,
             })
@@ -447,18 +468,19 @@ Page({
             whetherShowNext: temp,
         })
     },
-    openEnve(e) {
-        this.setData({
-            openEnveShow: 1
-        })
-    },
     letterEnd(e) {
         this.setData({
             showMc: 'play',
+            whetherShowMc: 'false',
         })        
     },
     closeEnve(e) {
-        if (this.data.showEnve == 1 && this.data.showMc == 'play') {
+        if (this.data.showEnve == 1 && this.data.showMc == 'stop') {
+            this.setData({
+                openEnveShow: 1
+            })
+        }
+        else if (this.data.showEnve == 1 && this.data.showMc == 'play') {
             this.setData({
                 showEnve: 0
             })
