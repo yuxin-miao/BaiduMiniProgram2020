@@ -156,10 +156,8 @@ Page({
                 this.setData({
                     changeText: 0
                 })
-            }
-
-        
-        }, 3000)
+            }        
+        }, 2000)
     },
     resetShake(e) {
         this.setData({
