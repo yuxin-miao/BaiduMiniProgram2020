@@ -28,17 +28,28 @@
             class="back-arrow"
             mode="widthFix"
             src="../../images/arrow.svg"
-            bindtap="returnNav"
+            bindtap="returnMain"
         />
 <view class='images-intro'>
+<view class="top-anim-por">
+    <animation-view 
+        path="/anims/mg2.json" 
+        style="width: 600rpx;height:500rpx;top:-50rpx;"
+        loop="true"
+        autoplay="true" 
+        action="play"
+        hidden="false"
+        />
+
+</view>
 <image
     mode="widthFix"
-    style="width: 750rpx"
+    style="width: 630rpx;margin-bottom:2vh;"
     src="{{backTopUrl}}"
 />
 <image
     mode="widthFix"
-    style="width: 750rpx"
+    style="width: 750rpx;"
     src="{{backBottomUrl}}"
     bind:tap="openCard"
 />

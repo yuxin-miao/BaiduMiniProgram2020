@@ -21,6 +21,12 @@ Page({
             transBubble: 'bubble'
         })
     },
+    stopTran(e) {
+        console.log('stop')
+        this.setData({
+            transBubble: ''
+        })
+    },  
 
     onReady: function() {
         // 监听页面初次渲染完成的生命周期函数

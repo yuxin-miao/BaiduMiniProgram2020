@@ -29,9 +29,18 @@
 .images-intro {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 
+.top-anim-por {
+    /* height: 30vh; */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 
 

@@ -98,7 +98,9 @@
   align-items: center;
   color: rgba(80,189,155);
   border-radius: 50rpx;
+  border: 1px solid rgba(181,246,201);
   font-size: 1rem;
+  z-index: 300;
   /* box-shadow:0 6rpx 10rpx 2rpx rgba(0, 0, 0, 0.1);
   -webkit-box-shadow:0px 3px 5px 1px rgba(0, 0, 0, 0.1); */
 }
@@ -144,11 +146,13 @@ checkbox {
 .bottom-record {
   /* flex-grow: 2; */
   /* background-color: white; */
+  position: fixed;
+  top: 52vh;
   padding: 0 40rpx;
 
-  margin: 2vh 0;
+  /* margin: 2vh 0; */
   height: 40vh;
-  width: 100%;
+  width: 90%;
 }
 .displayContent {
   color: rgba(181,181,181);
@@ -156,6 +160,7 @@ checkbox {
 
 }
 .content-record{
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -227,11 +232,12 @@ checkbox {
 }
 .bubble{  
   position: relative;
+  z-index: 200;
   overflow: hidden;
 }
 .bubble:after{
   content: "";
-  background: #cff4d1;
+  background: rgba(181,246,201);
   position: absolute; 
   width: 750rpx;
   height: 750rpx;
@@ -281,4 +287,9 @@ checkbox {
 @keyframes slidein {
   from { transform: scaleY(0); }
   to   { transform: scaleY(1); }
+}
+
+
+.expand-b {
+  box-shadow: inset 0 0 0 1px white;
 }

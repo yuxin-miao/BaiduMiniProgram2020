@@ -1,5 +1,6 @@
 .wrap {
     height: 100%;
+    z-index: 500;
 }
 .controls {
     position: fixed;
@@ -40,4 +41,21 @@
 
 swan-animation-view {
     height: 100%;
+}
+
+.skip-button {
+    position: fixed;
+    z-index: 999;
+    top: 6vh;
+    left: 8vw;
+    height: 50rpx;
+    width: 100rpx;
+    background-color: transparent;
+    font-size: .13rem;
+    color: rgba(181,181,181);
+    border: 1px solid rgba(181,181,181);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -17,7 +17,7 @@
             <!-- <checkbox value="whetherDis" disabled="false" checked="false" color="rgba(80,189,155)"> <text class="check-text">你是否愿意这条反馈公开 </text></checkbox> -->
 
         </view>
-            <view class="feedback-submit {{transBubble}}" bind:touchstart="triggerTransition" bind:touchend="submitFeedback"> 提交</view>
+            <view class="feedback-submit {{transBubble}}" bind:touchstart="triggerTransition" bind:transitionend="stopTran" bind:touchend="submitFeedback"> 提交</view>
         <view class="bottom-record">
             <view class="content-record">
             <text class="displayContent"> 感谢您对Ucho的支持！开发团队会仔细阅读每一条反馈并及时给出回复。您的每一条反馈均为匿名提交。 </text>

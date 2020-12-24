@@ -48,13 +48,13 @@ Page({
         console.log("play3")
 
         swan.redirectTo({
-            url: '/pages/main/main'
+            url: '/pages/intro/intro'
         })
     },
     nextAni(e) {
         if(this.data.anmi === 3) {
             swan.redirectTo({
-                url: '/pages/main/main'
+                url: '/pages/intro/intro'
             })
         }
         else {
@@ -63,5 +63,11 @@ Page({
                 anmi: tempAnmi
             })
         }
+    },
+    returnMain(e) {
+        console.log('returnM');
+        swan.redirectTo({
+            url: '/pages/intro/intro'
+        })
     }
 });

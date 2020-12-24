@@ -7,28 +7,44 @@ Page({
         showIntro: 0,
         transBubble: '',
         showAd: 0,
-        isFirstMain: 1,
-        whichToTop: 0,
+        isFirstMain: 0,
+        whichToTop: -1,
         shakeThis: -1,
         ltShow: 0,
         lbShow: 0,
         rShow: 0,
+        playChat: 'true',
+        allText: ['欢迎使用Ucho心理陪伴', '新上线用户反馈功能！'],
+        speakerText: '欢迎使用Ucho心理陪伴',
+        countNum: 0,
+        isLogin: 0,
+        showMaskText: 'welMask',
+        whetherShowNext: '',
+        showSelf: 0,
+        showEnve: 0,
+        openEnveShow: 0,
+        showMc: 'stop',
         // firstEnter: 1,
         // privacyContent: 
     },
     onLoad: function () {
         // 监听页面加载的生命周期函数
-        // if (swan.getStorageSync('first_main') === 'no') {
+        if (getApp().isAuthenticated()) {
+            this.setData({
+                isLogin: 1,
+            })
+        }
+        if (swan.getStorageSync('first_mc') === 'no') {
 
+        }
+        else {
+            
+            this.setData({
+                showEnve: 1,
+            })
+        }
+        getApp().setLocalStorage('first_mc', 'no');
 
-        // }
-        // else {
-        //     this.setData({
-        //         isFirstMain: 1,
-        //     })
-
-        // }
-        // getApp().setLocalStorage('first_main', 'no');
         swan.getSystemInfo({
             
             success: res => {
@@ -80,8 +96,48 @@ Page({
             },
             fail: err => {
             }
-        })
+        });
+        if (swan.getStorageSync('first_main') === 'no') {
+            this.setData({
+                playChat: 'false',
 
+            }, () => {
+                setTimeout(() => {
+                    this.setData({
+                        ltShow: 1,
+                        lbShow: 1,
+                        rShow: 1,
+                    })
+                }, 1000)
+
+            })
+
+        }
+        else {
+            this.setData({
+                isFirstMain: 1,
+                whichToTop: 0
+            })
+
+        }
+        getApp().setLocalStorage('first_main', 'no');
+        setInterval(() => {
+            if (this.data.changeText === 0) {
+                let currNum = this.data.countNum < this.data.allText.length - 1 ? this.data.countNum + 1 : 0;
+                this.setData({
+                    speakerText: this.data.allText[currNum],
+                    countNum: currNum,
+                    changeText: 1,
+                })
+            }
+            else {
+                this.setData({
+                    changeText: 0
+                })
+            }
+
+        
+        }, 3000)
     },
     resetShake(e) {
         this.setData({
@@ -113,14 +169,14 @@ Page({
             url: '/pages/myCalender/myCalender'
         })
     },
-    startChat() {
-        // console.log("transition finish")
+    startChat(e) {
+        console.log("transition finish")
         if (this.data.isWeb == 1) {
             var that = this;
             this.imageIntro(that);
             return
         }
-        if (getApp().isAuthenticated()) {
+        if (this.data.isLogin == 1) {
             swan.navigateTo ({
                 url: '/pages/Uchat/Uchat'
             })
@@ -163,9 +219,19 @@ Page({
         });
     },
     showPri(e) {
+        console.log(this.data.whichToTop)
         this.setData({
             showPrivacy: 1,
         })
+    },
+    toLogin(e) {
+        if (this.data.isLogin === 0) {
+            this.setData({
+                showPrivacy: 1,
+                mainLogin: 1,
+            })
+        }
+
     },
     hideModal(e) {
         this.setData({
@@ -190,6 +256,24 @@ Page({
                 scope: 'scope.userInfo',
                 success: res => {
                     getApp().login(this.toMood);
+                },
+                fail: err => {
+                    swan.showToast({
+                        title: '授权失败',
+                        icon: 'none'
+                    })
+                }
+            })
+        }
+        else if (this.data.mainLogin == 1) {
+            swan.authorize({
+                scope: 'scope.userInfo',
+                success: res => {
+                    getApp().login();
+                    this.setData({
+                        isLogin: 1,
+                        mainLogin: 0,
+                    })
                 },
                 fail: err => {
                     swan.showToast({
@@ -312,18 +396,73 @@ Page({
         })
     },
     showLt(e) {
+        this.showAllThree();
+
         this.setData({
             ltShow: 1,
+            showMaskText: 'moodMask',
+            showSelf: 0
+
+        }, () => {
+            this.showNextPuzzle()
         })
     },
     showLb(e) {
+        this.showAllThree();
+
         this.setData({
             lbShow: 1,
+            showMaskText: 'graMask',
+            showSelf: 0
+        }, () => {
+            this.showNextPuzzle()
         })
     },
     showR(e) {
+        this.showAllThree();
         this.setData({
             rShow: 1,
+            showMaskText: 'selfMask',  
+            showSelf: 1
+
+        }, () => {
+            this.showNextPuzzle()
         })
     },
+    showAllThree: function() {
+        if (this.data.ltShow === 1 && this.data.lbShow === 1 && this.data.rShow === 1) {
+            this.setData({
+                isFirstMain: 0,
+                whichToTop: -1,
+                playChat: 'false',
+            })
+        }
+    },
+    showNextPuzzle: function() {
+        let temp = "继续探索下一张拼图..."
+        if (this.data.ltShow === 1 && this.data.lbShow === 1 && this.data.rShow === 1) {
+            temp = "立即点击，开始体验..."
+        }
+        this.setData({
+            whetherShowNext: temp,
+        })
+    },
+    openEnve(e) {
+        this.setData({
+            openEnveShow: 1
+        })
+    },
+    letterEnd(e) {
+        this.setData({
+            showMc: 'play',
+        })        
+    },
+    closeEnve(e) {
+        if (this.data.showEnve == 1 && this.data.showMc == 'play') {
+            this.setData({
+                showEnve: 0
+            })
+        }
+
+    }
 });

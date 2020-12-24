@@ -33,3 +33,7 @@
         </animation-view>
     </view>
 </view>
+<!-- 
+<view class="skip-button" bind:tap="returnMain">
+    跳过
+</view> -->
