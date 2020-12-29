@@ -177,7 +177,7 @@ Page({
             }
         })
     },
-    scrollToBottomTemp(callback){
+    scrollToBottomTemp: function(callback){
         if(typeof callback != 'function') callback = function(){};
         let bottomHeight = 0;
         swan.createSelectorQuery().select('#uchat-bottom').boundingClientRect(rect => {
@@ -226,7 +226,7 @@ Page({
         });
     },
     // RAW input: SEND data and GET NEW
-    sendMsg:function(){
+    async sendMsg(){
         if(this.data.thisSenderMsg == ''){
             swan.showToast({
                 title: '消息不能为空',
@@ -243,11 +243,12 @@ Page({
         this.setData({
             displayMsgs: tempMsgs,
         }, ()=> {
-            this.scrollToBottomTemp(this.updateSendMsg());
+            await this.scrollToBottomTemp();
+            this.updateSendMsg();
         });
 
     },
-    updateSendMsg:function() {
+    updateSendMsg: async function() {
         if (this.data.robot == 1) {
             // console.log("4 robot");
             swan.request({
@@ -361,7 +362,9 @@ Page({
         }
         else if (this.data.taskFinish == true) {
             // console.log("sendMsg taskFinish", this.data.thisSenderMsg);
-            this.scrollToBottomTemp(this.matchingQuestion(this.data.thisSenderMsg));
+            await this.scrollToBottomTemp();
+            this.matchingQuestion(this.data.thisSenderMsg);
+
             this.setData({
                 taskFinish: false
             })
@@ -385,10 +388,11 @@ Page({
             displayMsgs: tempMsgs,
             showWhether: false,
         }, ()=> {
-            this.scrollToBottomTemp(this.updateChoice(choiceIndex));
+            this.matchingQuestion(this.data.thisSenderMsg);
+            this.updateChoice(choiceIndex);
         })
     },
-    updateChoice: function(choiceIndex) {
+    updateChoice: async function(choiceIndex) {
         let tempMsgs = this.data.displayMsgs;
         if (this.data.endAll == 1) {
             swan.navigateBack();
@@ -459,7 +463,8 @@ Page({
                 })
             }
             else if(choiceIndex == '1') {
-                this.scrollToBottomTemp(this.notMatchingQuestion());
+                await this.scrollToBottomTemp();
+                this.notMatchingQuestion();
                 // this.notMatchingQuestion();
             }
             else if(choiceIndex == '2') {
@@ -531,7 +536,7 @@ Page({
         })
 
     },
-    getInitialUpdateData: function(chIndex) { // 还未向服务器请求question
+    getInitialUpdateData: async function(chIndex) { // 还未向服务器请求question
         let tempDis = this.data.displayMsgs;
 
         if (this.data.doChoice === '1' &&  this.data.taskFinish == false && chIndex == 0) {
@@ -551,12 +556,14 @@ Page({
             });
             if (chIndex == '0') {
                 //matching
-                this.scrollToBottomTemp(this.matchingQuestion(this.data.thisSenderMsg ));
+                await this.scrollToBottomTemp();
+                this.matchingQuestion(this.data.thisSenderMsg );
                 // this.matchingQuestion(this.data.thisSenderMsg );
             }
             else {
                 // not matching
-                this.scrollToBottomTemp(this.notMatchingQuestion());
+                await this.scrollToBottomTemp();
+                this.notMatchingQuestion();
                 // this.notMatchingQuestion();
             }
             return;
@@ -584,7 +591,8 @@ Page({
                 whetherDetermineMatch: '1',
                 taskFinish: true,
             },() => {
-                this.scrollToBottomTemp(this.notMatchingQuestion());
+                await this.scrollToBottomTemp();
+                this.notMatchingQuestion();
             });
             return;
         }
@@ -599,7 +607,8 @@ Page({
             whetherDetermineMatch: '1',
             taskFinish: true,
         },() => {
-            this.scrollToBottomTemp(this.notMatchingQuestion());
+            await this.scrollToBottomTemp();
+            this.notMatchingQuestion();
         })
 
 
@@ -637,7 +646,7 @@ Page({
             }
         })
     },
-    userEnter: function() {
+    userEnter: async function() {
         this.setData({
             justEnter: "1",
         })
@@ -698,7 +707,8 @@ Page({
                             taskFinish: res.data.talk_finished,
                         }, () => {
                             // let match = false;
-                            this.scrollToBottomTemp(this.notMatchingQuestion());
+                            await this.scrollToBottomTemp();
+                            this.notMatchingQuestion();
                             // this.notMatchingQuestion();
                         });
                     }
