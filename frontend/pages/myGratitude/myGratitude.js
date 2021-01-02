@@ -68,7 +68,7 @@ Page({
         constMonth = dictD.month;
         thisYear = dictD.year;
         constYear = dictD.year;
-        this.loadOneMonth(dictD.year, dictD.month, dictD.day, numberDays);
+        this.loadOneMonth(dictD.year, dictD.month, dictD.day, numberDays, false);
 
 
     },
@@ -101,8 +101,8 @@ Page({
     setTodayIntoView: function(){
         
     },
-    loadOneMonth: function(year, month, toWhichDay, numberDays) {
-        console.log('begin', this.data.weekGratitude);
+    loadOneMonth: function(year, month, toWhichDay, numberDays, isPrev) {
+        // console.log('begin', this.data.weekGratitude, year, month, toWhichDay, numberDays);
         let tempDG = this.data.weekGratitude;
         let tempEachDays = this.data.eachDayGratiture;
         let tempD = this.data.days;
@@ -112,40 +112,73 @@ Page({
         let tempRightNum = this.data.allMonths.length;
         let tempAllNum = this.data.allMonths.length;
         let tempMName = this.data.monthName[month - 1];
-        console.log('0', this.data.allMonths.length, tempM.length)
+        let hasSetToWhich = false;
+        let isPrevIndex = this.data.allMonths.length;
+        // console.log('0', this.data.allMonths.length, tempM.length)
 
         for (let i = 1; i <= numberDays - 6; i+=7){
             tempAllNum = tempAllNum + 1;
-            if (toWhichDay <= i + 6) {
+            if (toWhichDay <= i + 6 && !hasSetToWhich) {
+                hasSetToWhich = true
+                // console.log('towhi', tempAllNum, toWhichDay)
                 tempRightNum = tempAllNum - 1;
                 tempId = i;
             }
-            tempM.unshift({
-                month: tempMName,
-                id: i,
-            })
-            tempD.unshift(i + 6, i);
+            if (isPrev === false) {
+                tempM.unshift({
+                    month: tempMName,
+                    id: i,
+                })
+                tempD.unshift(i + 6, i);
+            }
+            else {
+                console.log('rightIn1', tempM, tempD, isPrevIndex)
+
+                tempM.splice(
+                    isPrevIndex, 0, {
+                        month: tempMName,
+                        id: i,
+                    }
+                )
+                tempD.splice(
+                    isPrevIndex, 0, i + 6, i
+                )
+                isPrevIndex += 1;
+                console.log('rightIn', tempM, tempD, isPrevIndex)
+            }
         }
         if (tempD[0] != numberDays) {
             if (tempD.length % 2) {
-                tempD.unshift(numberDays);
+                if (isPrev === false) {
+                    tempD.unshift(numberDays);
+                }
             }
             else {
                 tempAllNum = tempAllNum + 1;
                 let first = tempD[0] + 1;
                 if (tempId == 0) tempId = first;
-                tempM.unshift({
-                    month: tempMName,
-                    id: first,
-                })
-                tempD.unshift(numberDays, first);
+                if (isPrev === false) {
+                    tempM.unshift({
+                        month: tempMName,
+                        id: first,
+                    })
+                    tempD.unshift(numberDays, first);
+                }
+
                 
             }
         }
-        console.log('1', this.data.allMonths.length, tempM.length)
+        // console.log('1', this.data.allMonths.length, tempM.length)
         for (let i = 0; i < tempM.length - holdLength; i++) {
-            tempDG.unshift([]);
-            tempEachDays.unshift([{}]);
+            if (isPrev === false) {
+                tempDG.unshift([]);
+                tempEachDays.unshift([{}]);
+            }
+            else {
+                // tempDG.push([]);
+                // tempEachDays.push([{}]);
+            }
+
         }
         // tempM.forEach(ele => {
 
@@ -154,6 +187,8 @@ Page({
             tempRightNum = holdLength;
         }
         let tempLeftWhole = (tempAllNum - tempRightNum ) == 0 ? 1 : (tempAllNum - tempRightNum);
+        tempLeftWhole = (tempRightNum == 0) ? tempAllNum - 1 : tempLeftWhole;
+        // console.log('tempLeftWhole', tempLeftWhole)
         this.setData({
             getSelectMonth: {year: year, month: month},
             today: toWhichDay,
@@ -165,7 +200,7 @@ Page({
             leftCardNum: tempLeftWhole,
         }, ()=>{
             this.setScrollLeft();
-            console.log('loadOne', tempDG)
+            // console.log('loadOne', tempDG)
             this.moodTypeGratitude({year: year, month: month});
         })
         
@@ -311,7 +346,7 @@ Page({
         this.changeOneCard(startX - endX)
     },
     touchMove(e) {
-        console.log('move')
+        // console.log('move')
     },
 
     changeOneCard: function(changeX) {
@@ -330,7 +365,7 @@ Page({
                 thisYear = tempThis == 12 ? thisYear + 1 : thisYear;
                 let numberDays = this.getThisMonthDays(thisYear, thisMonth);
 
-                this.loadOneMonth(thisYear, thisMonth, 1, numberDays)
+                this.loadOneMonth(thisYear, thisMonth, 1, numberDays, false)
             }
             this.setData({
                 leftCardNum: this.data.leftCardNum - 1,
@@ -348,13 +383,13 @@ Page({
             //     let numberDays = this.getThisMonthDays(thisYear, thisMonth);
 
             //     // console.log('prevM', thisMonth, thisYear)
-            //     this.loadOneMonth(thisYear, thisMonth, 1, numberDays)
+            //     this.loadOneMonth(thisYear, thisMonth, numberDays, numberDays, true)
             // }
-            this.setData({
-                leftCardNum: this.data.leftCardNum + 1,
-            }, ()=>{
-                this.setScrollLeft();
-            })
+            // this.setData({
+            //     leftCardNum: this.data.leftCardNum + 1,
+            // }, ()=>{
+            //     this.setScrollLeft();
+            // })
         }
 
     },
