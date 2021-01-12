@@ -1,49 +1,96 @@
 <template>
-  <el-row type="flex" v-loading="loading">
+  <el-row
+    v-loading="loading"
+    type="flex"
+  >
     <el-col :span="24">
-      <el-button @click="drawerVisible = true" type="primary" style="margin-left: 16px;">
+      <el-button
+        type="primary"
+        style="margin-left: 16px;"
+        @click="drawerVisible = true"
+      >
         看提示
       </el-button>
       <el-divider>问题信息</el-divider>
       <h2>问题ID: {{ this.$route.params.id }}</h2>
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form
+        ref="form"
+        :model="form"
+        label-width="80px"
+      >
         <el-form-item label="问题标题">
-          <el-input :rows="3" type="textarea" v-model="form.title"></el-input>
+          <el-input
+            v-model="form.title"
+            :rows="3"
+            type="textarea"
+          />
         </el-form-item>
         <el-form-item label="关键词">
-          <el-input v-model="form.keyword" placeholder="以逗号分隔"></el-input>
+          <el-input
+            v-model="form.keyword"
+            placeholder="以逗号分隔"
+          />
         </el-form-item>
         <el-form-item label="回复类型">
-          <el-select v-model="form.reply_type" placeholder="请选择回复类型">
-            <el-option v-for="(value, name) in REPLY_TYPE_STR" :label="value" :value="name * 1" :key="name"></el-option>
+          <el-select
+            v-model="form.reply_type"
+            placeholder="请选择回复类型"
+          >
+            <el-option
+              v-for="(value, name) in REPLY_TYPE_STR"
+              :key="name"
+              :label="value"
+              :value="name * 1"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="处理类型">
-          <el-select v-model="form.process_type" placeholder="请选择处理类型">
-            <el-option v-for="(value, name) in PROC_TYPE_STR" :label="value" :value="name * 1" :key="name"></el-option>
+          <el-select
+            v-model="form.process_type"
+            placeholder="请选择处理类型"
+          >
+            <el-option
+              v-for="(value, name) in PROC_TYPE_STR"
+              :key="name"
+              :label="value"
+              :value="name * 1"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="根问题">
           <el-switch
             v-model="form.root"
             active-color="#13ce66"
-            inactive-color="#ff4949">
-          </el-switch>
+            inactive-color="#ff4949"
+          />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" style="width: 100%" @click="updateQuestion">更新</el-button>
+          <el-button
+            type="primary"
+            style="width: 100%"
+            @click="updateQuestion"
+          >
+            更新
+          </el-button>
         </el-form-item>
       </el-form>
       <el-divider>问题选项</el-divider>
       <el-button
-        @click="initChoice"
         type="primary"
         icon="el-icon-plus"
+        @click="initChoice"
       >
         新建选项
       </el-button>
-      <el-row :gutter="12" style="margin-top: 20px">
-        <el-col :span="6" v-for="item in form.choices" :key="item.id">
+      <el-row
+        :gutter="12"
+        style="margin-top: 20px"
+      >
+        <el-col
+          v-for="item in form.choices"
+          :key="item.id"
+          :span="6"
+        >
           <el-card shadow="hover">
             <div slot="header">
               <span>{{ item.title }}</span>
@@ -58,7 +105,10 @@
             <div>
               <p>回复: {{ item.reply_content }}</p>
               <p>下个问题: {{ item.dest_question ? item.dest_question__title : '无' }}</p>
-              <el-row :gutter="10" style="margin-top: 10px">
+              <el-row
+                :gutter="10"
+                style="margin-top: 10px"
+              >
                 <el-col :span="12">
                   <el-button
                     v-if="item.dest_question"
@@ -66,7 +116,8 @@
                     style="width: 100%"
                     size="mini"
                     @click="jumpQuestion(item.dest_question)"
-                  >跳转
+                  >
+                    跳转
                   </el-button>
                 </el-col>
                 <el-col :span="12">
@@ -75,11 +126,17 @@
                     icon-color="red"
                     @confirm="deleteChoice(item.id)"
                   >
-                    <el-button slot="reference" type="danger" style="width: 100%" size="mini">删除</el-button>
+                    <el-button
+                      slot="reference"
+                      type="danger"
+                      style="width: 100%"
+                      size="mini"
+                    >
+                      删除
+                    </el-button>
                   </el-popconfirm>
                 </el-col>
               </el-row>
-
             </div>
           </el-card>
         </el-col>
@@ -95,13 +152,15 @@
         <ul>
           <li>问题标题: 小U回复时的内容</li>
           <li>关键词: 多个关键词用逗号分隔（中英文皆可），用于重新开始话题时匹配问题</li>
-          <li>回复类型
+          <li>
+            回复类型
             <ul>
               <li>文本: 聊天界面回复框为文本框</li>
               <li>选项: 聊天界面回复框为几个选项</li>
             </ul>
           </li>
-          <li>处理类型（心情日记仅对选项回复生效，其余仅对文本回复生效）
+          <li>
+            处理类型（心情日记仅对选项回复生效，其余仅对文本回复生效）
             <ul>
               <li>普通: 无论回复什么，跳转第1个选项指向的问题</li>
               <li>感恩日志: 用本轮回答生成一条感恩日志，并跳转第1个选项指向的问题</li>
@@ -113,13 +172,16 @@
       </el-row>
     </el-drawer>
 
-    <el-dialog title="新建选项" :visible.sync="dialogFormVisible">
+    <el-dialog
+      title="新建选项"
+      :visible.sync="dialogFormVisible"
+    >
       <el-form :model="editingChoice">
         <el-form-item label="选项标题">
-          <el-input v-model="editingChoice.title"></el-input>
+          <el-input v-model="editingChoice.title" />
         </el-form-item>
         <el-form-item label="回复内容">
-          <el-input v-model="editingChoice.reply_content"></el-input>
+          <el-input v-model="editingChoice.reply_content" />
         </el-form-item>
         <el-form-item label="指向问题">
           <el-select
@@ -128,19 +190,30 @@
             remote
             placeholder="请输入问题关键词"
             :remote-method="remoteMethod"
-            :loading="selectLoading">
+            :loading="selectLoading"
+          >
             <el-option
               v-for="item in options"
               :key="item.id"
               :label="item.title"
-              :value="item.id">
-            </el-option>
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="createOrUpdateChoice">确 定</el-button>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="dialogFormVisible = false">
+          取 消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="createOrUpdateChoice"
+        >
+          确 定
+        </el-button>
       </div>
     </el-dialog>
   </el-row>

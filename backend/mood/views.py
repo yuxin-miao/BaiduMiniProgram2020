@@ -28,7 +28,7 @@ class MoodRecordViewSet(
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return MoodRecord.objects.filter(user=self.request.user).order_by('-created_at')
+        return MoodRecord.objects.filter(user=self.request.user).order_by('-id')
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -90,7 +90,7 @@ class MoodRecordViewSet(
                 created_at__year=year,
                 created_at__month=month,
                 created_at__day=day
-            ).exclude(type=MoodType.GRATITUDE).order_by('-id').first()
+            ).exclude(type=MoodType.GRATITUDE).first()
             mood_data = MoodRecordDetailSerializer(mood_record).data
             return Response(data=mood_data, status=status.HTTP_200_OK)
         return Response(data={'detail': error}, status=status.HTTP_400_BAD_REQUEST)
@@ -111,22 +111,26 @@ class MoodRecordViewSet(
             ).exclude(type=MoodType.GRATITUDE)
 
             # only reserve the latest record of each day
-            mood_values = mood_records.values('id', 'created_at')
+            mood_values = mood_records.values('id', 'description', 'type', 'created_at')
             tz = timezone.get_current_timezone()
 
             for i in range(len(mood_values)):
                 mood_values[i]['created_at'] = tz.normalize(mood_values[i]['created_at'])
 
+            # Remove duplicate: only keep the mood record with largest ID on that day
+            day_set = set()
             for i in range(len(mood_values)):
-                if i > 0 and mood_values[i]['created_at'].day == mood_values[i - 1]['created_at'].day:
+                if mood_values[i]['created_at'].day in day_set:
                     mood_records = mood_records.exclude(id=mood_values[i]['id'])
+                else:
+                    day_set.add(mood_values[i]['created_at'].day)
 
             # get all gratitude journals in a month
             gratitude_journals = MoodRecord.objects.filter(user=request.user).filter(
                 created_at__year=year,
                 created_at__month=month,
                 type=MoodType.GRATITUDE
-            ).order_by('created_at')
+            ).order_by('-created_at')
 
             mood_data = MoodRecordMiniSerializer(mood_records, many=True).data
             gratitude_data = MoodRecordDetailSerializer(gratitude_journals, many=True).data
