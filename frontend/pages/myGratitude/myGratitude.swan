@@ -9,7 +9,7 @@
 
     <scroll-view class="scroll-box" scroll-x="false" scroll-y="false" scroll-with-animation bind:touchstart="touchStart" bind:touchend="touchEnd"
             scroll-left="{= scrollLeft =}">
-        <view s-for="item, index in allMonths"  class="card-box" id="{{item.id}}">
+        <view s-for="item, index in allMonths"  class="card-box">
             <view class="card {{leftCardNum == index ? 'animBig' : 'animSmaller'}}" bind:tap="openThisOne" data-cardIdx="{{index}}">
                 <view class="part">
                     <view class="top-text">
@@ -41,6 +41,25 @@
 
         </view>
     </scroll-view>
+    <view class="arrow-row">
+        <view  bind:tap="clickLeft">
+            <image
+                src="../../images/gra-left.svg"
+                mode="widthFix"
+                style="width:10vw"
+
+                />
+                
+        </view>
+        <!-- <view class="arrow-one"> -->
+            <image
+                src="../../images/gra-right.svg"
+                bind:tap="clickRight"
+                mode="widthFix"
+                style="width:10vw"
+            />
+        <!-- </view> -->
+    </view>
 </view>
 </view>
 
