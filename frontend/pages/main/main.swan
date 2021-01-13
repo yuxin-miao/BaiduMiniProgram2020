@@ -90,10 +90,7 @@
                     <image
                         mode="widthFix"
                         src="../../images/r-icon.png"
-                        class="inner-block-image {{shakeThis == 2 ? 'shake' : ''}}"
-                        bind:touchstart="beginShake"
-                        bind:animationend="resetShake"
-                        data-which-shake="2"/>
+                        class="inner-block-image"/>
                         <block s-if="isLogin == 1">
                             个人中心
                         </block>
@@ -251,7 +248,7 @@ c) 您通过我们的服务分享的内容所包含的信息（元数据）
         class="mc-wel"
         mode="widthFix"
         style="width: 600rpx"
-        src='https://cdn.xiaou.tech/mc-envel.png' />
+        src='https://cdn.xiaou.tech/newyear-wel.png' />
     <view class="envlope-wrapper">
         <view class="envelope" bind:tap="closeEnve">
             <view class="front flap {{openEnveShow == 1 ? 'open-flap' : ''}}"></view>

@@ -63,6 +63,16 @@
     -webkit-box-shadow:0px 3px 5px 1px rgba(207,244,209);/*for IOS*/
 
 }
+.arrow-row {
+    position: fixed;
+    top: 78vh;
+    padding: 0 18.25vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
 /* .card: */
 .animBig {
     animation: 0.2s ease toBigger forwards;

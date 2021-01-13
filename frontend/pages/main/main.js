@@ -42,7 +42,7 @@ Page({
         }
         else {
             swan.downloadFile({
-            url: 'https://cdn.xiaou.tech/mc-tree.json',
+            url: 'https://cdn.xiaou.tech/newyear2021.json',
             // header: {
             //     'content-type': 'application/json'
             // },

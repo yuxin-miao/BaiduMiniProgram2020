@@ -348,7 +348,13 @@ Page({
     touchMove(e) {
         // console.log('move')
     },
-
+    clickLeft(e) {
+        this.changeOneCard(-5);
+        console.log('left')
+    },
+    clickRight(e) {
+        this.changeOneCard(5);
+    },
     changeOneCard: function(changeX) {
         if (!getApp().isAuthenticated()) {
             letUserLogin(true);
@@ -375,7 +381,7 @@ Page({
 
         }
         else if (changeX > 0) { //  显示右边
-            // console.log('right', changeX);
+            console.log('right', changeX);
             // if (this.data.leftCardNum === this.data.allMonths.length) {
             //     let tempThis = thisMonth;
             //     thisMonth = thisMonth == 1 ? 12 : thisMonth - 1;
@@ -385,11 +391,11 @@ Page({
             //     // console.log('prevM', thisMonth, thisYear)
             //     this.loadOneMonth(thisYear, thisMonth, numberDays, numberDays, true)
             // }
-            // this.setData({
-            //     leftCardNum: this.data.leftCardNum + 1,
-            // }, ()=>{
-            //     this.setScrollLeft();
-            // })
+            this.setData({
+                leftCardNum: this.data.leftCardNum + 1,
+            }, ()=>{
+                this.setScrollLeft();
+            })
         }
 
     },

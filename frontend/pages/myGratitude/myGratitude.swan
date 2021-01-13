@@ -41,6 +41,25 @@
 
         </view>
     </scroll-view>
+    <view class="arrow-row">
+        <view  bind:tap="clickLeft">
+            <image
+                src="../../images/gra-left.svg"
+                mode="widthFix"
+                style="width:10vw"
+
+                />
+                
+        </view>
+        <!-- <view class="arrow-one"> -->
+            <image
+                src="../../images/gra-right.svg"
+                bind:tap="clickRight"
+                mode="widthFix"
+                style="width:10vw"
+            />
+        <!-- </view> -->
+    </view>
 </view>
 </view>
 
